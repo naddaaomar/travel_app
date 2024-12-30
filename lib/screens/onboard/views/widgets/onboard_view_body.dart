@@ -95,7 +95,7 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                         const SizedBox(
                             height: 20),
                         const Text(
-                          "We are ready to help you on\nvacation around Egypt",
+                          "No matter where you’re going,\n We’ll take you there",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -145,20 +145,10 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                "Let's Get Started",
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              SizedBox(
-                                  width: 5),
                               Icon(
-                                Icons.arrow_forward,
+                                Icons.double_arrow_rounded,
                                 color: Colors.white,
-                                size: 25,
+                                size: 44,
                               )
                             ],
                           ),

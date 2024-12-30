@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../screens/home/views/home_view.dart';
 import '../themes/colors.dart';
 
 class TravelAppBar extends StatelessWidget {
@@ -9,12 +10,16 @@ class TravelAppBar extends StatelessWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       shadowColor: Colors.transparent,
-      leading: Image.network('assets/logo.png'),
+      foregroundColor: Colors.black,
+      leading: Image.asset(
+        'assets/logo.png',
+        filterQuality: FilterQuality.high, ),
 
       actions: [
-        IconButton(onPressed: (){
-
+        IconButton(
+          onPressed: (){
         },
+
           icon: const Icon(Icons.menu_outlined,
             color: Colors.white,),
           hoverColor: ColorApp.primaryColor,)
