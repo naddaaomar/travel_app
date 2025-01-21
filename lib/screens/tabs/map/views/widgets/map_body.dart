@@ -26,14 +26,18 @@ class _MapBodyState extends State<MapBody> {
       target: LatLng(29.9610721, 31.2605734),
       tilt: 59.440717697143555,
       zoom: 22.151926040649414);
-
+  @override
+  void dispose() {
+    streamSubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     canAccessLocation();
     return MyLocation == null
         ? Center(child: CircularProgressIndicator())
-        :GoogleMap (
+        : GoogleMap(
       mapType: MapType.normal,
       myLocationEnabled: true,
       zoomControlsEnabled: false,
@@ -45,7 +49,7 @@ class _MapBodyState extends State<MapBody> {
             position: argument));
         setState(() {});
       },
-      polylines: polylines ,
+      polylines: polylines,
       cameraTargetBounds: CameraTargetBounds(LatLngBounds(
         northeast: LatLng(31.916667, 35.000000),
         southwest: LatLng(22.000000, 25.000000),
@@ -53,9 +57,7 @@ class _MapBodyState extends State<MapBody> {
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
       },
-    )
-
-    ;
+    );
   }
 
   Location location = new Location();
@@ -91,6 +93,9 @@ class _MapBodyState extends State<MapBody> {
       interval: 1000 * 10,
     );
     streamSubscription = location.onLocationChanged.listen((event) {
+      // Check if the widget is still mounted before calling setState
+      if (!mounted) return;
+
       locationData = event;
       markers.add(Marker(
         markerId: MarkerId("myLocation"),
@@ -111,7 +116,5 @@ class _MapBodyState extends State<MapBody> {
     });
   }
 
+
 }
-
-
-
