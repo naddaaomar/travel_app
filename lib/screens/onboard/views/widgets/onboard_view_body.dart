@@ -31,14 +31,13 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
       body: Stack(
         children: [
           PageView.builder(
-            itemCount: onboarding.length,
             onPageChanged: (value) {
               setState(() {
                 currentIndex = value;
               });
             },
             itemBuilder: (context, index) {
-              return Image.network(
+              return Image.asset(
                 onboarding[index].image,
                 fit: BoxFit.cover,
               );

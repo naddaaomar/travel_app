@@ -7,15 +7,15 @@ class NearbyPlaceModel {
 
 List<NearbyPlaceModel> nearbyPlaces = [
   NearbyPlaceModel(
-    image: "assets/onboard/onboard3.png",
+    image: "assets/images/onboard3.png",
   ),
   NearbyPlaceModel(
-    image: "assets/onboard/onboard3.png",
+    image: "assets/images/onboard3.png",
   ),
   NearbyPlaceModel(
-    image: "assets/onboard/onboard3.png",
+    image: "assets/images/onboard3.png",
   ),
   NearbyPlaceModel(
-    image: "assets/onboard/onboard3.png",
+    image: "assets/images/onboard3.png",
   ),
 ];

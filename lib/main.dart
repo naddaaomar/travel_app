@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:p/screens/onboard/views/onboard_view.dart';
 import 'screens/home/views/home_view.dart';
+import 'screens/onboard/views/onboard_view.dart';
 
 
 void main() {
@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFE0D7D7),
       ),

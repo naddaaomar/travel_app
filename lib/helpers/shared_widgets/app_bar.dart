@@ -12,7 +12,7 @@ class TravelAppBar extends StatelessWidget {
       shadowColor: Colors.transparent,
       foregroundColor: Colors.black,
       leading: Image.asset(
-        'assets/logo.png',
+        'assets/images/logo.png',
         filterQuality: FilterQuality.high, ),
 
       actions: [

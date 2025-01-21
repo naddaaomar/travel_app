@@ -10,7 +10,7 @@ class RecommendedPlaces extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 235,
+      height: 237,
       child: ListView.separated(
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
@@ -19,7 +19,8 @@ class RecommendedPlaces extends StatelessWidget {
               width: 220,
               child:
                Card(
-                elevation: 0.4,
+                 elevation: 10,
+                 shadowColor: ColorApp.primaryColor,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(10),
@@ -50,6 +51,7 @@ class RecommendedPlaces extends StatelessWidget {
                             height: 150,
                           ),
                         ),
+
 
                         const SizedBox(height: 15),
                         Row(

@@ -9,7 +9,8 @@ class LocationCard extends StatelessWidget {
     return
        Card(
         color: const Color(0xFFD7D1D1),
-        elevation: 0.4,
+        elevation: 10,
+        shadowColor: ColorApp.primaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
 
         child: Row(

@@ -12,22 +12,22 @@ class RecommendedPlaceModel {
 
 List<RecommendedPlaceModel> recommendedPlaces = [
 RecommendedPlaceModel(
-  image: 'assets/onboard/onboard3.png',
+  image: 'assets/images/onboard3.png',
   rating: 4.4,
   location: 'Taba',
  ),
   RecommendedPlaceModel(
-    image: 'assets/onboard/onboard3.png',
+    image: 'assets/images/onboard3.png',
     rating: 4.4,
     location: 'Taba',
   ),
   RecommendedPlaceModel(
-    image: 'assets/onboard/onboard3.png',
+    image: 'assets/images/onboard3.png',
     rating: 4.4,
     location: 'Taba',
   ),
   RecommendedPlaceModel(
-    image: 'assets/onboard/onboard3.png',
+    image: 'assets/images/onboard3.png',
     rating: 4.4,
     location: 'Taba',
   ),
