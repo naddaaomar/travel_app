@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/models/inclusion_model.dart';
+import 'package:p/models/photo_gallery_model.dart';
+import 'trip_on_map.dart';
 
 class TripDetailsViewBody extends StatelessWidget {
   const TripDetailsViewBody({
@@ -14,14 +17,13 @@ class TripDetailsViewBody extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
-        child: ListView(
+        child: Stack(
           children: [
             SizedBox(
-              height: size.height * 0.6,
+              height: size.height * 0.3,
               width: double.maxFinite,
               child: Stack(
                 fit: StackFit.expand,
-
                 children: [
                   Container(
                     decoration: BoxDecoration(
@@ -31,17 +33,8 @@ class TripDetailsViewBody extends StatelessWidget {
                         image: AssetImage(image),
                         fit: BoxFit.cover,
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.4),
-                          spreadRadius: 0,
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
                     ),
                   ),
-
                   Positioned(
                     top: 10,
                     left: 0,
@@ -72,101 +65,246 @@ class TripDetailsViewBody extends StatelessWidget {
                 ],
               ),
             ),
-
             Container(
-              height: MediaQuery.of(context).size.height / 500,
-              padding: const EdgeInsets.only(
-                  top: 20, left: 20, right: 20 ),
+              margin: const EdgeInsets.only(top: 230),
+              width: double.infinity,
               decoration: const BoxDecoration(
-                color: Color(0xFFE0D7D7),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30)
-                ),
-              ),
-              child: ListView(
-                children: const [
-                   Padding(padding: EdgeInsets.only(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-
-                          ],
-                        )
-                      ],
-                    ),),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20,left: 20,top: 20),
-              child: Row(
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
+                  color: ColorApp.secondaryColor,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20))),
+              child: Padding(
+                padding: EdgeInsets.only(right: 20, left: 20, top: 20),
+                child: SingleChildScrollView(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'place',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        )
+                      const Row(
+                        children: [
+                          Text('Dahab',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              )),
+                          Spacer(),
+                          Text(
+                            "\$200",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 17),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'description',
-                          style: Theme.of(context).textTheme.bodySmall,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: IconButton(
+                              onPressed: () {},
+                              iconSize: 20,
+                              icon: const Icon(
+                                  Ionicons.chatbubble_ellipses_outline),
+                            ),
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'rate',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              Icon(
+                                Ionicons.star,
+                                color: Colors.yellow[800],
+                                size: 15,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            color: ColorApp.primaryColor,
+                            size: 10,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Description',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        "Egypt’s Hidden Gem ,Dahab is a dream come true for thrill-seekers and nature"
+                        " enthusiasts alike. The town is world-renowned for its diving spots, "
+                        "particularly the Blue Hole, a bucket-list destination for divers"
+                        " drawn to its underwater caves and vibrant marine life.",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            color: ColorApp.primaryColor,
+                            size: 10,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Photo Gallery',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      SizedBox(
+                        height: 255,
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 20),
+                          itemCount: 6,
+                          itemBuilder: (context, index) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.asset(
+                                photoGalleryModel[index].image,
+                                fit: BoxFit.fill,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TripOnMap(
+                                    Latitude: 28.5093,
+                                    Longitude: 34.5136,
+                                  ),
+                                ));
+                          },
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.circle,
+                                color: ColorApp.primaryColor,
+                                size: 10,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Show on map',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            color: ColorApp.primaryColor,
+                            size: 10,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Inclusion',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20, top: 4),
+                        child: Text("Why book this trip ?"),
+                      ),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      SizedBox(
+                        height: 160,
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.circle,
+                                    color: ColorApp.primaryColor,
+                                    size: 6,
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Expanded(
+                                      child: Text(
+                                    "${inclusionModel[index].label}",
+                                  )),
+                                ],
+                              ),
+                            );
+                          },
+                          itemCount: inclusionModel.length,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Book Trip",
+                            style: TextStyle(color: Colors.white, fontSize: 17),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              elevation: 10,
+                              shadowColor: ColorApp.primaryColor,
+                              backgroundColor: ColorApp.primaryColor),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 7,
+                      ),
+                      Center(child: Text("What are you waiting for ?")),
+                      Center(child: Text("Book your trip now.")),
+                      SizedBox(
+                        height: 10,
                       )
                     ],
                   ),
-                  const Spacer(),
-
-                  Padding(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: IconButton(
-                      onPressed: () {},
-                      iconSize: 20,
-                      icon: const Icon(Ionicons.chatbubble_ellipses_outline),
-                    ),
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'rate',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      Icon(
-                        Ionicons.star,
-                        color: Colors.yellow[800],
-                        size: 15,
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 64),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorApp.primaryColor,
-                  elevation: 0.4,
-                  shape: const StadiumBorder(),
-
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 100,
-                    horizontal: 40,
-                  ),
                 ),
-                child: const Text("Join this tour"),
               ),
             )
           ],

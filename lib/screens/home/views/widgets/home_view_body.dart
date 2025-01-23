@@ -45,6 +45,7 @@ class _HomeViewBodyState extends State<HomeViewBody> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       extendBody: true,
       endDrawer:DrawerBody() ,
       appBar: AppBar(

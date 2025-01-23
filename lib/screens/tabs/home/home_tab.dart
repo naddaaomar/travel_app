@@ -46,7 +46,7 @@ class HomeTab extends StatelessWidget {
               height: 7),
           const RecommendedPlaces(),
 
-          const SizedBox(height: 40),
+          const SizedBox(height: 30),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
