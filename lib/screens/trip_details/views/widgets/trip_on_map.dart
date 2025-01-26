@@ -27,8 +27,8 @@ class TripOnMap extends StatelessWidget {
           zoomControlsEnabled: false,
           initialCameraPosition: tripPosition,
           cameraTargetBounds: CameraTargetBounds(LatLngBounds(
-            northeast: LatLng(31.916667, 35.000000),
-            southwest: LatLng(22.000000, 25.000000),
+            northeast: const LatLng(31.916667, 35.000000),
+            southwest: const LatLng(22.000000, 25.000000),
           )),
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);

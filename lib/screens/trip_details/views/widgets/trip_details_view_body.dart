@@ -74,7 +74,7 @@ class TripDetailsViewBody extends StatelessWidget {
                       topRight: Radius.circular(20),
                       topLeft: Radius.circular(20))),
               child: Padding(
-                padding: EdgeInsets.only(right: 20, left: 20, top: 20),
+                padding: const EdgeInsets.only(right: 20, left: 20, top: 20),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,7 +193,7 @@ class TripDetailsViewBody extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
@@ -294,12 +294,12 @@ class TripDetailsViewBody extends StatelessWidget {
                               backgroundColor: ColorApp.primaryColor),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 7,
                       ),
-                      Center(child: Text("What are you waiting for ?")),
-                      Center(child: Text("Book your trip now.")),
-                      SizedBox(
+                      const Center(child: Text("What are you waiting for ?")),
+                      const Center(child: Text("Book your trip now.")),
+                      const SizedBox(
                         height: 10,
                       )
                     ],
