@@ -40,11 +40,22 @@ dependencies:
   google_maps_flutter: ^2.5.3
   location: ^5.0.3
   carousel_slider: ^5.0.0
+  dio: ^5.7.0
+  bloc: ^9.0.0
+  flutter_bloc: ^9.0.0
+  flutter_screenutil: ^5.9.3
+  dartz: ^0.10.1
+  pretty_dio_logger: ^1.4.0
+  get_it: ^8.0.3
+  injectable: ^2.5.0
+  webview_flutter: ^3.0.4
 
 
 
 
 dev_dependencies:
+  injectable_generator: ^2.6.2
+  build_runner: ^2.4.11
   flutter_test:
     sdk: flutter
 

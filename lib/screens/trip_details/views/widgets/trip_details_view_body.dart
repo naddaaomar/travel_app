@@ -3,6 +3,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/models/inclusion_model.dart';
 import 'package:p/models/photo_gallery_model.dart';
+import 'package:p/screens/payment/presentation/pages/test_form.dart';
 import 'trip_on_map.dart';
 
 class TripDetailsViewBody extends StatelessWidget {
@@ -283,7 +284,13 @@ class TripDetailsViewBody extends StatelessWidget {
                       ),
                       Center(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RegisterScreen(),
+                                ));
+                          },
                           child: Text(
                             "Book Trip",
                             style: TextStyle(color: Colors.white, fontSize: 17),
