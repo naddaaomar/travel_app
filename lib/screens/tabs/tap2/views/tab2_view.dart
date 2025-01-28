@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:p/helpers/themes/colors.dart';
 
 class Tab2 extends StatelessWidget {
   const Tab2({super.key});
@@ -6,7 +7,7 @@ class Tab2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.cyan,
+      color:ColorApp.secondaryColor,
     );
   }
 }

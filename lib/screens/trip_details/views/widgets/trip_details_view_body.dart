@@ -256,7 +256,7 @@ class TripDetailsViewBody extends StatelessWidget {
                         child: ListView.builder(
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               child: Row(
                                 children: [
                                   const Icon(
@@ -284,7 +284,7 @@ class TripDetailsViewBody extends StatelessWidget {
                       Center(
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             "Book Trip",
                             style: TextStyle(color: Colors.white, fontSize: 17),
                           ),

@@ -16,19 +16,19 @@ class DrawerBody extends StatelessWidget {
           gradient: LinearGradient(
             colors: [Color(0xffD0806F), ColorApp.secondaryColor],
             begin: Alignment.topLeft,
-            end: Alignment.bottomCenter,
+            end: Alignment.centerLeft,
           )),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(
+          SizedBox(
             height: 70,
           ),
           Image.asset(
             "assets/images/logo.png",
             width: 150,
           ),
-          const SizedBox(
+          SizedBox(
             height: 50,
           ),
           Expanded(
@@ -39,16 +39,15 @@ class DrawerBody extends StatelessWidget {
                     child: Row(
                       children: [
                         IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            drawer[index].icon,
-                            color: Colors.black,
-                            size: 25,
-                          ),
-                        ),
+                            onPressed: () {},
+                            icon: Icon(
+                              drawer[index].icon,
+                              color: Colors.black,
+                              size: 25,
+                            ), ),
                         Text(
                           drawer[index].label,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 15,
                               color: Colors.black,
                               fontWeight: FontWeight.w500),
@@ -57,32 +56,14 @@ class DrawerBody extends StatelessWidget {
                     ),
                   );
                 },
-                separatorBuilder: (context, index) => const SizedBox(
+                separatorBuilder: (context, index) => const Divider(
                       height: 10,
+                      thickness: 2,
+                      color: ColorApp.primaryColor,
+                      endIndent: 20,
+                      indent: 20,
                     ),
-                itemCount: drawer.length),
-          ),
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset("assets/images/linkedin.png"),
-              const SizedBox(
-                width: 10,
-              ),
-              Image.asset("assets/images/messenger.png"),
-              const SizedBox(
-                width: 10,
-              ),
-              Image.asset("assets/images/x.png"),
-              const SizedBox(
-                width: 10,
-              ),
-              Image.asset("assets/images/vector.png"),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
+                itemCount:drawer.length ),
           )
         ],
       ),
