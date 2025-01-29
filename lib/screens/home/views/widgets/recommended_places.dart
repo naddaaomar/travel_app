@@ -1,9 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import '../../../../models/recommended_places.dart';
 import '../../../trip_details/views/widgets/trip_details_view_body.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+
 
 class RecommendedPlaces extends StatelessWidget {
   const RecommendedPlaces({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class RecommendedPlaces extends StatelessWidget {
       child: CarouselSlider(
           items: recommendedPlaces.map((index) {
             return Container(
-              margin: EdgeInsets.symmetric(horizontal: 5),
+              margin: const EdgeInsets.symmetric(horizontal: 5),
               width: 220,
               child: Card(
                 elevation: 10,
@@ -109,7 +110,7 @@ class RecommendedPlaces extends StatelessWidget {
             viewportFraction: .6,
             enlargeFactor: .5,
             enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-            autoPlayAnimationDuration: Duration(milliseconds: 700),
+            autoPlayAnimationDuration: const Duration(milliseconds: 600),
             autoPlayCurve: Curves.easeInOutCubic,
           )),
     );
