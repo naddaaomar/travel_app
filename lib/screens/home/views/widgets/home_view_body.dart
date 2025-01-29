@@ -4,8 +4,8 @@ import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/drawer_body.dart';
 import 'package:p/screens/tabs/home/home_tab.dart';
 import 'package:p/screens/tabs/map/views/map_view.dart';
+import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
 import 'package:p/screens/tabs/tab3/views/tab3_view.dart';
-import 'package:p/screens/tabs/tap2/views/tab2_view.dart';
 import 'location_card.dart';
 import 'recommended_places.dart';
 
@@ -21,7 +21,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
   late TabController _tabController;
   List<Widget> tabs = [
     HomeTab(),
-    Tab2(),
+    OffersScreen(),
     Tab3(),
     MapView(),
   ];

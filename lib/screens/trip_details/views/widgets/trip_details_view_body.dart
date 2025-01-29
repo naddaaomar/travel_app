@@ -173,25 +173,24 @@ class TripDetailsViewBody extends StatelessWidget {
                       const SizedBox(
                         height: 15,
                       ),
-                      SizedBox(
-                        height: 255,
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 20),
-                          itemCount: 6,
-                          itemBuilder: (context, index) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.asset(
-                                photoGalleryModel[index].image,
-                                fit: BoxFit.fill,
-                              ),
-                            );
-                          },
-                        ),
+                      GridView.builder(
+                        shrinkWrap: true, // Allow the GridView to size itself based on its children
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 20),
+                        itemCount: 6,
+                        itemBuilder: (context, index) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                              photoGalleryModel[index].image,
+                              fit: BoxFit.fill,
+                            ),
+                          );
+                        },
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
@@ -252,32 +251,31 @@ class TripDetailsViewBody extends StatelessWidget {
                       const SizedBox(
                         height: 7,
                       ),
-                      SizedBox(
-                        height: 160,
-                        child: ListView.builder(
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.circle,
-                                    color: ColorApp.primaryColor,
-                                    size: 6,
-                                  ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                  Expanded(
-                                      child: Text(
-                                    "${inclusionModel[index].label}",
-                                  )),
-                                ],
-                              ),
-                            );
-                          },
-                          itemCount: inclusionModel.length,
-                        ),
+                      ListView.builder(
+                        shrinkWrap: true, // Allow the GridView to size itself based on its children
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.circle,
+                                  color: ColorApp.primaryColor,
+                                  size: 6,
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  "${inclusionModel[index].label}",
+                                )),
+                              ],
+                            ),
+                          );
+                        },
+                        itemCount: inclusionModel.length,
                       ),
                       const SizedBox(
                         height: 30,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/models/nearby_places.dart';
-import '../../../trip_details/views/widgets/trip_details_view_body.dart';
+import 'package:p/screens/trip_details/views/widgets/trip_details_view_body.dart';
 
 class NearbyPlaces extends StatelessWidget {
   const NearbyPlaces({Key? key}) : super(key: key);
@@ -47,7 +47,7 @@ class NearbyPlaces extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      
+
                       const SizedBox(width: 10),
                       Expanded(
                         child: Column(
@@ -86,7 +86,7 @@ class NearbyPlaces extends StatelessWidget {
                                   text: const TextSpan(
                                       style: TextStyle(
                                         fontSize: 16,
-                                          color: ColorApp.primaryColor,
+                                        color: ColorApp.primaryColor,
                                       ),
 
                                       text: "\$200 ",
