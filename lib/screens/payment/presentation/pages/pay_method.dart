@@ -1,7 +1,11 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/helpers/constants/constants.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/main.dart';
+import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 
 import 'pay_screens/web_screen.dart';
 
@@ -20,11 +24,13 @@ class PayMethod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLight = context.read<ThemeBloc>().state == ThemeMode.light;
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: ColorApp.secondaryColor, size: 27),
-          backgroundColor: ColorApp.primaryColor,
+          iconTheme: IconThemeData(color: isLight?ColorApp.secondaryColor:Colors.white, size: 27),
+          backgroundColor:isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,
           shadowColor: Colors.transparent,
         ),
         body: Column(
@@ -51,8 +57,9 @@ class PayMethod extends StatelessWidget {
               duration: Duration(seconds: 1),
               animate: true,
               child: Card(
+                color: isLight?Colors.white:ColorApp.cardColorDark,
                 elevation: 10,
-                shadowColor: ColorApp.primaryColor,
+                shadowColor: isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,
                 margin: EdgeInsets.symmetric(horizontal: 25),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
@@ -157,9 +164,9 @@ class PayMethod extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: ColorApp.primaryColor),
+                            backgroundColor: isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,),
                         child: Text(
-                          "Select a payment method",
+                          "select a payment method".tr(),
                           style: TextStyle(fontSize: 15, color: Colors.white),
                         ),
                       ),

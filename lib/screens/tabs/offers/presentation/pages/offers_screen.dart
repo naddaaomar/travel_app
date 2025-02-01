@@ -1,5 +1,9 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:p/main.dart';
+import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/company_offers.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/companies.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/hot_deals.dart';
@@ -36,8 +40,17 @@ class _OffersScreenState extends State<OffersScreen> {
     });
   }
 
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool isLight = context.read<ThemeBloc>().state == ThemeMode.light;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
       child: SingleChildScrollView(
@@ -46,10 +59,11 @@ class _OffersScreenState extends State<OffersScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Hot Deals",
+              "hot Deals".tr(),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
+                color: isLight?Colors.black:Colors.white
               ),
             ),
             SizedBox(
@@ -63,14 +77,13 @@ class _OffersScreenState extends State<OffersScreen> {
               height: 15,
             ),
             Text(
-              """Discover exclusive offers
-from top companies tailored just for you""",
+              "discover exclusive offers \nfrom top companies tailored just for you".tr(),
               maxLines: 2,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500,
+              color: isLight?Colors.black:Colors.white),
             ),
             GridView.builder(
-              shrinkWrap:
-                  true, // Allow the GridView to size itself based on its children
+              shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, crossAxisSpacing: 30, mainAxisSpacing: 0),

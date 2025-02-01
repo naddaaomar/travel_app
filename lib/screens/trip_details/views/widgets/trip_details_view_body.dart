@@ -1,9 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/models/inclusion_model.dart';
 import 'package:p/models/photo_gallery_model.dart';
 import 'package:p/screens/payment/presentation/pages/test_form.dart';
+import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 import 'trip_on_map.dart';
 
 class TripDetailsViewBody extends StatelessWidget {
@@ -15,6 +18,7 @@ class TripDetailsViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLight = context.read<ThemeBloc>().state == ThemeMode.light;
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
@@ -41,7 +45,9 @@ class TripDetailsViewBody extends StatelessWidget {
                     left: 0,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.7),
+                        color: isLight
+                            ? Colors.white.withOpacity(0.7)
+                            : ColorApp.cardColorDark.withOpacity(.7),
                         borderRadius: const BorderRadius.horizontal(
                             right: Radius.circular(15)),
                       ),
@@ -52,12 +58,18 @@ class TripDetailsViewBody extends StatelessWidget {
                               Navigator.pop(context);
                             },
                             iconSize: 20,
-                            icon: const Icon(Ionicons.chevron_back),
+                            icon: Icon(
+                              Ionicons.chevron_back,
+                              color: isLight ? Colors.brown : Colors.white,
+                            ),
                           ),
                           IconButton(
                             iconSize: 20,
                             onPressed: () {},
-                            icon: const Icon(Ionicons.heart_outline),
+                            icon: Icon(
+                              Ionicons.heart_outline,
+                              color: isLight ? Colors.brown : Colors.white,
+                            ),
                           ),
                         ],
                       ),
@@ -69,8 +81,10 @@ class TripDetailsViewBody extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: 230),
               width: double.infinity,
-              decoration: const BoxDecoration(
-                  color: ColorApp.secondaryColor,
+              decoration: BoxDecoration(
+                  color: isLight
+                      ? ColorApp.secondaryColor
+                      : ColorApp.secondaryColorDark,
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(20),
                       topLeft: Radius.circular(20))),
@@ -80,18 +94,21 @@ class TripDetailsViewBody extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Row(
                         children: [
-                          Text('Dahab',
+                          Text('dahab'.tr(),
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              )),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color:
+                                      isLight ? Colors.black : Colors.white)),
                           Spacer(),
                           Text(
                             "\$200",
                             style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 17),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17,
+                                color: isLight ? Colors.black : Colors.white),
                           ),
                         ],
                       ),
@@ -103,16 +120,19 @@ class TripDetailsViewBody extends StatelessWidget {
                             child: IconButton(
                               onPressed: () {},
                               iconSize: 20,
-                              icon: const Icon(
-                                  Ionicons.chatbubble_ellipses_outline),
+                              icon: Icon(Ionicons.chatbubble_ellipses_outline,
+                                  color: isLight ? Colors.black : Colors.white),
                             ),
                           ),
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'rate',
-                                style: Theme.of(context).textTheme.bodySmall,
+                                'rate'.tr(),
+                                style: TextStyle(
+                                    color:
+                                        isLight ? Colors.black : Colors.white,
+                                    fontSize: 12),
                               ),
                               Icon(
                                 Ionicons.star,
@@ -123,50 +143,61 @@ class TripDetailsViewBody extends StatelessWidget {
                           )
                         ],
                       ),
-                      const Row(
+                      Row(
                         children: [
                           Icon(
                             Icons.circle,
-                            color: ColorApp.primaryColor,
+                            color: isLight
+                                ? ColorApp.primaryColor
+                                : ColorApp.primaryColorDark,
                             size: 10,
                           ),
                           SizedBox(
                             width: 5,
                           ),
                           Text(
-                            'Description',
+                            'description'.tr(),
                             style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w500),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: isLight ? Colors.black : Colors.white),
                           ),
                         ],
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      const Text(
-                        "Egypt’s Hidden Gem ,Dahab is a dream come true for thrill-seekers and nature"
-                        " enthusiasts alike. The town is world-renowned for its diving spots, "
-                        "particularly the Blue Hole, a bucket-list destination for divers"
-                        " drawn to its underwater caves and vibrant marine life.",
-                        style: TextStyle(fontSize: 13),
+                      Text(
+                        "egypt’s Hidden Gem ,Dahab is a dream come true for thrill-seekers and nature"
+                                " enthusiasts alike. The town is world-renowned for its diving spots, "
+                                "particularly the Blue Hole, a bucket-list destination for divers"
+                                " drawn to its underwater caves and vibrant marine life."
+                            .tr(),
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: isLight ? Colors.black : Colors.white),
                       ),
                       const SizedBox(
                         height: 15,
                       ),
-                      const Row(
+                      Row(
                         children: [
                           Icon(
                             Icons.circle,
-                            color: ColorApp.primaryColor,
+                            color: isLight
+                                ? ColorApp.primaryColor
+                                : ColorApp.primaryColorDark,
                             size: 10,
                           ),
                           SizedBox(
                             width: 5,
                           ),
                           Text(
-                            'Photo Gallery',
+                            'photo Gallery'.tr(),
                             style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w500),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: isLight ? Colors.black : Colors.white),
                           ),
                         ],
                       ),
@@ -174,7 +205,7 @@ class TripDetailsViewBody extends StatelessWidget {
                         height: 15,
                       ),
                       GridView.builder(
-                        shrinkWrap: true, // Allow the GridView to size itself based on its children
+                        shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -192,6 +223,9 @@ class TripDetailsViewBody extends StatelessWidget {
                           );
                         },
                       ),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: InkWell(
@@ -205,63 +239,77 @@ class TripDetailsViewBody extends StatelessWidget {
                                   ),
                                 ));
                           },
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Icon(
                                 Icons.circle,
-                                color: ColorApp.primaryColor,
+                                color: isLight
+                                    ? ColorApp.primaryColor
+                                    : ColorApp.primaryColorDark,
                                 size: 10,
                               ),
                               SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                'Show on map',
+                                'show on map'.tr(),
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.black),
+                                    color:
+                                        isLight ? Colors.black : Colors.white),
                               ),
                             ],
                           ),
                         ),
                       ),
-                      const Row(
+                      Row(
                         children: [
                           Icon(
                             Icons.circle,
-                            color: ColorApp.primaryColor,
+                            color: isLight
+                                ? ColorApp.primaryColor
+                                : ColorApp.primaryColorDark,
                             size: 10,
                           ),
                           SizedBox(
                             width: 5,
                           ),
                           Text(
-                            'Inclusion',
+                            'inclusion'.tr(),
                             style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w500),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: isLight ? Colors.black : Colors.white,
+                            ),
                           ),
                         ],
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(left: 20, top: 4),
-                        child: Text("Why book this trip ?"),
+                        child: Text(
+                          "why book this trip ?".tr(),
+                          style: TextStyle(
+                              color: isLight ? Colors.black : Colors.white),
+                        ),
                       ),
                       const SizedBox(
                         height: 7,
                       ),
                       ListView.builder(
-                        shrinkWrap: true, // Allow the GridView to size itself based on its children
+                        shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.only(left: 10),
                             child: Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.circle,
-                                  color: ColorApp.primaryColor,
+                                  color: isLight
+                                      ? ColorApp.primaryColor
+                                      : ColorApp.primaryColorDark,
                                   size: 6,
                                 ),
                                 const SizedBox(
@@ -269,7 +317,11 @@ class TripDetailsViewBody extends StatelessWidget {
                                 ),
                                 Expanded(
                                     child: Text(
-                                  "${inclusionModel[index].label}",
+                                  "${inclusionModel[index].label.tr()}",
+                                  style: TextStyle(
+                                      color: isLight
+                                          ? Colors.black
+                                          : Colors.white),
                                 )),
                               ],
                             ),
@@ -290,20 +342,35 @@ class TripDetailsViewBody extends StatelessWidget {
                                 ));
                           },
                           child: Text(
-                            "Book Trip",
+                            "book Trip".tr(),
                             style: TextStyle(color: Colors.white, fontSize: 17),
                           ),
                           style: ElevatedButton.styleFrom(
-                              elevation: 10,
-                              shadowColor: ColorApp.primaryColor,
-                              backgroundColor: ColorApp.primaryColor),
+                            elevation: 10,
+                            shadowColor: isLight
+                                ? ColorApp.primaryColor
+                                : ColorApp.primaryColorDark,
+                            backgroundColor: isLight
+                                ? ColorApp.primaryColor
+                                : ColorApp.primaryColorDark,
+                          ),
                         ),
                       ),
                       const SizedBox(
                         height: 7,
                       ),
-                      const Center(child: Text("What are you waiting for ?")),
-                      const Center(child: Text("Book your trip now.")),
+                      Center(
+                          child: Text(
+                        "what are you waiting for ?".tr(),
+                        style: TextStyle(
+                            color: isLight ? Colors.black : Colors.white),
+                      )),
+                      Center(
+                          child: Text(
+                        "book your trip now.".tr(),
+                        style: TextStyle(
+                            color: isLight ? Colors.black : Colors.white),
+                      )),
                       const SizedBox(
                         height: 10,
                       )

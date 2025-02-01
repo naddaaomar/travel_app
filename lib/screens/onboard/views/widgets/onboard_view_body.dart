@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/models/onboard_model.dart';
 import 'package:p/screens/home/views/home_view.dart';
+import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 
 class OnBoardViewBody extends StatefulWidget {
   const OnBoardViewBody({super.key});
@@ -13,6 +16,8 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
   int currentIndex = 0;
 
   Widget dotIndicator(int index) {
+    bool isLight = context.read<ThemeBloc>().state == ThemeMode.light;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 400),
       margin: const EdgeInsets.only(right: 4),
@@ -93,8 +98,8 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                         ),
                         const SizedBox(
                             height: 20),
-                        const Text(
-                          "No matter where you’re going,\n We’ll take you there",
+                         Text(
+                          "no matter".tr(),
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

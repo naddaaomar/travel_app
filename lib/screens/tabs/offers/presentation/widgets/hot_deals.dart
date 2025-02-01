@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 
 class HotDeals extends StatelessWidget {
   final List<String> adsImages;
@@ -16,10 +18,12 @@ class HotDeals extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLight = context.read<ThemeBloc>().state == ThemeMode.light;
+
     return Stack(
       children: [
         AnimatedSwitcher(
-          duration: const Duration(milliseconds: 1500),
+          duration: const Duration(milliseconds: 2000),
           child: Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
@@ -50,7 +54,7 @@ class HotDeals extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: currentIndex == index
-                      ? ColorApp.primaryColor
+                      ? isLight?ColorApp.primaryColor:ColorApp.primaryColorDark
                       : Colors.white,
                 ),
               );
