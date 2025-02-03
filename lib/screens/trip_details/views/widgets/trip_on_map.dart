@@ -7,7 +7,14 @@ import 'package:ionicons/ionicons.dart';
 class TripOnMap extends StatelessWidget {
   double Latitude;
   double Longitude;
-  TripOnMap({super.key, required this.Latitude, required this.Longitude});
+  double width;
+  double hight;
+  TripOnMap(
+      {super.key,
+      required this.Latitude,
+      required this.Longitude,
+      required this.width,
+      required this.hight});
 
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
@@ -19,10 +26,14 @@ class TripOnMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(children: [
+    return Container(
+      width: width,
+      height: hight,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: GoogleMap(
+            liteModeEnabled: true,
 
-        GoogleMap(
           mapType: MapType.normal,
           zoomControlsEnabled: false,
           initialCameraPosition: tripPosition,
@@ -34,18 +45,7 @@ class TripOnMap extends StatelessWidget {
             _controller.complete(controller);
           },
         ),
-        Positioned(
-          top: 25, // Adjust this value for desired position
-          left: 0, // Adjust this value for desired position
-          child: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            iconSize: 30,
-            icon: const Icon(Ionicons.chevron_back),
-          ),
-        ),
-      ]),
+      ),
     );
   }
 }

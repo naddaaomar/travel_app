@@ -172,7 +172,7 @@ class TripDetailsViewBody extends StatelessWidget {
                                 " enthusiasts alike. The town is world-renowned for its diving spots, "
                                 "particularly the Blue Hole, a bucket-list destination for divers"
                                 " drawn to its underwater caves and vibrant marine life."
-                            .tr(),
+                            ,
                         style: TextStyle(
                             fontSize: 13,
                             color: isLight ? Colors.black : Colors.white),
@@ -228,42 +228,32 @@ class TripDetailsViewBody extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => TripOnMap(
-                                    Latitude: 28.5093,
-                                    Longitude: 34.5136,
-                                  ),
-                                ));
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.circle,
-                                color: isLight
-                                    ? ColorApp.primaryColor
-                                    : ColorApp.primaryColorDark,
-                                size: 10,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                'show on map'.tr(),
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                    color:
-                                        isLight ? Colors.black : Colors.white),
-                              ),
-                            ],
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.circle,
+                              color: isLight
+                                  ? ColorApp.primaryColor
+                                  : ColorApp.primaryColorDark,
+                              size: 10,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'show on map'.tr(),
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color:
+                                      isLight ? Colors.black : Colors.white),
+                            ),
+                          ],
                         ),
                       ),
+                      TripOnMap(Latitude: 28.5093,
+                          Longitude: 34.5136, width: double.infinity, hight: 200),
                       Row(
                         children: [
                           Icon(

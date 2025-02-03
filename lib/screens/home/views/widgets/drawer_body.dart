@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,24 +54,26 @@ class DrawerBody extends StatelessWidget {
                             ));
 
                     },
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            drawer[index].icon,
-                            color:isLight?Colors.black:Colors.white,
-                            size: 25,
-                          ),
-                        ),
-                        Text(
-                          drawer[index].label.tr(),
-                          style:  TextStyle(
-                              fontSize: 15,
+                    child: FadeInRight(
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              drawer[index].icon,
                               color:isLight?Colors.black:Colors.white,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ],
+                              size: 25,
+                            ),
+                          ),
+                          Text(
+                            drawer[index].label.tr(),
+                            style:  TextStyle(
+                                fontSize: 15,
+                                color:isLight?Colors.black:Colors.white,
+                                fontWeight: FontWeight.w500),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 );

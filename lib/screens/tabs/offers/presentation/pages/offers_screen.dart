@@ -16,71 +16,42 @@ class OffersScreen extends StatefulWidget {
 }
 
 class _OffersScreenState extends State<OffersScreen> {
-  int _currentIndex = 0;
-  late Timer _timer;
   var company = CompanyModel.Companies();
-  final List<String> adsImages = [
-    "assets/images/dahab1.jpg",
-    "assets/images/dahab2.jpg",
-    "assets/images/dahab3.jpg",
-    "assets/images/dahab4.jpg",
-    "assets/images/dahab5.jpg",
-    "assets/images/dahab6.jpg",
-  ];
-  void initState() {
-    super.initState();
-    _startImageSwitching();
-  }
-
-  void _startImageSwitching() {
-    _timer = Timer.periodic(const Duration(milliseconds: 2500), (Timer timer) {
-      setState(() {
-        _currentIndex = (_currentIndex + 1) % adsImages.length;
-      });
-    });
-  }
-
 
   @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     bool isLight = context.read<ThemeBloc>().state == ThemeMode.light;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 18),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "hot Deals".tr(),
+              "don't miss".tr(),
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-                color: isLight?Colors.black:Colors.white
-              ),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                  color: isLight ? Colors.black : Colors.white),
             ),
             SizedBox(
               height: 15,
             ),
-            HotDeals(
-                adsImages: adsImages,
-                currentIndex: _currentIndex,
-                timer: _timer),
+            HotDeals(),
             SizedBox(
               height: 15,
             ),
             Text(
-              "discover exclusive offers \nfrom top companies tailored just for you".tr(),
+              "discover exclusive offers \nfrom top companies tailored just for you"
+                  .tr(),
               maxLines: 2,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500,
-              color: isLight?Colors.black:Colors.white),
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: isLight ? Colors.black : Colors.white),
             ),
             GridView.builder(
               shrinkWrap: true,

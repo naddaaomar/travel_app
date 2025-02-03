@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/helpers/constants/constants.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/main.dart';
+import 'package:p/models/paymet_methods_model.dart';
+import 'package:p/screens/payment/presentation/widgets/pay_card.dart';
 import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 
 import 'pay_screens/web_screen.dart';
@@ -28,157 +30,52 @@ class PayMethod extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: isLight?ColorApp.secondaryColor:Colors.white, size: 27),
-          backgroundColor:isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,
-          shadowColor: Colors.transparent,
-        ),
-        body: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 100,
-            ),
-            Center(
-              child: FadeInUp(
-                duration: Duration(seconds: 1),
-                animate: true,
-                child: Image.asset(
-                  'assets/images/logo_2.png',
-                  width: 200,
-                  height: 100,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            FadeInUp(
-              duration: Duration(seconds: 1),
-              animate: true,
-              child: Card(
-                color: isLight?Colors.white:ColorApp.cardColorDark,
-                elevation: 10,
-                shadowColor: isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,
-                margin: EdgeInsets.symmetric(horizontal: 25),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        InkWell(
-                          onTap: () {},
-                          child: FadeInUp(
-                            duration: Duration(seconds: 1),
-                            animate: true,
-                            child: Image.asset(
-                              "assets/images/instapay.png",
-                              width: 120,
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => WebScreen(
-                                  integrationId: Constants.CARD_ID,
-                                  fName: fName,
-                                  lName: lName,
-                                  phone: phone,
-                                  amount: amount * 100,
-                                ),
-                              ),
-                            );
-                          },
-                          child: FadeInUp(
-                            duration: Duration(seconds: 1),
-                            animate: true,
-                            child: Image.asset(
-                              "assets/images/masterCard.png",
-                              width: 120,
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => WebScreen(
-                                    integrationId: Constants.CARD_ID,
-                                    fName: fName,
-                                    lName: lName,
-                                    phone: phone,
-                                    amount: amount * 100,
-                                  ),
-                                ));
-                          },
-                          child: FadeInUp(
-                            duration: Duration(seconds: 1),
-                            animate: true,
-                            child: Image.asset(
-                              "assets/images/visa.png",
-                              width: 120,
-                            ),
-                          ),
-                        ),
-                      ],
+        body: SingleChildScrollView(
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 170,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(170), // Make half circle
+                      bottomRight: Radius.circular(170),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        InkWell(
-                          onTap: () {},
-                          child: FadeInUp(
-                            duration: Duration(seconds: 1),
-                            animate: true,
-                            child: Image.asset(
-                              "assets/images/vodafone.png",
-                              width: 120,
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: FadeInUp(
-                            duration: Duration(seconds: 1),
-                            animate: true,
-                            child: Image.asset(
-                              "assets/images/payPal.png",
-                              width: 120,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    FadeInUp(
-                      duration: Duration(seconds: 1),
-                      animate: true,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,),
+                    color: ColorApp.primaryColor),
+                child: Center(
+                    child: FadeInUp(
                         child: Text(
-                          "select a payment method".tr(),
-                          style: TextStyle(fontSize: 15, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    )
-                  ],
-                ),
+                  "Select a payment method",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500),
+                ))),
               ),
-            ),
-          ],
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                 return InkWell(
+                   onTap: () {
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => WebScreen(
+                       fName: fName,
+                       lName: lName,
+                       phone: phone,
+                       amount: amount*100,
+                       integrationId: payModel[index].id,
+                     ),));
+                   },
+                   child: PayCard(
+                      image: payModel[index].image,
+                    ),
+                 );
+                },
+                itemCount: payModel.length,
+              )
+            ],
+          ),
         ),
       ),
     );

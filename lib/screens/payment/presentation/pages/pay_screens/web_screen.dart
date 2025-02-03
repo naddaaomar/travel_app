@@ -78,7 +78,7 @@ class WebScreen extends StatelessWidget {
               ),
             );
           }
-          return Center(child: Text("something went wrong"));
+          return Scaffold(body: Center(child: Text("something went wrong")));
         },
       ),
     );
