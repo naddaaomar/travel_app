@@ -1,34 +1,40 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/main.dart';
+import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 
 class LocationCard extends StatelessWidget {
   const LocationCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return
        Card(
-        color: const Color(0xFFD7D1D1),
+        color: isLight? Color(0xFFD7D1D1):Color(0xFF8C8282),
         elevation: 10,
-        shadowColor: ColorApp.primaryColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shadowColor: isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 10),
+              padding:  EdgeInsets.only(left: 10.w),
               child: Column(
                 children: [
                   Text(
-                    "Where to?",
+                    "where to?".tr(),
                     style: Theme
                         .of(context)
                         .textTheme
                         .titleLarge!
                         .copyWith(
-                      color: const Color(0xFF787474),
-                      fontSize: 18,
+                      color: isLight? Color(0xFF787474):Colors.white,
+                      fontSize: 18.sp,
                     ),
                   ),
                 ],
@@ -41,15 +47,15 @@ class LocationCard extends StatelessWidget {
               type: MaterialType.transparency,
               child: Ink(
                 decoration: BoxDecoration(
-                    color: ColorApp.primaryColor,
-                    borderRadius: BorderRadius.circular(10)),
+                    color: isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,
+                    borderRadius: BorderRadius.circular(10.r)),
 
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.r),
                   onTap: () {},
 
-                  child: const Padding(
-                    padding: EdgeInsets.all(10),
+                  child:  Padding(
+                    padding: EdgeInsets.all(10.w),
                     child: Icon(
                       Icons.search,
                       color: Colors.white,

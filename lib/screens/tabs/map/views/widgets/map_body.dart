@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:p/main.dart';
 
 class MapBody extends StatefulWidget {
   MapBody({super.key});
@@ -14,7 +16,7 @@ class _MapBodyState extends State<MapBody> {
   StreamSubscription<LocationData>? streamSubscription;
 
   final Completer<GoogleMapController> _controller =
-  Completer<GoogleMapController>();
+      Completer<GoogleMapController>();
 
   CameraPosition? MyLocation;
   Set<Marker> markers = {};
@@ -26,37 +28,46 @@ class _MapBodyState extends State<MapBody> {
       target: LatLng(29.9610721, 31.2605734),
       tilt: 59.440717697143555,
       zoom: 22.151926040649414);
-  @override
-  void dispose() {
-    streamSubscription?.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     canAccessLocation();
-    return MyLocation == null
-        ? Center(child: CircularProgressIndicator())
-        : GoogleMap(
-      mapType: MapType.normal,
-      myLocationEnabled: true,
-      zoomControlsEnabled: false,
-      initialCameraPosition: MyLocation!,
-      markers: markers,
-      onTap: (argument) {
-        markers.add(Marker(
-            markerId: MarkerId("userId:${index++}"),
-            position: argument));
-        setState(() {});
-      },
-      polylines: polylines,
-      cameraTargetBounds: CameraTargetBounds(LatLngBounds(
-        northeast: LatLng(31.916667, 35.000000),
-        southwest: LatLng(22.000000, 25.000000),
-      )),
-      onMapCreated: (GoogleMapController controller) {
-        _controller.complete(controller);
-      },
+    return Stack(
+      children: [
+        MyLocation == null
+            ? Center(child: CircularProgressIndicator())
+            : GoogleMap(
+                mapType: MapType.normal,
+                myLocationEnabled: true,
+                zoomControlsEnabled: false,
+                initialCameraPosition: MyLocation!,
+                markers: markers,
+                onTap: (argument) {
+                  markers.add(Marker(
+                      markerId: MarkerId("userId:${index++}"),
+                      position: argument));
+                  setState(() {});
+                },
+                polylines: polylines,
+                cameraTargetBounds: CameraTargetBounds(LatLngBounds(
+                  northeast: LatLng(31.916667, 35.000000),
+                  southwest: LatLng(22.000000, 25.000000),
+                )),
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              ),
+        Padding(
+          padding:  EdgeInsets.only(right: 10.w, top: 10.h, left: 18.w),
+          child: Image.asset(
+            'assets/images/logo.png',
+            fit: BoxFit.cover,
+            width: 94.w,
+            height: 40.h,
+            filterQuality: FilterQuality.high,
+          ),
+        ),
+      ],
     );
   }
 
@@ -93,9 +104,6 @@ class _MapBodyState extends State<MapBody> {
       interval: 1000 * 10,
     );
     streamSubscription = location.onLocationChanged.listen((event) {
-      // Check if the widget is still mounted before calling setState
-      if (!mounted) return;
-
       locationData = event;
       markers.add(Marker(
         markerId: MarkerId("myLocation"),
@@ -115,6 +123,4 @@ class _MapBodyState extends State<MapBody> {
       print("lat: ${locationData?.latitude} long: ${locationData?.longitude}");
     });
   }
-
-
 }

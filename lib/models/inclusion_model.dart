@@ -1,3 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:p/main.dart';
+
 class InclusionModel {
    String label;
    InclusionModel({
@@ -8,13 +11,13 @@ class InclusionModel {
 
 List<InclusionModel> inclusionModel = [
   InclusionModel(
-    label: "Hiking tours to Mount Sinai with sunrise or sunset views."
+    label: "hiking tours to Mount Sinai with sunrise or sunset views."
   ),
   InclusionModel(
-      label: "Hiking tours to Mount Sinai with sunrise or sunset views."
+      label: "hiking tours to Mount Sinai with sunrise or sunset views."
   ),
   InclusionModel(
-      label: "Hiking tours to Mount Sinai with sunrise or sunset views."
+      label: "hiking tours to Mount Sinai with sunrise or sunset views."
   ),
 
 ];

@@ -1,3 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:p/main.dart';
+
 class RecommendedPlaceModel {
   final String image;
   final double rating;
@@ -14,21 +17,21 @@ List<RecommendedPlaceModel> recommendedPlaces = [
 RecommendedPlaceModel(
   image: 'assets/images/onboard3.png',
   rating: 4.4,
-  location: 'Taba',
+  location: 'taba'.tr(),
  ),
   RecommendedPlaceModel(
     image: 'assets/images/onboard3.png',
     rating: 4.4,
-    location: 'Taba',
+    location: 'taba'.tr(),
   ),
   RecommendedPlaceModel(
     image: 'assets/images/onboard3.png',
     rating: 4.4,
-    location: 'Taba',
+    location: 'taba'.tr(),
   ),
   RecommendedPlaceModel(
     image: 'assets/images/onboard3.png',
     rating: 4.4,
-    location: 'Taba',
+    location: 'taba'.tr(),
   ),
 ];

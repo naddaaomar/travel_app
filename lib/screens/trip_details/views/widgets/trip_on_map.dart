@@ -1,12 +1,22 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:p/main.dart';
+import 'package:rive/rive.dart';
 
 class TripOnMap extends StatelessWidget {
   double Latitude;
   double Longitude;
-  TripOnMap({super.key, required this.Latitude, required this.Longitude});
+  double width;
+  double hight;
+  TripOnMap(
+      {super.key,
+      required this.Latitude,
+      required this.Longitude,
+      required this.width,
+      required this.hight});
 
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
@@ -18,33 +28,40 @@ class TripOnMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(children: [
-
-        GoogleMap(
-          mapType: MapType.normal,
-          zoomControlsEnabled: false,
-          initialCameraPosition: tripPosition,
-          cameraTargetBounds: CameraTargetBounds(LatLngBounds(
-            northeast: const LatLng(31.916667, 35.000000),
-            southwest: const LatLng(22.000000, 25.000000),
-          )),
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
+    return Container(
+      width: width,
+      height: hight,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Stack(
+          children: [
+            GoogleMap(
+              liteModeEnabled: true,
+              mapType: MapType.normal,
+              zoomControlsEnabled: false,
+              initialCameraPosition: tripPosition,
+              cameraTargetBounds: CameraTargetBounds(LatLngBounds(
+                northeast: const LatLng(31.916667, 35.000000),
+                southwest: const LatLng(22.000000, 25.000000),
+              )),
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+            ),
+            Positioned(
+              top: 120.h,
+              left: 290.w,
+              child: SizedBox(
+                width: 100.w,
+                height: 100.h,
+                child: RiveAnimation.asset("assets/RiveAssets/hand_touch_gestures_icons.riv",
+                  artboard: "single tap",
+                  stateMachines: ["State Machine 1"],),
+              ),
+            )
+          ],
         ),
-        Positioned(
-          top: 25, // Adjust this value for desired position
-          left: 0, // Adjust this value for desired position
-          child: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            iconSize: 30,
-            icon: const Icon(Ionicons.chevron_back),
-          ),
-        ),
-      ]),
+      ),
     );
   }
 }
