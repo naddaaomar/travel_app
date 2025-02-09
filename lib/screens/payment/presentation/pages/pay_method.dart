@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/constants/constants.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/main.dart';
@@ -26,53 +27,100 @@ class PayMethod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isLight = context.read<ThemeBloc>().state == ThemeMode.light;
-
+    bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: ColorApp.primaryColor,
         body: SingleChildScrollView(
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 10.h,),
+              IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_ios_new,
+                    size: 30.w,
+                    color: ColorApp.secondaryColor,
+                  )),
+              SizedBox(height: 10.h,),
               Container(
-                height: 170,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(170), // Make half circle
-                      bottomRight: Radius.circular(170),
+                decoration: BoxDecoration(color: ColorApp.secondaryColor,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(30.r),
+                  topLeft: Radius.circular(30.r)
+                )),
+                child: Padding(
+                  padding:  EdgeInsets.symmetric(
+                      horizontal: 15.w, vertical: 20.h),
+                  child: FadeInUp(
+                    child: Column(
+                      children: [
+                        FadeInUp(
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                    
+                            text: TextSpan(children: [
+                              TextSpan(
+                    
+                                  style: TextStyle(
+                                    fontSize: 30.sp,
+                                    color:
+                                        isLight ? Colors.black : Colors.white,
+                                  ),
+                                  text: "Select a"),
+                              TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 40.sp,
+                                    color: isLight
+                                        ? ColorApp.primaryColor
+                                        : Colors.white,
+                                  ),
+                                  text: " PAYMENT METHOD")
+                            ]),
+                          ),
+                        ),
+                        FadeInUp(
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            "Just one step left to complete!",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 23.sp,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WebScreen(
+                                        fName: fName,
+                                        lName: lName,
+                                        phone: phone,
+                                        amount: amount * 100,
+                                        integrationId: payModel[index].id,
+                                      ),
+                                    ));
+                              },
+                              child: PayCard(
+                                image: payModel[index].image,
+                              ),
+                            );
+                          },
+                          itemCount: payModel.length,
+                        )
+                      ],
                     ),
-                    color: ColorApp.primaryColor),
-                child: Center(
-                    child: FadeInUp(
-                        child: Text(
-                  "Select a payment method",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500),
-                ))),
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                 return InkWell(
-                   onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => WebScreen(
-                       fName: fName,
-                       lName: lName,
-                       phone: phone,
-                       amount: amount*100,
-                       integrationId: payModel[index].id,
-                     ),));
-                   },
-                   child: PayCard(
-                      image: payModel[index].image,
-                    ),
-                 );
-                },
-                itemCount: payModel.length,
+                  ),
+                ),
               )
             ],
           ),

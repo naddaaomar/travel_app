@@ -1,144 +1,127 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/main.dart';
 import 'package:p/models/nearby_places.dart';
 import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/trip_details/views/widgets/trip_details_view_body.dart';
 
-class OfferCar extends StatelessWidget {
-  const OfferCar({Key? key}) : super(key: key);
+class OfferCard extends StatelessWidget {
+  const OfferCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isLight = context.read<ThemeBloc>().state == ThemeMode.light;
-
-    return Column(
-      children: List.generate(nearbyPlaces.length, (index) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 6),
-          child: SizedBox(
-            height: 120,
-            width: double.maxFinite,
-            child: Card(
-              color: isLight?Colors.white:ColorApp.cardColorDark,
-              elevation: 10,
-              shadowColor: isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(10),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TripDetailsViewBody(
-                          image: nearbyPlaces[index].image,
-                        ),
-                      ));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.asset(
-                          nearbyPlaces[index].image,
-                          height: double.maxFinite,
-                          width: 130,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                 Text(
-                                  'place'.tr(),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: isLight?Colors.black:Colors.white
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                 Text('company'.tr(),style: TextStyle( color: isLight?Colors.black:Colors.white),),
-                                const SizedBox(height: 10),
-                                const Spacer(),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.yellow.shade700,
-                                      size: 14,
-                                    ),
-                                     Text(
-                                      'rate'.tr(),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: isLight?Colors.black:Colors.white
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    "\$200",
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        decoration: TextDecoration.lineThrough,
-                                        decorationColor: Colors.red,
-                                        fontSize: 13),
-                                  ),
-                                  Text(
-                                    "\$100",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: isLight?Colors.black:Colors.white),
-                                  ),
-                                  const Spacer(),
-                                  RichText(
-                                    text:  TextSpan(
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: isLight?ColorApp.primaryColor:Colors.white,
-                                        ),
-                                        text: "\$100",
-                                        children: [
-                                          TextSpan(
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: isLight?Colors.black54:Colors.white,
-                                              ),
-                                              text: "/ Person".tr(), )
-                                        ]),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
+    bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
+      margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+      color: Colors.white,
+      child: Padding(
+        padding:  EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15.r),
+                  child: Image.asset(
+                    "assets/images/onboard3.png",
+                    width: 150.w,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ),
+                SizedBox(
+                  width: 20.w,
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "Place",
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                Column(
+                  children: [
+                    Text(
+                      "\$100",
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                      ),
+                    ),
+                    Text(
+                      "\$200",
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          decorationThickness: 2,
+                          fontWeight: FontWeight.bold,
+                          color: ColorApp.primaryColor,
+                          decorationColor: ColorApp.primaryColor,
+                          decoration: TextDecoration.lineThrough),
+                    )
+                  ],
+                )
+              ],
             ),
-          ),
-        );
-      }),
+            SizedBox(
+              height: 20.h,
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.star,
+                  color: Colors.yellow.shade700,
+                  size: 18.w,
+                ),
+                Icon(
+                  Icons.star,
+                  color: Colors.yellow.shade700,
+                  size: 18.w,
+                ),
+                Icon(
+                  Icons.star,
+                  color: Colors.yellow.shade700,
+                  size: 18.w,
+                ),
+                Icon(
+                  Icons.star,
+                  color: Colors.yellow.shade700,
+                  size: 18.w,
+                ),
+                Icon(
+                  Icons.star,
+                  color: Colors.yellow.shade700,
+                  size: 18.w,
+                ),
+                Spacer(),
+                Text(
+                  "7/07/2025",
+                  style: TextStyle(color: Colors.grey, fontSize: 12.sp),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              "egypt’s Hidden Gem ,Dahab is a dream come true for thrill-seekers and nature"
+              " enthusiasts alike. The town is world-renowned for its diving spots, "
+              "particularly the Blue Hole, a bucket-list destination for divers"
+              " drawn to its underwater caves and vibrant marine life.",
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: 13.sp,
+                  color: isLight ? Colors.black.withOpacity(.7) : Colors.white),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

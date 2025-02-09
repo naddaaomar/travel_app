@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/main.dart';
 import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 
 class HotDeals extends StatefulWidget {
@@ -29,17 +31,16 @@ class _HotDealsState extends State<HotDeals> {
 
   @override
   Widget build(BuildContext context) {
-    bool isLight = context.read<ThemeBloc>().state == ThemeMode.light;
-
+    bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return Column(children: [
       SizedBox(
-        height: 230,
+        height: 230.h,
         child: CarouselSlider(
           items: adsImages
               .map(
                 (item) => Container(
                   child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    borderRadius: BorderRadius.all(Radius.circular(30.r)),
                     child: Image.asset(item,
                         fit: BoxFit.fill, width: double.infinity),
                   ),
@@ -66,9 +67,9 @@ class _HotDealsState extends State<HotDeals> {
           return GestureDetector(
             onTap: () => _controller.animateToPage(entry.key),
             child: Container(
-              width: 8,
-              height: 8,
-              margin: EdgeInsets.symmetric(horizontal: 4.0),
+              width: 8.w,
+              height: 8.h,
+              margin: EdgeInsets.symmetric(horizontal: 4.0.w),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: _current == entry.key

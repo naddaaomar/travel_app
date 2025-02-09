@@ -3,9 +3,10 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/main.dart';
-import 'package:p/screens/home/views/widgets/drawer_body.dart';
+import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/language.dart';
 import 'package:p/screens/settings/theme.dart';
 
@@ -21,81 +22,107 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
-    bool isLight = context.read<ThemeBloc>().state == ThemeMode.light;
-
+    bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return SafeArea(
       child: Scaffold(
-        endDrawer: DrawerBody(),
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 70,
-          iconTheme: IconThemeData(
-            color: isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
-            size: 27,
-          ),
-          backgroundColor: Colors.transparent,
-          title: Image.asset(
-            'assets/images/logo.png',
-            fit: BoxFit.cover,
-            width: 100,
-            height: 40,
-          ),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FadeInUp(
-                child: Text(
-                  "settings".tr(),
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                      color: isLight ? Colors.black : Colors.white),
+          backgroundColor: ColorApp.primaryColor,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 10.h,
                 ),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              FadeInUp(
-                child: Row(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "theme".tr(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 20,
-                          color: isLight ? Colors.black : Colors.white),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        //  EasyLocalization.of(context)?.reload();
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: ColorApp.secondaryColor,
+                        size: 30.w,
+                      ),
                     ),
-                    Spacer(),
-                    ThemeApp(),
+                    Expanded(
+                      child: FadeInUp(
+                        child: Text(
+                          "Settings",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 48.w),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              FadeInUp(
-                child: Row(
-                  children: [
-                    Text(
-                      "language".tr(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 20,
-                          color: isLight ? Colors.black : Colors.white),
-                    ),
-                    Spacer(),
-                    Language()
-                  ],
+                SizedBox(
+                  height: 20.h,
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                      color: ColorApp.secondaryColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.r),
+                        topRight: Radius.circular(20.r),
+                      )),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 20.h, horizontal: 30.w),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 50.h,
+                        ),
+                        FadeInUp(
+                          child: Row(
+                            children: [
+                              Text(
+                                "theme".tr(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 20.sp,
+                                    color:
+                                        isLight ? Colors.black : Colors.white),
+                              ),
+                              Spacer(),
+                              ThemeApp(),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40.h,
+                        ),
+                        FadeInUp(
+                          child: Row(
+                            children: [
+                              Text(
+                                "language".tr(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 20.sp,
+                                    color:
+                                        isLight ? Colors.black : Colors.white),
+                              ),
+                              Spacer(),
+                              Language()
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )),
     );
   }
 }

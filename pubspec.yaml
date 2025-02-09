@@ -53,6 +53,10 @@ dependencies:
   animated_toggle_switch: ^0.8.4
   easy_localization: ^3.0.7+1
   shared_preferences: ^2.5.1
+  rive: ^0.13.20
+  chat_bubbles: ^1.6.0
+  auto_animated: ^3.2.0
+  equatable: ^2.0.7
 
 
 
@@ -85,6 +89,7 @@ flutter:
   assets:
     - assets/images/
     - assets/translations/
+    - assets/RiveAssets/
 
 
 
