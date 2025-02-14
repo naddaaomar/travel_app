@@ -48,14 +48,15 @@ class Language extends StatelessWidget {
           current: nullableValueLanguage,
           allowUnlistedValues: true,
           values: const [0, 1],
-          onChanged: (i) {
+          onChanged: (i) async {
             // Dispatch ChangeLocale event to the Bloc
             context.read<LocaleBloc>().add(
-              ChangeLocale(i == 1 ? const Locale("en") : const Locale("ar")),
-            );
+                  ChangeLocale(
+                      i == 1 ? const Locale("en") : const Locale("ar")),
+                );
 
             // Manually trigger locale change in EasyLocalization
-            EasyLocalization.of(context)?.setLocale(
+            await EasyLocalization.of(context)?.setLocale(
               i == 1 ? const Locale("en") : const Locale("ar"),
             );
           },
@@ -64,9 +65,8 @@ class Language extends StatelessWidget {
           style: ToggleStyle(
             indicatorColor: ColorApp.secondaryColor,
             borderColor: Colors.transparent,
-            backgroundColor: isLight
-                ? ColorApp.primaryColor
-                : ColorApp.primaryColorDark,
+            backgroundColor:
+                isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
           ),
           height: 55.h,
           spacing: 50.0.w,

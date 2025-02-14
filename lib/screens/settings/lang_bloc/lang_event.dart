@@ -6,7 +6,6 @@ abstract class LocaleEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadLocale extends LocaleEvent {}
 
 class ChangeLocale extends LocaleEvent {
   final Locale locale;
