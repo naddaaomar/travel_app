@@ -10,6 +10,7 @@ import 'package:p/models/inclusion_model.dart';
 import 'package:p/models/photo_gallery_model.dart';
 import 'package:p/screens/payment/presentation/pages/test_form.dart';
 import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/tabs/offers/presentation/pages/company_profile.dart';
 import 'trip_on_map.dart';
 
 class TripDetailsViewBody extends StatelessWidget {
@@ -124,7 +125,10 @@ class TripDetailsViewBody extends StatelessWidget {
                             Padding(
                               padding:  EdgeInsets.only(right: 4.w),
                               child: IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => CompanyProfile(),));
+                                },
                                 iconSize: 20.w,
                                 icon: Icon(Ionicons.chatbubble_ellipses_outline,
                                     color: isLight ? Colors.black : Colors.white),

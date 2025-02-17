@@ -39,9 +39,11 @@ class Language extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Locale currentLocal =context.locale;
+
     return BlocBuilder<LocaleBloc, Locale>(
       builder: (context, locale) {
-        int? nullableValueLanguage = locale.languageCode == "en" ? 1 : 0;
+        int? nullableValueLanguage = currentLocal == Locale("en") ? 1 : 0;
         bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
 
         return AnimatedToggleSwitch<int?>.rolling(

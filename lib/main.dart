@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/home/views/home_view.dart';
 import 'screens/onboard/views/onboard_view.dart';
 import 'screens/settings/theme_bloc/theme_bloc.dart';
+import 'screens/splash_screen/view/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,12 +61,12 @@ class MyApp extends StatelessWidget {
                   localizationsDelegates: context.localizationDelegates,
                   supportedLocales: context.supportedLocales,
                   locale:
-                      locale,
+                  context.locale,
                   theme: MyThemeData.lightTheme,
                   darkTheme: MyThemeData.darkTheme,
                   themeMode: themeMode,
                   debugShowCheckedModeBanner: false,
-                  home: OnBoardView(),
+                  home: SplashScreen(),
                 ),
               ),
             );
