@@ -48,17 +48,7 @@ class TripOnMap extends StatelessWidget {
                 _controller.complete(controller);
               },
             ),
-            Positioned(
-              top: 120.h,
-              left: 290.w,
-              child: SizedBox(
-                width: 100.w,
-                height: 100.h,
-                child: RiveAnimation.asset("assets/RiveAssets/hand_touch_gestures_icons.riv",
-                  artboard: "single tap",
-                  stateMachines: ["State Machine 1"],),
-              ),
-            )
+
           ],
         ),
       ),

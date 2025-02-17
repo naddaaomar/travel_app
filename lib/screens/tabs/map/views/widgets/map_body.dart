@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:p/main.dart';
-
+import 'dart:ui' as ui;
 class MapBody extends StatefulWidget {
   MapBody({super.key});
 
@@ -57,14 +57,21 @@ class _MapBodyState extends State<MapBody> {
                   _controller.complete(controller);
                 },
               ),
-        Padding(
-          padding:  EdgeInsets.only(right: 10.w, top: 10.h, left: 18.w),
-          child: Image.asset(
-            'assets/images/logo.png',
-            fit: BoxFit.cover,
-            width: 94.w,
-            height: 40.h,
-            filterQuality: FilterQuality.high,
+        Directionality(
+          textDirection: ui.TextDirection.ltr,
+          child: Row(
+            children: [
+              Padding(
+                padding:  EdgeInsets.only(right: 10.w, top: 10.h, left: 18.w),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  fit: BoxFit.cover,
+                  width: 94.w,
+                  height: 40.h,
+                  filterQuality: FilterQuality.high,
+                ),
+              ),
+            ],
           ),
         ),
       ],
