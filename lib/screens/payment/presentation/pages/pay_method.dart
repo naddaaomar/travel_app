@@ -54,7 +54,7 @@ class PayMethod extends StatelessWidget {
                 )),
                 child: Padding(
                   padding:  EdgeInsets.symmetric(
-                      horizontal: 15.w, vertical: 20.h),
+                      horizontal: 20.w, vertical: 20.h),
                   child: FadeInUp(
                     child: Column(
                       children: [
@@ -66,19 +66,19 @@ class PayMethod extends StatelessWidget {
                               TextSpan(
                     
                                   style: TextStyle(
-                                    fontSize: 30.sp,
+                                    fontSize: 28.sp,
                                     color:
                                         isLight ? Colors.black : Colors.white,
                                   ),
-                                  text: "Select a"),
+                                  text: "Select "),
                               TextSpan(
                                   style: TextStyle(
-                                    fontSize: 40.sp,
+                                    fontSize: 32.sp,
                                     color: isLight
-                                        ? ColorApp.primaryColor
+                                        ? ColorApp.thirdColor
                                         : Colors.white,
                                   ),
-                                  text: " PAYMENT METHOD")
+                                  text: "PAYMENT METHOD")
                             ]),
                           ),
                         ),
@@ -88,10 +88,11 @@ class PayMethod extends StatelessWidget {
                             "Just one step left to complete!",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 23.sp,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
+                        SizedBox(height: 12,),
                         ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),

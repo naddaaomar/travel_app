@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:p/main.dart';
 import 'package:rive/rive.dart';
 
 class MenuBtn extends StatelessWidget {
@@ -15,7 +14,7 @@ class MenuBtn extends StatelessWidget {
       child: GestureDetector(
         onTap: press,
         child: Container(
-          margin:  EdgeInsets.only(left: 12.w),
+          margin:  EdgeInsets.only(left: 12.w, top: 12.w),
           height: 40.h,
           width: 40.w,
           decoration:  BoxDecoration(

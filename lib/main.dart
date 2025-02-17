@@ -8,12 +8,10 @@ import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
 import 'package:p/screens/settings/lang_bloc/lang_bloc.dart';
-import 'package:p/screens/settings/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/home/views/home_view.dart';
 import 'screens/onboard/views/onboard_view.dart';
 import 'screens/settings/theme_bloc/theme_bloc.dart';
-import 'screens/splash_screen/view/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,11 +35,11 @@ void main() async {
         child: MyApp(),
       )));
 }
-
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LocaleBloc, Locale>(
@@ -52,22 +50,15 @@ class MyApp extends StatelessWidget {
               designSize: const Size(420, 880),
               minTextAdapt: true,
               splitScreenMode: true,
-              builder: (context, child) => BlocListener<LocaleBloc, Locale>(
-                listener: (context, locale) async {
-                  await EasyLocalization.of(context)!.setLocale(locale);
-                },
-                child: MaterialApp(
-                  navigatorKey: navigatorKey,
-                  localizationsDelegates: context.localizationDelegates,
-                  supportedLocales: context.supportedLocales,
-                  locale:
-                  context.locale,
-                  theme: MyThemeData.lightTheme,
-                  darkTheme: MyThemeData.darkTheme,
-                  themeMode: themeMode,
-                  debugShowCheckedModeBanner: false,
-                  home: SplashScreen(),
-                ),
+              builder: (context, child) => MaterialApp(
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: locale, // Locale is now dynamically provided by the Bloc
+                theme: MyThemeData.lightTheme,
+                darkTheme: MyThemeData.darkTheme,
+                themeMode: themeMode,
+                debugShowCheckedModeBanner: false,
+                home: OnBoardView(),
               ),
             );
           },

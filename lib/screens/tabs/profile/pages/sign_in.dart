@@ -1,9 +1,17 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:p/screens/tabs/profile/pages/main_profile.dart';
+import 'package:p/screens/tabs/profile/pages/sign_up.dart';
+import 'forget_password.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
+  @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -44,7 +52,7 @@ class SignInPage extends StatelessWidget {
                         const SizedBox(height: 7,),
                         FadeInUp(
                             duration: const Duration(milliseconds: 1300),
-                            child: const Text("Welcome Back",
+                            child: const Text("Welcome Back!",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20),)),
@@ -89,12 +97,15 @@ class SignInPage extends StatelessWidget {
                                           Container(
                                             padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
-                                              border: Border(bottom: BorderSide(color: Colors.grey.shade200),),
+                                              border: Border(
+                                                bottom: BorderSide(
+                                                    color: Colors.grey.shade200),),
                                             ),
                                             child: const TextField(
                                               decoration: InputDecoration(
                                                   hintText: "Email",
-                                                  hintStyle: TextStyle(color: Colors.grey),
+                                                  hintStyle: TextStyle(
+                                                      color: Colors.grey),
                                                   border: InputBorder.none
                                               ),
                                             ),
@@ -102,14 +113,17 @@ class SignInPage extends StatelessWidget {
                                           Container(
                                             padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
-                                                border: Border(bottom: BorderSide(color: Colors.grey.shade200))
+                                                border: Border(
+                                                    bottom: BorderSide(
+                                                        color: Colors.grey.shade200))
                                             ),
-                                            child: const TextField(
+                                            child: TextField(
                                               obscureText: true,
                                               decoration: InputDecoration(
                                                   hintText: "Password",
-                                                  hintStyle: TextStyle(color: Colors.grey),
-                                                  border: InputBorder.none
+                                                  hintStyle: TextStyle(
+                                                      color: Colors.grey),
+                                                  border: InputBorder.none,
                                               ),
                                             ),
                                           ),
@@ -118,20 +132,16 @@ class SignInPage extends StatelessWidget {
                                     )),
                                 const SizedBox(height: 80,),
                                 FadeInUp(
-                                    duration: const Duration(milliseconds: 1500),
-                                    child: const Text("Forgot Password?",
-                                      style: TextStyle(
-                                          color: Colors.grey),)),
-                                const SizedBox(height: 18,),
-                                FadeInUp(
-                                    duration: const Duration(milliseconds: 1600), child: MaterialButton(
-                                    onPressed: () {},
+                                    duration: const Duration(milliseconds: 1600),
+                                    child: MaterialButton(
+                                     onPressed: () {Navigator.push(context,
+                                         MaterialPageRoute(builder: (context) => MainProfile ()),);
+                                     },
                                     height: 50,
                                     color: const Color(0xFFB43E26),
                                     shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50),
-                                  ),
-
+                                    ),
                                     child: const Center(
                                     child: Text("Sign In",
                                       style: TextStyle(
@@ -139,12 +149,32 @@ class SignInPage extends StatelessWidget {
                                           fontWeight: FontWeight.bold),),
                                   ),
                                 )),
+                                const SizedBox(height: 10,),
+                                FadeInUp(
+                                    duration: const Duration(milliseconds: 1500),
+                                    child: TextButton(
+                                      onPressed: () {Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => ForgetPassword ()),);
+                                      },
+                                      child: Text("Forget Password?",
+                                        style: TextStyle(
+                                            color: Colors.grey
+                                        ),),)),
+                                const SizedBox(height: 24,),
+                                FadeInUp(
+                                    duration: const Duration(milliseconds: 1500),
+                                    child: TextButton(
+                                      onPressed: () {Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => SignUpPage ()),);
+                                      },
+                                      child: Text("Don’t have account? SIGN UP",
+                                        style: TextStyle(
+                                            color: Colors.grey
+                                        ),),),),
                                 const SizedBox(height: 50,),
-
                               ],
                             ),
-                          )
-
+                          ),
                       ),
                     ),
                   ),

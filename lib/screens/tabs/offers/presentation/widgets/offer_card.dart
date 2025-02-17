@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/main.dart';
-import 'package:p/models/nearby_places.dart';
 import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/trip_details/views/widgets/trip_details_view_body.dart';
 
 class OfferCard extends StatelessWidget {
   const OfferCard({Key? key}) : super(key: key);
@@ -60,7 +57,7 @@ class OfferCard extends StatelessWidget {
                           fontSize: 12.sp,
                           decorationThickness: 2,
                           fontWeight: FontWeight.bold,
-                          color: ColorApp.primaryColor,
+                          color: ColorApp.thirdColor,
                           decorationColor: ColorApp.primaryColor,
                           decoration: TextDecoration.lineThrough),
                     )

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:p/main.dart';
 import 'package:p/screens/home/views/widgets/drawer/menu.dart';
 import 'package:p/screens/home/views/widgets/drawer/rive_utils.dart';
 import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
@@ -45,10 +44,10 @@ class _SideBarState extends State<SideBar> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding:  EdgeInsets.only(left: 15.w),
+                  padding:  EdgeInsets.only(left: 24.w, top: 24.w),
                   child: Image.asset(
                     "assets/images/logo_2.png",
-                    width: 200,
+                    width: 180,
                   ),
                 ),
                 Padding(

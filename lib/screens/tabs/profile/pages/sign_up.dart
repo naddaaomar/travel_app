@@ -1,8 +1,16 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'main_profile.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +44,7 @@ class SignUpPage extends StatelessWidget {
                     children: <Widget>[
                       FadeInUp(
                           duration: const Duration(milliseconds: 1000),
-                          child: const Text("Sign Up",
+                          child: const Text("Create Your Account",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 40,
@@ -45,7 +53,7 @@ class SignUpPage extends StatelessWidget {
                       const SizedBox(height: 7,),
                       FadeInUp(
                           duration: const Duration(milliseconds: 1300),
-                          child: const Text("Welcome",
+                          child: const Text("Welcome!",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20),)),
@@ -94,20 +102,7 @@ class SignUpPage extends StatelessWidget {
                                         ),
                                         child: const TextField(
                                           decoration: InputDecoration(
-                                              hintText: "First Name",
-                                              hintStyle: TextStyle(color: Colors.grey),
-                                              border: InputBorder.none
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          border: Border(bottom: BorderSide(color: Colors.grey.shade200),),
-                                        ),
-                                        child: const TextField(
-                                          decoration: InputDecoration(
-                                              hintText: "Last Name",
+                                              hintText: "Name",
                                               hintStyle: TextStyle(color: Colors.grey),
                                               border: InputBorder.none
                                           ),
@@ -127,54 +122,88 @@ class SignUpPage extends StatelessWidget {
                                     ),
                                   ),
                                       Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          border: Border(bottom: BorderSide(color: Colors.grey.shade200),),
+                                        ),
+                                        child: TextFormField(
+                                          decoration: InputDecoration(
+                                              hintText: "Password",
+                                              hintStyle: TextStyle(
+                                                  color: Colors.grey),
+                                              border: InputBorder.none,
+                                              suffixIcon: IconButton(
+                                                icon: Icon(
+                                                _passwordVisible
+                                                    ? Icons.visibility
+                                                    : Icons.visibility_off,
+                                                  color: Colors.grey,
+                                              ),
+                                              onPressed: () {
+                                                setState (() {
+                                                  _passwordVisible = !_passwordVisible;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                         border: Border(bottom: BorderSide(color: Colors.grey.shade200))
                                     ),
-                                        child: const TextField(
+                                        child: TextField(
                                       obscureText: true,
                                       decoration: InputDecoration(
-                                          hintText: "Password",
-                                          hintStyle: TextStyle(color: Colors.grey),
-                                          border: InputBorder.none
+                                          hintText: "Re-Password",
+                                          hintStyle: TextStyle(
+                                              color: Colors.grey),
+                                          border: InputBorder.none,
+                                        suffixIcon: IconButton(
+                                          icon: Icon(
+                                            _passwordVisible
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                              color: Colors.grey,
+                                          ),
+                                          onPressed: () {
+                                            setState (() {
+                                              _passwordVisible = !_passwordVisible;
+                                            });
+                                          },
+                                        ),
+                                      ),),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                             ),
-                            ),
-                            const SizedBox(height: 40,),
+                                      const SizedBox(height: 40,),
+                                      FadeInUp(
+                                          duration: const Duration(milliseconds: 1600),
+                                          child: MaterialButton(
+                                            onPressed: () {Navigator.push(context,
+                                              MaterialPageRoute(builder: (context) => MainProfile ()),);
+                                              },
+                                            height: 50,
+                                            color: const Color(0xFFB43E26),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(50),
+                                            ),
 
-                            FadeInUp(
-                                duration: const Duration(milliseconds: 1600), child: MaterialButton(
-                              onPressed: () {},
-                              height: 50,
-                              // margin: EdgeInsets.symmetric(horizontal: 50),
-                              color: const Color(0xFFB43E26),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-
-                                child: const Center(
-                                 child: Text("Sign Up",
-                                   style: TextStyle(
-                                       color: Colors.white,
-                                       fontWeight: FontWeight.bold),),
-                              ),
-                            )),
-                            const SizedBox(height: 50,),
-                              ],
-                            ),
-                      )
-
+                                            child: const Center(
+                                              child: Text("Sign Up",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold),),
+                                            ),
+                                          )),
+                                      const SizedBox(height: 50,),
+                                    ],
+                            ),)
                       ),
-                    ),
-                ),
-              ],
+                  ] ),
+                ),)
             ),
           ),
-        )],
+     ] )))],
       ),
     );
   }

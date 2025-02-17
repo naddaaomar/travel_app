@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/settings.dart';
-
 import 'rive_model.dart';
 
 class Menu {

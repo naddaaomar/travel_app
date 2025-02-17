@@ -32,50 +32,55 @@ class _TabBarPageState extends State<TabBarPage>
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
             child: Column(
               children: [
-                const SizedBox(height: 24),
+                SizedBox(height: 44),
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: ColorApp.primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                    decoration: BoxDecoration(
+                      color: ColorApp.secondaryColor,
+                    //  borderRadius: BorderRadius.circular(10),
+                    ),
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(7),
-                        child: TabBar(
-                          unselectedLabelColor: Colors.white,
+                       TabBar(
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          isScrollable: false,
+
+                          labelPadding: EdgeInsets.zero,
+                          padding: EdgeInsets.zero,
+                          indicatorPadding: EdgeInsets.zero,
+                          unselectedLabelColor: Color(0xFFB43E26),
                           labelColor: Colors.black,
                           indicatorColor: ColorApp.secondaryColor,
                           indicatorWeight: 2,
                           indicator: BoxDecoration(
                             gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xFFFF9682),
-                                  Color(0xFFDF6951),
-                                  Color(0xFFB43E26),
-                                  Color(0xFFDF6951),
-                                  Color(0xFFFF9682),
-                                  ],
+                              colors: [
+                                Color(0xFFFF9682),
+                                Color(0xFFDF6951),
+                                Color(0xFFB43E26),
+                                Color(0xFFDF6951),
+                                Color(0xFFFF9682),
+                              ],
                             ),
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(7),
                           ),
                           controller: tabController,
                           tabs: const [
                             Tab(
                               icon: Icon(Icons.person),
+                              iconMargin: EdgeInsets.zero,
                             ),
                             Tab(
                               icon: Icon(Icons.business_center_outlined),
+                              iconMargin: EdgeInsets.zero,
                             ),
                           ],
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -87,7 +92,7 @@ class _TabBarPageState extends State<TabBarPage>
                       CompanyTab(),
                     ],
                   ),
-                ),
+                )
               ],
             ),
           ),

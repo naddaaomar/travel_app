@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/main.dart';
 import 'package:p/models/nearby_places.dart';
 import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/trip_details/views/widgets/trip_details_view_body.dart';
@@ -23,7 +22,7 @@ class NearbyPlaces extends StatelessWidget {
           return Padding(
             padding:  EdgeInsets.only(bottom:6.h),
             child: SizedBox(
-              height: 120.h,
+              height: 140.h,
               width: double.maxFinite,
 
               child: Card(
@@ -59,7 +58,7 @@ class NearbyPlaces extends StatelessWidget {
                           ),
                         ),
 
-                         SizedBox(width: 10.w),
+                        SizedBox(width: 10.w),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,10 +71,9 @@ class NearbyPlaces extends StatelessWidget {
                                   color: isLight?Colors.black:Colors.white
                                 ),
                               ),
-                               SizedBox(height: 2.h),
-
-                               Text('company'.tr(),style: TextStyle(color: isLight?Colors.black:Colors.white),),
-                               SizedBox(height: 10.h),
+                               Text('company'.tr(),
+                                 style: TextStyle(
+                                     color: isLight?Colors.black:Colors.white),),
                               const Spacer(),
 
                               Row(
@@ -94,12 +92,11 @@ class NearbyPlaces extends StatelessWidget {
                                   ),
 
                                   const Spacer(),
-
                                   RichText(
                                     text:  TextSpan(
                                         style: TextStyle(
                                           fontSize: 16.sp,
-                                          color: isLight?ColorApp.primaryColor:Colors.white,
+                                          color: isLight?ColorApp.thirdColor:Colors.white,
                                         ),
 
                                         text: "\$200",
