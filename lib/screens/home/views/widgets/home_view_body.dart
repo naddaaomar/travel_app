@@ -142,8 +142,8 @@ class _HomeViewBodyState extends State<HomeViewBody>
                     },
                   ),
                 ),
-              ])
-        ,
+              ]),
+
         bottomNavigationBar: Transform.translate(
           offset: Offset(0, 100 * animation.value),
           child: CurvedNavigationBar(
@@ -171,6 +171,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
             letIndexChange: (index) => true,
           ),
         ),
+
         floatingActionButton: Transform.translate(
           offset: Offset(0, 200 * animation.value),
           child: FloatingActionButton(

@@ -8,8 +8,8 @@ import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
 import 'package:p/screens/settings/lang_bloc/lang_bloc.dart';
+import 'package:p/screens/tabs/profile/pages/main_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'screens/home/views/home_view.dart';
 import 'screens/onboard/views/onboard_view.dart';
 import 'screens/settings/theme_bloc/theme_bloc.dart';
 
@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
                 darkTheme: MyThemeData.darkTheme,
                 themeMode: themeMode,
                 debugShowCheckedModeBanner: false,
-                home: OnBoardView(),
+                home: MainProfile(),
               ),
             );
           },
