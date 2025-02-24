@@ -44,9 +44,9 @@ class _SettingsState extends State<Settings> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomLeft,
                 colors: [
-                  Color(0xFFB06353), // Blush pink (calm & elegant)
-                  Color(0xFFA77065), // Muted orange (adds richness)
-                  Color(0xFFAB837B), // Muted orange (adds richness)
+                  Color(0xFFB06353),
+                  Color(0xFFA77065),
+                  Color(0xFFAB837B),
                   ColorApp.secondaryColor,
                 ],
               ),
@@ -62,14 +62,6 @@ class _SettingsState extends State<Settings> {
           // openScale: 1.0,
           disabledGestures: false,
           childDecoration: const BoxDecoration(
-            // NOTICE: Uncomment if you want to add shadow behind the page.
-            // Keep in mind that it may cause animation jerks.
-            // boxShadow: <BoxShadow>[
-            //   BoxShadow(
-            //     color: Colors.black12,
-            //     blurRadius: 0.0,
-            //   ),
-            // ],
             borderRadius: const BorderRadius.all(Radius.circular(16)),
           ),
 
