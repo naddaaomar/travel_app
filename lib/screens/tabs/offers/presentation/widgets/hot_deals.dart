@@ -50,10 +50,10 @@ class _HotDealsState extends State<HotDeals> {
           carouselController: _controller,
           options: CarouselOptions(
               autoPlay: true,
-              viewportFraction: .9,
+              viewportFraction:.95,
               enlargeCenterPage: true,
               aspectRatio: 2.0,
-              scrollDirection: Axis.vertical,
+              scrollDirection: Axis.horizontal,
               onPageChanged: (index, reason) {
                 setState(() {
                   _current = index;

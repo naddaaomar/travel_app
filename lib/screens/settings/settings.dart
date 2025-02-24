@@ -1,14 +1,12 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/app_bar/app_bar_widget.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/main.dart';
-import 'package:p/screens/home/views/widgets/home_view_body.dart';
-import 'package:p/screens/settings/lang_bloc/lang_bloc.dart';
+import 'package:p/screens/home/views/widgets/drawer/new_drawer.dart';
 import 'package:p/screens/settings/language.dart';
 import 'package:p/screens/settings/theme.dart';
 
@@ -22,76 +20,133 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  final _advancedDrawerController = AdvancedDrawerController();
+
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     Locale currentLocal = context.locale;
-    return SafeArea(
-      child: Scaffold(
-        appBar: appBar(
-          lable: "Settings",
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        backgroundColor: ColorApp.primaryColor,
-        body: Column(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                    color: ColorApp.secondaryColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.r),
-                      topRight: Radius.circular(20.r),
-                    )),
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 20.h, horizontal: 30.w),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      FadeInUp(
-                        child: Row(
-                          children: [
-                            Text(
-                              "theme".tr(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 20.sp,
-                                  color: isLight ? Colors.black : Colors.white),
-                            ),
-                            Spacer(),
-                            ThemeApp(),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                      FadeInUp(
-                        child: Row(
-                          children: [
-                            Text(
-                              "language".tr(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 20.sp,
-                                  color: isLight ? Colors.black : Colors.white),
-                            ),
-                            Spacer(),
-                            Language()
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+    return WillPopScope(
+      onWillPop: () async {
+        if (_advancedDrawerController.value.visible) {
+          _advancedDrawerController.hideDrawer();
+          return false;
+        }
+        return true;
+      },
+      child: SafeArea(
+        child: AdvancedDrawer(
+          backdrop: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Color(0xFFB06353), // Blush pink (calm & elegant)
+                  Color(0xFFA77065), // Muted orange (adds richness)
+                  Color(0xFFAB837B), // Muted orange (adds richness)
+                  ColorApp.secondaryColor,
+                ],
               ),
-            )
-          ],
+            ),
+          ),
+          openScale: .9,
+          controller: _advancedDrawerController,
+          animationCurve: Curves.easeInOut,
+          animationDuration: const Duration(milliseconds: 300),
+          animateChildDecoration: true,
+          rtlOpening: true,
+          openRatio: .5,
+          // openScale: 1.0,
+          disabledGestures: false,
+          childDecoration: const BoxDecoration(
+            // NOTICE: Uncomment if you want to add shadow behind the page.
+            // Keep in mind that it may cause animation jerks.
+            // boxShadow: <BoxShadow>[
+            //   BoxShadow(
+            //     color: Colors.black12,
+            //     blurRadius: 0.0,
+            //   ),
+            // ],
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+          ),
+
+          drawer: NewDrawer(
+            controller: _advancedDrawerController,
+          ),
+          child: Scaffold(
+            appBar: appBar(
+              lable: "Settings",
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              controller: _advancedDrawerController,
+              menuOnPressed: () {
+                _advancedDrawerController.showDrawer();
+              },
+            ),
+            backgroundColor: ColorApp.primaryColor,
+            body: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: ColorApp.secondaryColor,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.r),
+                          topRight: Radius.circular(20.r),
+                        )),
+                    child: Padding(
+                      padding:
+                      EdgeInsets.symmetric(vertical: 20.h, horizontal: 30.w),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 50.h,
+                          ),
+                          FadeInUp(
+                            child: Row(
+                              children: [
+                                Text(
+                                  "theme".tr(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 20.sp,
+                                      color: isLight ? Colors.black : Colors.white),
+                                ),
+                                Spacer(),
+                                ThemeApp(),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 40.h,
+                          ),
+                          FadeInUp(
+                            child: Row(
+                              children: [
+                                Text(
+                                  "language".tr(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 20.sp,
+                                      color: isLight ? Colors.black : Colors.white),
+                                ),
+                                Spacer(),
+                                Language()
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

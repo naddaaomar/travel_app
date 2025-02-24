@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:p/screens/home/views/widgets/main_row.dart';
 import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/company_offers.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/companies.dart';
@@ -11,7 +12,7 @@ import 'dart:ui' as ui;
 class OffersScreen extends StatelessWidget {
    OffersScreen({super.key});
 
-  var company = CompanyModel.Companies();
+   var company = CompanyModel.Companies();
 
   @override
   Widget build(BuildContext context) {
@@ -23,23 +24,7 @@ class OffersScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Directionality(
-              textDirection: ui.TextDirection.ltr,
-              child: Row(
-                children: [
-                  Padding(
-                    padding:  EdgeInsets.only(right: 10.w, top: 0.h),
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      fit: BoxFit.cover,
-                      width: 94.w,
-                      height: 40.h,
-                      filterQuality: FilterQuality.high,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+
             SizedBox(
               height: 10.h,
             ),

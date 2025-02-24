@@ -15,9 +15,5 @@ class DrawerModel {
 
 List<DrawerModel> drawer = [
   DrawerModel(icon: Icons.home_outlined, label: 'home', widget: () => HomeViewBody()),
-  DrawerModel(icon: Icons.event, label: 'upcoming Events', widget: () => Settings()),
-  DrawerModel(icon: Icons.travel_explore, label: 'services', widget: () => Settings()),
-  DrawerModel(icon: Icons.info_outline, label: 'about', widget: () => Settings()),
-  DrawerModel(icon: Icons.chat, label: 'get In Touch', widget: () => Settings()),
   DrawerModel(icon: Icons.settings_outlined, label: 'settings', widget: () => Settings()),
 ];
