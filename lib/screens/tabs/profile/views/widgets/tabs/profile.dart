@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../helpers/themes/colors.dart';
 import '../../../pages/sign_in.dart';
-import '../first_tab_widgets/edit_profile.dart';
+import '../profile_tab_widgets/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -55,6 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 10),
             _itemProfile('Password', _password, Icons.password_sharp ,Icons.lock, (){} ),
             const SizedBox(height: 55),
+
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -80,12 +81,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(15),
+                  side: BorderSide(
+                    color: ColorApp.primaryColor
+                  ),
+                  padding: const EdgeInsets.all(18),
                 ),
                 child: const Text(
                   'Edit Profile',
                   style: TextStyle(
-                    color: ColorApp.primaryColor, // Replace with your color
+                    color: ColorApp.primaryColor,
+                    fontWeight: FontWeight.w600
                   ),
                 ),
               ),
@@ -111,9 +116,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
       child: ListTile(
-        title: Text(title),
-        subtitle: Text(subtitle),
-        leading: Icon(iconData),
+        title: Text(title,
+          style: TextStyle(
+          fontWeight: FontWeight.w500,
+            color: ColorApp.thirdColor
+        ),),
+        subtitle: Text(subtitle,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 17
+        ),),
+        leading: Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: Icon(iconData),
+        ),
         trailing: IconButton(
           icon: Icon(trailingIcon),
           onPressed: onTap,
@@ -128,7 +144,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Edit $title'),
+        title: Text('Edit $title',
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+          color: ColorApp.thirdColor
+        ),),
         content: TextField(
           controller: controller,
           decoration: InputDecoration(labelText: title),
@@ -138,7 +158,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel',
             style: TextStyle(
-              color: ColorApp.primaryColor
+              color: ColorApp.thirdColor,
+                fontWeight: FontWeight.w600
             ),),
           ),
           TextButton(
@@ -148,7 +169,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
             child: const Text('Save',
               style: TextStyle(
-                  color: ColorApp.primaryColor
+                  color: ColorApp.thirdColor,
+                fontWeight: FontWeight.w600
               ),),
           ),
         ],

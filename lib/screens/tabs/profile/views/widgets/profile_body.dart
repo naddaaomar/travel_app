@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:p/screens/tabs/profile/views/widgets/tabs/first.dart';
+import 'package:p/screens/tabs/profile/views/widgets/tabs/profile.dart';
 import '../../../../../helpers/themes/colors.dart';
+import 'fav_tab_widgets/no_fav.dart';
+import 'trips_tab_widgets/no_trips.dart';
 
 class ProfileBody extends StatefulWidget {
   const ProfileBody({super.key});
@@ -80,11 +82,13 @@ class _ProfileBodyState extends State<ProfileBody>
         return const Center(
             child: ProfileScreen(name: 'n', value: 'n@gmail.com', pass: '********',));
       case 1:
-        return const Center(child: Text("Favourite Content"));
+        return const Center(
+            child: NoFavorites());
       case 2:
-        return const Center(child: Text("Payment Content"));
+        return const Center(
+            child: NoPreviousTrips());
       case 3:
-        return const Center(child: Text("Previous Trips Content"));
+        return const Center(child: Text("Payment Content"));
       default:
         return Container(); // Default case
     }
@@ -102,9 +106,9 @@ class ProfileModel {
 }
 List ProfileData = [
   ProfileModel(name: "Profile", icon: Icons.person),
-  ProfileModel(name: "favourite", icon: Icons.favorite),
-  ProfileModel(name: "Payment", icon: Icons.monetization_on_outlined),
+  ProfileModel(name: "favorite", icon: Icons.favorite),
   ProfileModel(name: "Previous Trips", icon: Icons.business_center_rounded),
+  ProfileModel(name: "Payment", icon: Icons.monetization_on_outlined),
 ];
 
 

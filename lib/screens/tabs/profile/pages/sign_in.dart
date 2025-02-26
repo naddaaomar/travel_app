@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:p/screens/tabs/profile/pages/main_profile.dart';
 import 'package:p/screens/tabs/profile/pages/sign_up.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../views/widgets/tabs/first.dart';
+import '../views/widgets/tabs/profile.dart';
 import 'forget_password.dart';
 
 class SignInPage extends StatefulWidget {
