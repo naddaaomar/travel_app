@@ -60,6 +60,8 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   animated_splash_screen: ^1.3.0
   flutter_advanced_drawer: ^1.4.0
+  lucide_icons_flutter: ^1.2.8
+  flutter_card_swiper: ^7.0.2
 
 
 

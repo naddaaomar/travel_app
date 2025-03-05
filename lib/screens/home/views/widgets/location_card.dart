@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/main.dart';
 import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 
 class LocationCard extends StatelessWidget {
@@ -15,7 +14,7 @@ class LocationCard extends StatelessWidget {
     return
        Card(
         color: isLight? Color(0xFFD7D1D1):Color(0xFF8C8282),
-        elevation: 10,
+        elevation: 3,
         shadowColor: isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
 

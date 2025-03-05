@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:p/screens/tabs/profile/pages/main_profile.dart';
 import 'package:p/screens/tabs/profile/pages/sign_up.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../views/widgets/tabs/first.dart';
+import '../views/widgets/tabs/profile.dart';
 import 'forget_password.dart';
 
 class SignInPage extends StatefulWidget {
@@ -33,15 +33,15 @@ class _SignInPageState extends State<SignInPage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('email', email); // Store email for auto-login.
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfileScreen(
-            value: email,
-            pass: password,
-            name: '',),
-        ),
-      );
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => ProfileScreen(
+      //       value: email,
+      //       pass: password,
+      //       name: '',),
+      //   ),
+      // );
     }
   }
 
@@ -189,6 +189,7 @@ class _SignInPageState extends State<SignInPage> {
                                          if (_formKey.currentState!.validate()) {
                                            String email = _emailController.text;
                                            String password = _passwordController.text;
+                                           _signIn();
                                            print('Email: $email, Password: $password');
                                            Navigator.push(context, MaterialPageRoute(builder: (context) => MainProfile()));
                                          }

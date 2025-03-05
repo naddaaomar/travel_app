@@ -41,13 +41,12 @@ class _SettingsState extends State<Settings> {
             height: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomLeft,
+                begin: Alignment.topRight,
+                end: Alignment.bottomRight,
+                tileMode: TileMode.repeated,
                 colors: [
-                  Color(0xFFB06353),
-                  Color(0xFFA77065),
-                  Color(0xFFAB837B),
-                  ColorApp.secondaryColor,
+                  Color(0xffC59D90),
+                  Color(0xffDDBBB0),
                 ],
               ),
             ),
@@ -91,8 +90,8 @@ class _SettingsState extends State<Settings> {
                           topRight: Radius.circular(20.r),
                         )),
                     child: Padding(
-                      padding:
-                      EdgeInsets.symmetric(vertical: 20.h, horizontal: 30.w),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 20.h, horizontal: 30.w),
                       child: Column(
                         children: [
                           SizedBox(
@@ -106,7 +105,9 @@ class _SettingsState extends State<Settings> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 20.sp,
-                                      color: isLight ? Colors.black : Colors.white),
+                                      color: isLight
+                                          ? Colors.black
+                                          : Colors.white),
                                 ),
                                 Spacer(),
                                 ThemeApp(),
@@ -124,7 +125,9 @@ class _SettingsState extends State<Settings> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 20.sp,
-                                      color: isLight ? Colors.black : Colors.white),
+                                      color: isLight
+                                          ? Colors.black
+                                          : Colors.white),
                                 ),
                                 Spacer(),
                                 Language()

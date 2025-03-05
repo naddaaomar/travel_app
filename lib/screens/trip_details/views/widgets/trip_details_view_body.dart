@@ -11,7 +11,7 @@ import 'package:p/models/photo_gallery_model.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/payment/presentation/pages/test_form.dart';
 import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/tabs/offers/presentation/pages/company_profile.dart';
+import 'package:p/screens/company_profile/company_profile.dart';
 import 'trip_on_map.dart';
 
 class TripDetailsViewBody extends StatefulWidget {

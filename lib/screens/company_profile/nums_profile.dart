@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:p/screens/tabs/offers/presentation/widgets/nums_column.dart';
+import 'package:p/screens/company_profile/nums_column.dart';
 
 class NumsProfile extends StatelessWidget {
   const NumsProfile({super.key});

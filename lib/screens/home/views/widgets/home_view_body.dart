@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:p/screens/home/views/widgets/main_row.dart';
 import 'package:p/screens/tabs/home/home_tab.dart';
 import 'package:p/screens/tabs/map/views/map_view.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
-import 'dart:ui' as ui;
 import '../../../settings/theme_bloc/theme_bloc.dart';
 import '../../../tabs/profile/views/widgets/tab_bar.dart';
 
@@ -40,7 +38,6 @@ class _HomeViewBodyState extends State<HomeViewBody>
 
     _advancedDrawerController.addListener(() {
       if (!_advancedDrawerController.value.visible) {
-        /// **Force UI rebuild when drawer closes**
         Future.delayed(
           Duration(milliseconds: 200),
           () => setState(() {}),
@@ -57,11 +54,25 @@ class _HomeViewBodyState extends State<HomeViewBody>
 
     return WillPopScope(
       onWillPop: () async {
+        if (_advancedDrawerController.value.visible &&
+            HomeViewBody.currentIndex != 0) {
+          _advancedDrawerController.hideDrawer();
+          return false;
+        }
+
+        if (HomeViewBody.currentIndex != 0) {
+          setState(() {
+            HomeViewBody.currentIndex = 0; // Switch to Home tab
+          });
+          return false; // Prevent app from closing
+        }
+
         if (_advancedDrawerController.value.visible) {
           _advancedDrawerController.hideDrawer();
           return false;
         }
-        return true;
+
+        return true; // Exit the app
       },
       child: SafeArea(
         child: AdvancedDrawer(
@@ -70,13 +81,12 @@ class _HomeViewBodyState extends State<HomeViewBody>
             height: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomLeft,
+                begin: Alignment.topRight,
+                end: Alignment.bottomRight,
+                tileMode: TileMode.repeated,
                 colors: [
-                  Color(0xFFB06353),
-                  Color(0xFFA77065),
-                  Color(0xFFAB837B),
-                  ColorApp.secondaryColor,
+                  Color(0xffC59D90),
+                  Color(0xffDDBBB0),
                 ],
               ),
             ),
@@ -106,26 +116,30 @@ class _HomeViewBodyState extends State<HomeViewBody>
               leadingWidth: double.infinity,
             ),
             body: tabs[HomeViewBody.currentIndex],
-            bottomNavigationBar: CurvedNavigationBar(
-              index: HomeViewBody.currentIndex,
-              color:
-                  isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
-              backgroundColor: Colors.transparent,
-              animationDuration: const Duration(milliseconds: 400),
-              items: [
-                Icon(Icons.home, color: isLight ? Colors.black : Colors.white),
-                Icon(Icons.local_offer_outlined,
-                    color: isLight ? Colors.black : Colors.white),
-                Icon(Icons.person,
-                    color: isLight ? Colors.black : Colors.white),
-                Image.asset('assets/images/map.png',
-                    width: 35.w, color: isLight ? Colors.black : Colors.white)
-              ],
-              onTap: (index) {
-                setState(() {
-                  HomeViewBody.currentIndex = index;
-                });
-              },
+            bottomNavigationBar: Container(
+              height: 60,
+              child: CurvedNavigationBar(
+                index: HomeViewBody.currentIndex,
+                color:
+                    isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
+                backgroundColor: Colors.transparent,
+                animationDuration: const Duration(milliseconds: 400),
+                items: [
+                  Icon(Icons.home,
+                      color: isLight ? Colors.black : Colors.white),
+                  Icon(Icons.local_offer_outlined,
+                      color: isLight ? Colors.black : Colors.white),
+                  Icon(Icons.person,
+                      color: isLight ? Colors.black : Colors.white),
+                  Image.asset('assets/images/map.png',
+                      width: 35.w, color: isLight ? Colors.black : Colors.white)
+                ],
+                onTap: (index) {
+                  setState(() {
+                    HomeViewBody.currentIndex = index;
+                  });
+                },
+              ),
             ),
           ),
         ),

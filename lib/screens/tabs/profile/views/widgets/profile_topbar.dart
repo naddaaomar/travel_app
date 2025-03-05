@@ -16,8 +16,8 @@ class TopBar extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.end,
-        children: const [
-          Padding(
+        children:  [
+          const Padding(
             padding: EdgeInsets.only(left: 4,top: 20),
             child: Text('Welcome',
               style: TextStyle(
@@ -28,8 +28,10 @@ class TopBar extends StatelessWidget {
           ),
           Spacer(),
           ImageIcon(
-              AssetImage('assets/images/logo.png'),
-              size: 90,
+            AssetImage('assets/images/logo.png',),
+            size: 90,
+
+
           ),
         ],
       ),

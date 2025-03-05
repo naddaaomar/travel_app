@@ -8,10 +8,6 @@ import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
 import 'package:p/screens/settings/lang_bloc/lang_bloc.dart';
-import 'package:p/screens/settings/settings.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'screens/home/views/home_view.dart';
-import 'screens/onboard/views/onboard_view.dart';
 import 'screens/settings/theme_bloc/theme_bloc.dart';
 import 'screens/splash_screen/view/splash.dart';
 

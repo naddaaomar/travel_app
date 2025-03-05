@@ -56,30 +56,25 @@ class _NewDrawerState extends State<NewDrawer> {
                   hoverDuration: Duration(milliseconds: 1000),
                   onTap: () {
                     if (drawer[index].widget().runtimeType == HomeViewBody) {
-                      if (ModalRoute.of(context)?.settings.name == "Settings") {
-
-                        widget.controller.hideDrawer();
-                        Future.delayed(
-                          Duration(milliseconds: 200),
-                          () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HomeViewBody(),
-                                ));
-                          },
-                        );
-                      }
                       widget.controller.hideDrawer();
+                      Future.delayed(
+                        Duration(milliseconds: 200),
+                            () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomeViewBody()),
+                                (route) => false, // This removes all previous routes
+                          );
+                        },
+                      );
                       setState(() {
                         HomeViewBody.currentIndex = 0;
                       });
                     } else if (drawer[index].widget().runtimeType == Settings) {
                       if (ModalRoute.of(context)?.settings.name == "Settings") {
-                        // Just close the drawer if already in Settings
                         Future.delayed(
                           Duration(milliseconds: 200),
-                          () => widget.controller.hideDrawer(),
+                              () => widget.controller.hideDrawer(),
                         );
                       } else {
                         widget.controller.hideDrawer();
@@ -104,7 +99,8 @@ class _NewDrawerState extends State<NewDrawer> {
                         );
                       });
                     }
-                  },
+                  }
+,
                   child: FadeInRight(
                     child: Row(
                       children: [
