@@ -7,23 +7,24 @@ import 'package:p/helpers/themes/colors.dart';
 AppBar appBar(
     {required String lable,
     required void Function()? onPressed,
-     AdvancedDrawerController? controller,
-     void Function()? menuOnPressed}) {
+    AdvancedDrawerController? controller,
+    void Function()? menuOnPressed}) {
   return AppBar(
     toolbarHeight: 75.h,
     backgroundColor: ColorApp.primaryColor,
-    leading: Row(
-      children: [
-        IconButton(
-          onPressed: onPressed,
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
-            size: 30.w,
+    leading: FadeInUp(
+      duration: Duration(milliseconds: 1000),
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: onPressed,
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.white,
+              size: 30.w,
+            ),
           ),
-        ),
-        Expanded(
-          child: FadeInUp(
+          Expanded(
             child: Text(
               lable,
               textAlign: TextAlign.center,
@@ -34,37 +35,36 @@ AppBar appBar(
               ),
             ),
           ),
-        ),
-
-        IconButton(
-          onPressed: menuOnPressed,
-          icon: ValueListenableBuilder<AdvancedDrawerValue>(
-            valueListenable: controller!,
-            builder: (_, value, __) {
-              return AnimatedSwitcher(
-                duration: Duration(milliseconds: 250),
-                child: value.visible
-                    ? Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            color: Colors.white, shape: BoxShape.circle),
-                        child: Icon(
-                          Icons.clear,
-                          color: Colors.black,
+          IconButton(
+            onPressed: menuOnPressed,
+            icon: ValueListenableBuilder<AdvancedDrawerValue>(
+              valueListenable: controller!,
+              builder: (_, value, __) {
+                return AnimatedSwitcher(
+                  duration: Duration(milliseconds: 250),
+                  child: value.visible
+                      ? Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color: Colors.white, shape: BoxShape.circle),
+                          child: Icon(
+                            Icons.clear,
+                            color: Colors.black,
+                          ),
+                        )
+                      : Icon(
+                          Icons.menu,
+                          color: Colors.white,
+                          size: 30,
+                          key: ValueKey<bool>(value.visible),
                         ),
-                      )
-                    : Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                        size: 30,
-                        key: ValueKey<bool>(value.visible),
-                      ),
-              );
-            },
-          ),
-        )
-      ],
+                );
+              },
+            ),
+          )
+        ],
+      ),
     ),
     leadingWidth: double.infinity,
   );

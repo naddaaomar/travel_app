@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/main.dart';
-import 'package:p/models/suggest_text.dart';
 
 class SuggestItem extends StatelessWidget {
   String lable;

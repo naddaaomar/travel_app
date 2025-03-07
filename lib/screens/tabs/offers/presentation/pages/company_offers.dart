@@ -7,7 +7,7 @@ import 'package:p/helpers/app_bar/app_bar_widget.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/main.dart';
 import 'package:p/screens/home/views/widgets/nearby_places.dart';
-import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/companies.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/company_card.dart';

@@ -17,7 +17,7 @@ class CompanyHomeCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withOpacity(0.2),
               blurRadius: 6,
               spreadRadius: 2,
             ),
@@ -26,7 +26,6 @@ class CompanyHomeCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(6),
           child: Column(
-
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
@@ -34,7 +33,7 @@ class CompanyHomeCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.asset(
-                     img,
+                      img,
                       height: 120,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -44,7 +43,7 @@ class CompanyHomeCard extends StatelessWidget {
                     top: 6,
                     right: 5,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 3,vertical: 3),
+                      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.rectangle,
@@ -58,29 +57,28 @@ class CompanyHomeCard extends StatelessWidget {
                         ],
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0,vertical: 0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 0, vertical: 0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
                               Icons.star,
-                              color:Colors.yellow[800],
+                              color: Colors.yellow[800],
                               size: 15,
                             ),
-                            Text("4.5",
-                            style: TextStyle(
-                              fontSize: 9
-                            ),)
+                            Text(
+                              "4.5",
+                              style: TextStyle(fontSize: 9),
+                            )
                           ],
                         ),
                       ),
                     ),
                   ),
-
                 ],
               ),
               Text(
-
                 label,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
@@ -114,4 +112,3 @@ class CompanyHomeCard extends StatelessWidget {
     );
   }
 }
-

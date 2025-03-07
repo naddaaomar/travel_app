@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/screens/home/views/widgets/drawer/menu.dart';
 import 'package:p/screens/home/views/widgets/drawer/rive_utils.dart';
-import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import '../../../../../helpers/themes/colors.dart';
 import 'side_menu.dart';
 

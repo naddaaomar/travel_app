@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/main.dart';
-import 'package:p/screens/home/views/widgets/recommended_places.dart';
-import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 
 class ThemeApp extends StatefulWidget {
   const ThemeApp({super.key});
@@ -17,14 +15,17 @@ class ThemeApp extends StatefulWidget {
 
 class _ThemeAppState extends State<ThemeApp> {
   Widget rollingIconBuilderMode(int? valueMode, bool foreground) {
-    return Icon(iconDataByValueMode(valueMode));
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Icon(iconDataByValueMode(valueMode),size: 22,),
+    );
   }
 
   IconData iconDataByValueMode(int? valueMode) => switch (valueMode) {
-    0 => Icons.sunny,
-    1 => Icons.dark_mode,
-    _ => Icons.dark_mode,
-  };
+        0 => Icons.sunny,
+        1 => Icons.dark_mode,
+        _ => Icons.dark_mode,
+      };
 
   @override
   Widget build(BuildContext context) {
@@ -38,23 +39,24 @@ class _ThemeAppState extends State<ThemeApp> {
           allowUnlistedValues: true,
           values: const [0, 1],
           onChanged: (i) {
-
             bool isDark = i == 1;
             context.read<ThemeBloc>().add(ChangeTheme(isDark));
           },
           iconBuilder: rollingIconBuilderMode,
-          borderWidth: 4.5.w,
+          borderWidth: 5,
+          indicatorSize: Size(30.w, 30.h),
           style: ToggleStyle(
+            borderColor: Colors.transparent,
+            indicatorBorderRadius: BorderRadius.circular(70),
             indicatorColor: ColorApp.secondaryColor,
             backgroundGradient: LinearGradient(
               colors: currentLocal == Locale("en")
                   ? [ColorApp.primaryColor, ColorApp.primaryColorDark]
                   : [ColorApp.primaryColorDark, ColorApp.primaryColor],
             ),
-            borderColor: Colors.transparent,
           ),
-          height: 55.h,
-          spacing: 50.0.w,
+          height: 38.h,
+          spacing: 20.0.w,
         );
       },
     );

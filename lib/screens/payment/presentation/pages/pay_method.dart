@@ -8,7 +8,7 @@ import 'package:p/helpers/themes/colors.dart';
 import 'package:p/main.dart';
 import 'package:p/models/paymet_methods_model.dart';
 import 'package:p/screens/payment/presentation/widgets/pay_card.dart';
-import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 
 import 'pay_screens/web_screen.dart';
 

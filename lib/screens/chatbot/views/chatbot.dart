@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/main.dart';
-import 'package:p/screens/chatbot/respond.dart';
-import 'package:p/screens/chatbot/sender.dart';
-import 'package:p/screens/chatbot/suggest_item.dart';
-import 'package:p/models/suggest_text.dart';
+import 'package:p/screens/chatbot/models/suggest_text.dart';
+import 'package:p/screens/chatbot/widgets/respond.dart';
+import 'package:p/screens/chatbot/widgets/sender.dart';
+import 'package:p/screens/chatbot/widgets/suggest_item.dart';
 
 class Chatbot extends StatelessWidget {
   const Chatbot({super.key});

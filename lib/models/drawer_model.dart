@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:p/main.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
-import 'package:p/screens/settings/settings.dart';
+import 'package:p/screens/settings/views/settings.dart';
 
 class DrawerModel {
   String label;

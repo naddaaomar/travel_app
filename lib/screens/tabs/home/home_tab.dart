@@ -8,8 +8,9 @@ import 'package:p/screens/home/views/widgets/location_card.dart';
 import 'package:p/screens/home/views/widgets/main_row.dart';
 import 'package:p/screens/home/views/widgets/nearby_places.dart';
 import 'package:p/screens/home/views/widgets/recommended_places.dart';
-import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 import 'dart:ui' as ui;
+
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 class HomeTab extends StatelessWidget {
    HomeTab({super.key});
 

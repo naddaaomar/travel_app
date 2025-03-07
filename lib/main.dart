@@ -7,10 +7,10 @@ import 'package:p/di.dart';
 import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
-import 'package:p/screens/settings/lang_bloc/lang_bloc.dart';
-import 'screens/settings/theme_bloc/theme_bloc.dart';
+import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
+import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'screens/splash_screen/view/splash.dart';
-
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
                   await EasyLocalization.of(context)!.setLocale(locale);
                 },
                 child: MaterialApp(
+                  navigatorObservers: [routeObserver],
                   navigatorKey: navigatorKey,
                   localizationsDelegates: context.localizationDelegates,
                   supportedLocales: context.supportedLocales,

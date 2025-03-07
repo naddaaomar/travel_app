@@ -7,10 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/drawer/new_drawer.dart';
 import 'package:p/screens/home/views/widgets/main_row.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/home/home_tab.dart';
 import 'package:p/screens/tabs/map/views/map_view.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
-import '../../../settings/theme_bloc/theme_bloc.dart';
 import '../../../tabs/profile/views/widgets/tab_bar.dart';
 
 class HomeViewBody extends StatefulWidget {
@@ -84,10 +84,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
                 begin: Alignment.topRight,
                 end: Alignment.bottomRight,
                 tileMode: TileMode.repeated,
-                colors: [
-                  Color(0xffC59D90),
-                  Color(0xffDDBBB0),
-                ],
+                colors: ColorApp.drawerColors,
               ),
             ),
           ),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
-import 'package:p/screens/settings/settings.dart';
+import 'package:p/screens/settings/views/settings.dart';
 import '../../../../../models/drawer_model.dart';
 
 class NewDrawer extends StatefulWidget {
