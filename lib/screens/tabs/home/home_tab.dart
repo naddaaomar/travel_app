@@ -11,22 +11,21 @@ import 'package:p/screens/home/views/widgets/recommended_places.dart';
 import 'dart:ui' as ui;
 
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
+
 class HomeTab extends StatelessWidget {
-   HomeTab({super.key});
+  HomeTab({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return Padding(
-      padding:  EdgeInsets.symmetric(horizontal: 18.w,vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
       child: ListView(
         shrinkWrap: true,
-        physics:  BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         children: [
-
-
-           LocationCard(),
-           SizedBox(height: 40.h),
+          LocationCard(),
+          SizedBox(height: 40.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -38,9 +37,7 @@ class HomeTab extends StatelessWidget {
                     color: isLight ? Colors.black : Colors.white),
               ),
               TextButton(
-                onPressed: () {
-
-                },
+                onPressed: () {},
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.black,
                 ),
@@ -52,9 +49,9 @@ class HomeTab extends StatelessWidget {
               ),
             ],
           ),
-           SizedBox(height: 7.h),
-           RecommendedPlaces(),
-           SizedBox(height: 30.h),
+          SizedBox(height: 7.h),
+          RecommendedPlaces(),
+          SizedBox(height: 30.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -78,8 +75,8 @@ class HomeTab extends StatelessWidget {
               ),
             ],
           ),
-           SizedBox(height: 7.h),
-           NearbyPlaces(),
+          SizedBox(height: 7.h),
+          NearbyPlaces(),
         ],
       ),
     );

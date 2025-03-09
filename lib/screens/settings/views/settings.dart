@@ -68,6 +68,8 @@ class _SettingsState extends State<Settings> {
           ),
           child: Scaffold(
             appBar: appBar(
+              height: 75.h,
+              color: ColorApp.primaryColor,
               lable: "Settings",
               onPressed: () {
                 Navigator.pop(context);

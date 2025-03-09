@@ -8,10 +8,13 @@ AppBar appBar(
     {required String lable,
     required void Function()? onPressed,
     AdvancedDrawerController? controller,
-    void Function()? menuOnPressed}) {
+    void Function()? menuOnPressed,
+    required Color color,
+      required double height
+    }) {
   return AppBar(
-    toolbarHeight: 75.h,
-    backgroundColor: ColorApp.primaryColor,
+    toolbarHeight: height,
+    backgroundColor: color,
     leading: FadeInUp(
       duration: Duration(milliseconds: 1000),
       child: Row(
