@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/models/nearby_places.dart';
-import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/trip_details/views/widgets/trip_details_view_body.dart';
 
 class NearbyPlaces extends StatelessWidget {

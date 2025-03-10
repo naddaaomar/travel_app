@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/screens/home/views/widgets/drawer/menu.dart';
 import 'package:p/screens/home/views/widgets/drawer/rive_utils.dart';
-import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
-
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import '../../../../../helpers/themes/colors.dart';
 import 'side_menu.dart';
 
 class SideBar extends StatefulWidget {
-  const SideBar({super.key});
+  SideBar({super.key, required this.onTap});
+  void Function()? onTap;
 
   @override
   State<SideBar> createState() => _SideBarState();
@@ -17,6 +17,7 @@ class SideBar extends StatefulWidget {
 
 class _SideBarState extends State<SideBar> {
   Menu selectedSideMenu = sidebarMenus.first;
+
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
@@ -39,19 +40,34 @@ class _SideBarState extends State<SideBar> {
         child: DefaultTextStyle(
           style: const TextStyle(color: Colors.white),
           child: Padding(
-            padding:  EdgeInsets.symmetric(vertical: 20.h),
+            padding: EdgeInsets.symmetric(vertical: 20.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding:  EdgeInsets.only(left: 24.w, top: 24.w),
-                  child: Image.asset(
-                    "assets/images/logo_2.png",
-                    width: 180,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset(
+                      "assets/images/logo_2.png",
+                      width: 200,
+                    ),
+                    InkWell(
+                      onTap: widget.onTap,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        child: Icon(
+                          Icons.clear,
+                          size: 30,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(left: 24.w, top: 32.h, bottom: 16.h),
+                  padding: EdgeInsets.only(left: 24.w, top: 32.h, bottom: 16.h),
                   child: Text(
                     "Browse".toUpperCase(),
                     style: Theme.of(context)

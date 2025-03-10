@@ -7,4 +7,8 @@ abstract class ColorApp {
   static const primaryColorDark = Color(0xFF773B2E);
   static const secondaryColorDark = Color(0xFF625656);
   static const cardColorDark = Color(0xFF614848);
+  static List<Color> drawerColors= [
+    Color(0xffC59D90),
+    Color(0xffDDBBB0),
+  ];
 }

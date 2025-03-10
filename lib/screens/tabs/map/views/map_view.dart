@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'widgets/map_body.dart';
 
 class MapView extends StatefulWidget {
-  const MapView({super.key});
+   MapView({super.key});
 
   @override
   State<MapView> createState() => _MapViewState();

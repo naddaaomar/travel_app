@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,11 +14,10 @@ import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/home/home_tab.dart';
 import 'package:p/screens/tabs/map/views/map_view.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
+import 'package:p/screens/tabs/tab3/views/tab3_view.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/widgets.dart' as flutter_widgets;
 import 'package:rive/rive.dart' as rive;
-
-import '../../../tabs/profile/views/widgets/tab_bar.dart';
 
 
 class HomeViewBody extends StatefulWidget {
@@ -33,7 +33,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
   List<Widget> tabs = [
     HomeTab(),
     OffersScreen(),
-    TabBarPage(),
+    Tab3(),
     MapView(),
   ];
   bool isSideBarOpen = false;
@@ -77,118 +77,122 @@ class _HomeViewBodyState extends State<HomeViewBody>
     bool isLight = context.read<ThemeBloc>().state == ThemeMode.light;
 
     return SafeArea(
-      child: Scaffold(
-        extendBody: true,
-        body:  Stack(children: [
-                AnimatedPositioned(
-                  width: 250.w,
-                  height: MediaQuery.of(context).size.height,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.fastOutSlowIn,
-                  right: isSideBarOpen ? 0 : -288.w,
-                  top: 0,
-                  child: const SideBar(),
-                ),
-                Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, 0.001)
-                    ..rotateY(
-                        1 * animation.value - 100 * (animation.value) * pi / 180),
-                  child: Transform.translate(
-                    offset: Offset(-animation.value * 215, 0),
-                    child: Transform.scale(
-                      scale: scalAnimation.value,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(24.r),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            key: ValueKey(context.locale),
+            extendBody: true,
+            body:  Stack(children: [
+                    AnimatedPositioned(
+                      width: 250.w,
+                      height: MediaQuery.of(context).size.height,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.fastOutSlowIn,
+                      right: isSideBarOpen ? 0 : -288.w,
+                      top: 0,
+                      child: const SideBar(),
+                    ),
+                    Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001)
+                        ..rotateY(
+                            1 * animation.value - 100 * (animation.value) * pi / 180),
+                      child: Transform.translate(
+                        offset: Offset(-animation.value * 215, 0),
+                        child: Transform.scale(
+                          scale: scalAnimation.value,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(24.r),
+                            ),
+                            child: tabs[_tabController.index],
+                          ),
                         ),
-                        child: tabs[_tabController.index],
                       ),
                     ),
-                  ),
-                ),
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.fastOutSlowIn,
-                  left: isSideBarOpen ? 350.w :350.w,
+                    AnimatedPositioned(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.fastOutSlowIn,
+                      left: isSideBarOpen ? 350.w :350.w,
 
-                  top: isSideBarOpen ? 20.h :0,
-                  child: MenuBtn(
-                    press: () {
-                      isMenuOpenInput.value = !isMenuOpenInput.value;
+                      top: isSideBarOpen ? 20.h :0,
+                      child: MenuBtn(
+                        press: () {
+                          isMenuOpenInput.value = !isMenuOpenInput.value;
 
-                      if (_animationController.value == 0) {
-                        _animationController.forward();
-                      } else {
-                        _animationController.reverse();
-                      }
+                          if (_animationController.value == 0) {
+                            _animationController.forward();
+                          } else {
+                            _animationController.reverse();
+                          }
 
-                      setState(
-                        () {
-                          isSideBarOpen = !isSideBarOpen;
+                          setState(
+                            () {
+                              isSideBarOpen = !isSideBarOpen;
+                            },
+                          );
                         },
-                      );
-                    },
-                    riveOnInit: (artboard) {
-                      final controller = StateMachineController.fromArtboard(
-                          artboard, "State Machine");
+                        riveOnInit: (artboard) {
+                          final controller = StateMachineController.fromArtboard(
+                              artboard, "State Machine");
 
-                      artboard.addController(controller!);
+                          artboard.addController(controller!);
 
-                      isMenuOpenInput =
-                          controller.findInput<bool>("isOpen") as SMIBool;
-                      isMenuOpenInput.value = true;
-                    },
+                          isMenuOpenInput =
+                              controller.findInput<bool>("isOpen") as SMIBool;
+                          isMenuOpenInput.value = true;
+                        },
+                      ),
+                    ),
+                  ])
+            ,
+            bottomNavigationBar: Transform.translate(
+              offset: Offset(0, 100 * animation.value),
+              child: CurvedNavigationBar(
+                index: _tabController.index,
+                color: isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
+                backgroundColor: Colors.transparent,
+                animationDuration: const Duration(milliseconds: 400),
+                items: [
+                  Icon(
+                    Icons.home,
+                    color: isLight ? Colors.black : Colors.white,
                   ),
-                ),
-              ]),
-
-        bottomNavigationBar: Transform.translate(
-          offset: Offset(0, 100 * animation.value),
-          child: CurvedNavigationBar(
-            index: _tabController.index,
-            color: isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
-            backgroundColor: Colors.transparent,
-            animationDuration: const Duration(milliseconds: 400),
-            items: [
-              Icon(
-                Icons.home,
-                color: isLight ? Colors.black : Colors.white,
+                  Icon(Icons.local_offer_outlined,
+                      color: isLight ? Colors.black : Colors.white),
+                  Icon(Icons.person, color: isLight ? Colors.black : Colors.white),
+                  flutter_widgets.Image.asset('assets/images/map.png',
+                      width: 35.w, color: isLight ? Colors.black : Colors.white)
+                ],
+                onTap: (index) {
+                  setState(() {
+                    _page = index;
+                    _tabController.index = index;
+                  });
+                },
+                letIndexChange: (index) => true,
               ),
-              Icon(Icons.local_offer_outlined,
-                  color: isLight ? Colors.black : Colors.white),
-              Icon(Icons.person, color: isLight ? Colors.black : Colors.white),
-              flutter_widgets.Image.asset('assets/images/map.png',
-                  width: 35.w, color: isLight ? Colors.black : Colors.white)
-            ],
-            onTap: (index) {
-              setState(() {
-                _page = index;
-                _tabController.index = index;
-              });
-            },
-            letIndexChange: (index) => true,
-          ),
-        ),
-
-        floatingActionButton: Transform.translate(
-          offset: Offset(0, 200 * animation.value),
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Chatbot(),
-                  ));
-            },
-            backgroundColor: ColorApp.secondaryColor,
-            elevation: 10,
-            shape: CircleBorder(
-                side: BorderSide(width: 3.w, color: ColorApp.primaryColor)),
-            child: flutter_widgets.Image.asset("assets/images/ai.png"),
-          ),
-        ),
+            ),
+            floatingActionButton: Transform.translate(
+              offset: Offset(0, 200 * animation.value),
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Chatbot(),
+                      ));
+                },
+                backgroundColor: ColorApp.secondaryColor,
+                elevation: 10,
+                shape: CircleBorder(
+                    side: BorderSide(width: 3.w, color: ColorApp.primaryColor)),
+                child: flutter_widgets.Image.asset("assets/images/ai.png"),
+              ),
+            ),
+          );
+        }
       ),
     );
   }

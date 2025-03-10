@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/main.dart';
 import 'package:p/models/onboard_model.dart';
 import 'package:p/screens/home/views/home_view.dart';
-import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 
 class OnBoardViewBody extends StatefulWidget {
   const OnBoardViewBody({super.key});
@@ -22,7 +22,7 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 400),
-      margin:  EdgeInsets.only(right: 4.w),
+      margin: EdgeInsets.only(right: 4.w),
       width: 30.w,
       height: 5.h,
       decoration: BoxDecoration(
@@ -38,6 +38,7 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
       body: Stack(
         children: [
           PageView.builder(
+            itemCount: onboarding.length,
             onPageChanged: (value) {
               setState(() {
                 currentIndex = value;
@@ -50,18 +51,15 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
               );
             },
           ),
-
           Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 20.w),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     SizedBox(
-                        height: 40.h),
-
+                    SizedBox(height: 40.h),
                     GestureDetector(
                       onTap: () {
                         Navigator.pushAndRemoveUntil(
@@ -69,38 +67,35 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                             MaterialPageRoute(
                               builder: (_) => const HomeView(),
                             ),
-                                (route) => false);
+                            (route) => false);
                       },
                       child: Visibility(
                         visible: onboarding.length - 1 != currentIndex
                             ? true
                             : false,
                         child: Container(
-                          padding:  EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             horizontal: 15.w,
                             vertical: 7.h,
                           ),
-                        ),),),
-
-
-                     SizedBox(
-                        height: 10.h),
-
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           onboarding[currentIndex].name,
-                          style:  TextStyle(
+                          style: TextStyle(
                             fontSize: 40.sp,
                             color: Colors.white,
                             fontWeight: FontWeight.w400,
                             height: 1,
                           ),
                         ),
-                         SizedBox(
-                            height: 20.h),
-                         Text(
+                        SizedBox(height: 20.h),
+                        Text(
                           "no matter".tr(),
                           style: TextStyle(
                             fontSize: 18.sp,
@@ -115,7 +110,6 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
               ],
             ),
           ),
-
           Align(
             alignment: Alignment.bottomCenter,
             child: SizedBox(
@@ -129,36 +123,34 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                       dotIndicator,
                     ),
                   ),
-
-                   SizedBox(
-                      height: 20.h),
-
+                  SizedBox(height: 20.h),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(35.r),
                     child: Column(
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const HomeView(),
+                        currentIndex == onboarding.length - 1
+                            ? GestureDetector(
+                                onTap: () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const HomeView(),
+                                      ),
+                                      (route) => false);
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.double_arrow_rounded,
+                                      color: Colors.white,
+                                      size: 44.w,
+                                    )
+                                  ],
                                 ),
-                                    (route) => false);
-                          },
-
-                          child:  Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.double_arrow_rounded,
-                                color: Colors.white,
-                                size: 44.w,
                               )
-                            ],
-                          ),
-                        ),
+                            : SizedBox(),
                       ],
                     ),
                   ),

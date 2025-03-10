@@ -7,18 +7,24 @@ import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/models/inclusion_model.dart';
 import 'package:p/models/photo_gallery_model.dart';
+import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/payment/presentation/pages/test_form.dart';
-import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/tabs/offers/presentation/pages/company_profile.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/company_profile/views/company_profile.dart';
 import 'trip_on_map.dart';
 
-class TripDetailsViewBody extends StatelessWidget {
+class TripDetailsViewBody extends StatefulWidget {
   const TripDetailsViewBody({
     Key? key,
     required this.image,
   }) : super(key: key);
   final String image;
 
+  @override
+  State<TripDetailsViewBody> createState() => _TripDetailsViewBodyState();
+}
+
+class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
@@ -35,10 +41,10 @@ class TripDetailsViewBody extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      borderRadius:  BorderRadius.vertical(
-                          bottom: Radius.circular(20.r)),
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(20.r)),
                       image: DecorationImage(
-                        image: AssetImage(image),
+                        image: AssetImage(widget.image),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -47,6 +53,7 @@ class TripDetailsViewBody extends StatelessWidget {
                     top: 10.h,
                     left: 0.w,
                     child: FadeInUp(
+                      duration: Duration(milliseconds: 1000),
                       child: Container(
                         decoration: BoxDecoration(
                           color: isLight
@@ -84,7 +91,7 @@ class TripDetailsViewBody extends StatelessWidget {
               ),
             ),
             Container(
-              margin:  EdgeInsets.only(top: 230.h),
+              margin: EdgeInsets.only(top: 230.h),
               width: double.infinity,
               decoration: BoxDecoration(
                   color: isLight
@@ -94,13 +101,14 @@ class TripDetailsViewBody extends StatelessWidget {
                       topRight: Radius.circular(20.r),
                       topLeft: Radius.circular(20.r))),
               child: Padding(
-                padding:  EdgeInsets.only(right: 20.w, left: 20.w, top: 20.h),
+                padding: EdgeInsets.only(right: 20.w, left: 20.w, top: 20.h),
                 child: SingleChildScrollView(
-                  child: FadeInUp(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FadeInUp(
+                        duration: Duration(milliseconds: 1150),
+                        child: Row(
                           children: [
                             Text('dahab'.tr(),
                                 style: TextStyle(
@@ -118,19 +126,49 @@ class TripDetailsViewBody extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 1300),
+                        child: Row(
                           children: [
+                            Column(
+                              children: [
+                                Text(
+                                  "start date",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                Text(
+                                  "7/7/2025",
+                                  style: TextStyle(fontSize: 10),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Column(
+                              children: [
+                                Text("end date",
+                                    style: TextStyle(fontSize: 12)),
+                                Text("15/7/2025",
+                                    style: TextStyle(fontSize: 10))
+                              ],
+                            ),
+                            Spacer(),
                             Padding(
-                              padding:  EdgeInsets.only(right: 4.w),
+                              padding: EdgeInsets.only(right: 4.w),
                               child: IconButton(
                                 onPressed: () {
-                                  
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => CompanyProfile(),));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CompanyProfile(),
+                                      ));
                                 },
                                 iconSize: 20.w,
                                 icon: Icon(Ionicons.chatbubble_ellipses_outline,
-                                    color: isLight ? Colors.black : Colors.white),
+                                    color:
+                                        isLight ? Colors.black : Colors.white),
                               ),
                             ),
                             Column(
@@ -152,7 +190,13 @@ class TripDetailsViewBody extends StatelessWidget {
                             )
                           ],
                         ),
-                        Row(
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 1450),
+                        child: Row(
                           children: [
                             Icon(
                               Icons.circle,
@@ -173,23 +217,28 @@ class TripDetailsViewBody extends StatelessWidget {
                             ),
                           ],
                         ),
-                         SizedBox(
-                          height: 10.w,
-                        ),
-                        Text(
+                      ),
+                      SizedBox(
+                        height: 10.w,
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 1600),
+                        child: Text(
                           "egypt’s Hidden Gem ,Dahab is a dream come true for thrill-seekers and nature"
-                                  " enthusiasts alike. The town is world-renowned for its diving spots, "
-                                  "particularly the Blue Hole, a bucket-list destination for divers"
-                                  " drawn to its underwater caves and vibrant marine life."
-                              ,
+                          " enthusiasts alike. The town is world-renowned for its diving spots, "
+                          "particularly the Blue Hole, a bucket-list destination for divers"
+                          " drawn to its underwater caves and vibrant marine life.",
                           style: TextStyle(
                               fontSize: 13.sp,
                               color: isLight ? Colors.black : Colors.white),
                         ),
-                         SizedBox(
-                          height: 15.sp,
-                        ),
-                        Row(
+                      ),
+                      SizedBox(
+                        height: 15.sp,
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 1750),
+                        child: Row(
                           children: [
                             Icon(
                               Icons.circle,
@@ -210,10 +259,13 @@ class TripDetailsViewBody extends StatelessWidget {
                             ),
                           ],
                         ),
-                         SizedBox(
-                          height: 15.h,
-                        ),
-                        GridView.builder(
+                      ),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 1900),
+                        child: GridView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
@@ -232,11 +284,14 @@ class TripDetailsViewBody extends StatelessWidget {
                             );
                           },
                         ),
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        Padding(
-                          padding:  EdgeInsets.symmetric(vertical: 5.h),
+                      ),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 2050),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -261,9 +316,24 @@ class TripDetailsViewBody extends StatelessWidget {
                             ],
                           ),
                         ),
-                        TripOnMap(Latitude: 28.5093,
-                            Longitude: 34.5136, width: double.infinity, hight: 200.h),
-                        Row(
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 2200),
+                        child: TripOnMap(
+                            Latitude: 28.5093,
+                            Longitude: 34.5136,
+                            width: double.infinity,
+                            hight: 200.h),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 2350),
+                        child: Row(
                           children: [
                             Icon(
                               Icons.circle,
@@ -285,7 +355,10 @@ class TripDetailsViewBody extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Padding(
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 2500),
+                        child: Padding(
                           padding: EdgeInsets.only(left: 20.w, top: 4.h),
                           child: Text(
                             "why book this trip ?".tr(),
@@ -293,10 +366,13 @@ class TripDetailsViewBody extends StatelessWidget {
                                 color: isLight ? Colors.black : Colors.white),
                           ),
                         ),
-                         SizedBox(
-                          height: 7.h,
-                        ),
-                        ListView.builder(
+                      ),
+                      SizedBox(
+                        height: 7.h,
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 2650),
+                        child: ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
@@ -311,7 +387,7 @@ class TripDetailsViewBody extends StatelessWidget {
                                         : ColorApp.primaryColorDark,
                                     size: 6.w,
                                   ),
-                                   SizedBox(
+                                  SizedBox(
                                     width: 8.w,
                                   ),
                                   Expanded(
@@ -328,21 +404,34 @@ class TripDetailsViewBody extends StatelessWidget {
                           },
                           itemCount: inclusionModel.length,
                         ),
-                         SizedBox(
-                          height: 30.h,
-                        ),
-                        Center(
+                      ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 2800),
+                        child: Center(
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => RegisterScreen(),
-                                  ));
+                              setState(() {
+                                HomeViewBody.currentIndex = 2;
+                              });
+
+                              Future.delayed(
+                                Duration(milliseconds: 200),
+                                () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => HomeViewBody(),
+                                      ));
+                                },
+                              );
                             },
                             child: Text(
                               "book Trip".tr(),
-                              style: TextStyle(color: Colors.white, fontSize: 17.sp),
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 17.sp),
                             ),
                             style: ElevatedButton.styleFrom(
                               elevation: 10,
@@ -355,26 +444,32 @@ class TripDetailsViewBody extends StatelessWidget {
                             ),
                           ),
                         ),
-                         SizedBox(
-                          height: 7.h,
-                        ),
-                        Center(
+                      ),
+                      SizedBox(
+                        height: 7.h,
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 2950),
+                        child: Center(
                             child: Text(
                           "what are you waiting for ?".tr(),
                           style: TextStyle(
                               color: isLight ? Colors.black : Colors.white),
                         )),
-                        Center(
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 3100),
+                        child: Center(
                             child: Text(
                           "book your trip now.".tr(),
                           style: TextStyle(
                               color: isLight ? Colors.black : Colors.white),
                         )),
-                         SizedBox(
-                          height: 10.h,
-                        )
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      )
+                    ],
                   ),
                 ),
               ),

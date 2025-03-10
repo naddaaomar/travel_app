@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/screens/tabs/offers/presentation/pages/company_profile.dart';
+import 'package:p/screens/company_profile/views/company_profile.dart';
 
 class CompanyCard extends StatelessWidget {
   const CompanyCard({super.key});
@@ -9,9 +9,10 @@ class CompanyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 70,
-      left: 30,
+      top: 35,
+      left: (MediaQuery.of(context).size.width - 270) / 2,
       child: FadeInUp(
+        duration: Duration(milliseconds: 1000),
         child: InkWell(
           onTap: () {
             Navigator.push(
@@ -21,7 +22,7 @@ class CompanyCard extends StatelessWidget {
                 ));
           },
           child: Container(
-            width: 350,
+            width: 270,
             height: 130,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
