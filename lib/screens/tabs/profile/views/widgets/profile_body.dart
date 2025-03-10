@@ -21,7 +21,7 @@ class _ProfileBodyState extends State<ProfileBody>
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 20 ,right: 20 ,top: 96),
+          padding: const EdgeInsets.only(left: 40 ,right: 40 ,top: 96),
           child: Container(
             height: 100,
             decoration: BoxDecoration(
@@ -31,11 +31,11 @@ class _ProfileBodyState extends State<ProfileBody>
                 height: 20,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  separatorBuilder: (context, index) => SizedBox(width: 10,),
+                  separatorBuilder: (context, index) => SizedBox(width: 20,),
                   itemCount: ProfileData.length,
                   itemBuilder: (BuildContext context, int index) {
                       return Padding(
-                        padding: const EdgeInsets.only( left: 10, bottom: 4,),
+                        padding: const EdgeInsets.only( left: 20, bottom: 4,),
                         child: InkWell(
                           onTap: (){
                             setState(() {
@@ -87,8 +87,6 @@ class _ProfileBodyState extends State<ProfileBody>
       case 2:
         return const Center(
             child: NoPreviousTrips());
-      case 3:
-        return const Center(child: Text("Payment Content"));
       default:
         return Container(); // Default case
     }
@@ -108,7 +106,6 @@ List ProfileData = [
   ProfileModel(name: "Profile", icon: Icons.person),
   ProfileModel(name: "favorite", icon: Icons.favorite),
   ProfileModel(name: "Previous Trips", icon: Icons.business_center_rounded),
-  ProfileModel(name: "Payment", icon: Icons.monetization_on_outlined),
 ];
 
 

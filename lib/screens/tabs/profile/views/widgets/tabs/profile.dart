@@ -90,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   'Edit Profile',
                   style: TextStyle(
                     color: ColorApp.primaryColor,
-                    fontWeight: FontWeight.w600
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
