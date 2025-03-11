@@ -25,14 +25,14 @@ class CustomTabBar extends StatelessWidget {
             indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 gradient: LinearGradient(
-                    colors: [ColorApp.primaryColor, Color(0xffE2A093)])),
+                    colors: const [ColorApp.primaryColor, Color(0xffE2A093)])),
             tabs: [
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
-                          gradient: LinearGradient(colors: [
+                          gradient: LinearGradient(colors: const [
                         ColorApp.primaryColor,
                         Color(0xffE2A093)
                       ]))),
@@ -42,7 +42,7 @@ class CustomTabBar extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
-                          gradient: LinearGradient(colors: [
+                          gradient: LinearGradient(colors: const [
                         ColorApp.primaryColor,
                         Color(0xffE2A093)
                       ]))),
@@ -52,7 +52,7 @@ class CustomTabBar extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
-                          gradient: LinearGradient(colors: [
+                          gradient: LinearGradient(colors: const [
                         ColorApp.primaryColor,
                         Color(0xffE2A093)
                       ]))),
@@ -62,7 +62,7 @@ class CustomTabBar extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
-                          gradient: LinearGradient(colors: [
+                          gradient: LinearGradient(colors: const [
                         ColorApp.primaryColor,
                         Color(0xffE2A093)
                       ]))),
@@ -72,7 +72,7 @@ class CustomTabBar extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
-                          gradient: LinearGradient(colors: [
+                          gradient: LinearGradient(colors: const [
                         ColorApp.primaryColor,
                         Color(0xffE2A093)
                       ]))),
@@ -82,7 +82,7 @@ class CustomTabBar extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
-                          gradient: LinearGradient(colors: [
+                          gradient: LinearGradient(colors: const [
                         ColorApp.primaryColor,
                         Color(0xffE2A093)
                       ]))),
@@ -92,7 +92,7 @@ class CustomTabBar extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
-                          gradient: LinearGradient(colors: [
+                          gradient: LinearGradient(colors: const [
                         ColorApp.primaryColor,
                         Color(0xffE2A093)
                       ]))),

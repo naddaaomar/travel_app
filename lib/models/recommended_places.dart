@@ -3,11 +3,11 @@ import 'package:p/main.dart';
 
 class RecommendedPlaceModel {
   final String image;
-  final double rating;
+  final String date;
   final String location;
   RecommendedPlaceModel({
     required this.image,
-    required this.rating,
+    required this.date,
     required this.location,
   });
 }
@@ -15,23 +15,23 @@ class RecommendedPlaceModel {
 
 List<RecommendedPlaceModel> recommendedPlaces = [
 RecommendedPlaceModel(
-  image: 'assets/images/onboard3.png',
-  rating: 4.4,
-  location: 'taba'.tr(),
+  image: 'assets/images/onboard.png',
+  date: '7/7/2025',
+  location: 'event'.tr(),
  ),
   RecommendedPlaceModel(
-    image: 'assets/images/onboard3.png',
-    rating: 4.4,
-    location: 'taba'.tr(),
+    image: 'assets/images/onboard.png',
+    date: '7/7/2025',
+    location: 'event'.tr(),
   ),
   RecommendedPlaceModel(
-    image: 'assets/images/onboard3.png',
-    rating: 4.4,
-    location: 'taba'.tr(),
+    image: 'assets/images/onboard.png',
+    date: '7/7/2025',
+    location: 'event'.tr(),
   ),
   RecommendedPlaceModel(
-    image: 'assets/images/onboard3.png',
-    rating: 4.4,
-    location: 'taba'.tr(),
+    image: 'assets/images/onboard.png',
+    date: '7/7/2025',
+    location: 'event'.tr(),
   ),
 ];

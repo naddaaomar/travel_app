@@ -6,22 +6,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/main.dart';
-import 'package:p/screens/chatbot/chatbot.dart';
 import 'package:p/screens/home/views/widgets/drawer/menu.dart';
 import 'package:p/screens/home/views/widgets/drawer/menu_btn.dart';
 import 'package:p/screens/home/views/widgets/drawer/side_bar.dart';
-import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/home/home_tab.dart';
 import 'package:p/screens/tabs/map/views/map_view.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
-import 'package:p/screens/tabs/tab3/views/tab3_view.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/widgets.dart' as flutter_widgets;
 import 'package:rive/rive.dart' as rive;
 
+import '../../../chatbot/views/chatbot.dart';
+import '../../../tabs/profile/views/widgets/tab_bar.dart';
+
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
+
+  static int currentIndex = 0;
 
   @override
   State<HomeViewBody> createState() => _HomeViewBodyState();
@@ -33,7 +36,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
   List<Widget> tabs = [
     HomeTab(),
     OffersScreen(),
-    Tab3(),
+    TabBarPage(),
     MapView(),
   ];
   bool isSideBarOpen = false;
@@ -90,7 +93,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
                       curve: Curves.fastOutSlowIn,
                       right: isSideBarOpen ? 0 : -288.w,
                       top: 0,
-                      child: const SideBar(),
+                      child:  SideBar(onTap: () { },),
                     ),
                     Transform(
                       alignment: Alignment.center,

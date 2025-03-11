@@ -3,16 +3,13 @@ import 'package:auto_animated/auto_animated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:p/helpers/app_bar/app_bar_widget.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/main.dart';
-import 'package:p/screens/home/views/widgets/nearby_places.dart';
-import 'package:p/screens/settings/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/companies.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/company_card.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/offer_card.dart';
-import 'package:p/screens/trip_details/trip_details_view.dart';
 import 'package:p/screens/trip_details/views/widgets/trip_details_view_body.dart';
 
 import '../../../../../models/nearby_places.dart';

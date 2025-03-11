@@ -3,24 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/models/nearby_places.dart';
+import 'package:p/models/recommended_places.dart';
+import 'package:p/screens/event_details/views/widgets/event_details_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/trip_details/views/widgets/trip_details_view_body.dart';
 
-class NearbyPlaces extends StatelessWidget {
-  const NearbyPlaces({Key? key}) : super(key: key);
+class ViewAllEventsBody extends StatelessWidget {
+  const ViewAllEventsBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return MaterialButton(
       onPressed: () {
-
       },
       child: Column(
-        children: List.generate(nearbyPlaces.length, (index) {
+        children: List.generate(recommendedPlaces.length, (index) {
           return Padding(
-            padding:  EdgeInsets.only(bottom:6.h),
+            padding:  EdgeInsets.only(bottom:18.h),
             child: SizedBox(
               height: 140.h,
               width: double.maxFinite,
@@ -39,8 +38,7 @@ class NearbyPlaces extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TripDetailsViewBody(
-                            image: nearbyPlaces[index].image,
+                          builder: (context) => EventDetailsViewBody(image: '',
                           ),
                         ));
                   },
@@ -51,7 +49,7 @@ class NearbyPlaces extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12.r),
                           child: Image.asset(
-                            nearbyPlaces[index].image,
+                            recommendedPlaces[index].image,
                             height: double.maxFinite,
                             width: 130.w,
                             fit: BoxFit.cover,
@@ -63,17 +61,17 @@ class NearbyPlaces extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                               Text(
+                              Text(
                                 'place'.tr(),
                                 style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: isLight?Colors.black:Colors.white
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: isLight?Colors.black:Colors.white
                                 ),
                               ),
-                               Text('company'.tr(),
-                                 style: TextStyle(
-                                     color: isLight?Colors.black:Colors.white),),
+                              Text('company'.tr(),
+                                style: TextStyle(
+                                    color: isLight?Colors.black:Colors.white),),
                               const Spacer(),
 
                               Row(
@@ -83,11 +81,11 @@ class NearbyPlaces extends StatelessWidget {
                                     color: Colors.yellow.shade700,
                                     size: 14.w,
                                   ),
-                                   Text(
+                                  Text(
                                     'rate'.tr(),
                                     style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: isLight?Colors.black:Colors.white
+                                        fontSize: 12.sp,
+                                        color: isLight?Colors.black:Colors.white
                                     ),
                                   ),
 

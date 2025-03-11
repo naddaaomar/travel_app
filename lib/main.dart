@@ -7,6 +7,7 @@ import 'package:p/di.dart';
 import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
+import 'package:p/screens/home/views/home_view.dart';
 import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'screens/splash_screen/view/splash.dart';
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
                   darkTheme: MyThemeData.darkTheme,
                   themeMode: themeMode,
                   debugShowCheckedModeBanner: false,
-                  home: SplashScreen(),
+                  home: HomeView(),
                 ),
               ),
             );

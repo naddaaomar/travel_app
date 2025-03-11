@@ -8,7 +8,6 @@ import 'package:p/helpers/themes/colors.dart';
 import 'package:p/models/inclusion_model.dart';
 import 'package:p/models/photo_gallery_model.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
-import 'package:p/screens/payment/presentation/pages/test_form.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/company_profile/views/company_profile.dart';
 import 'trip_on_map.dart';
@@ -132,7 +131,7 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                         child: Row(
                           children: [
                             Column(
-                              children: [
+                              children: const [
                                 Text(
                                   "start date",
                                   style: TextStyle(fontSize: 12),
@@ -147,7 +146,7 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                               width: 15,
                             ),
                             Column(
-                              children: [
+                              children: const [
                                 Text("end date",
                                     style: TextStyle(fontSize: 12)),
                                 Text("15/7/2025",
