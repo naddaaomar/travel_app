@@ -34,4 +34,19 @@ RecommendedPlaceModel(
     date: '7/7/2025',
     location: 'event'.tr(),
   ),
+  RecommendedPlaceModel(
+    image: 'assets/images/onboard.png',
+    date: '7/7/2025',
+    location: 'event'.tr(),
+  ),
+  RecommendedPlaceModel(
+    image: 'assets/images/onboard.png',
+    date: '7/7/2025',
+    location: 'event'.tr(),
+  ),
+  RecommendedPlaceModel(
+    image: 'assets/images/onboard.png',
+    date: '7/7/2025',
+    location: 'event'.tr(),
+  ),
 ];

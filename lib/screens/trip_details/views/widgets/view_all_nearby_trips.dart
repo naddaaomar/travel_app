@@ -16,8 +16,16 @@ class ViewAllTrips extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 100,
         backgroundColor: Colors.transparent,
-        leading: Icon(Icons.arrow_back_ios_new,
-          color: Colors.white,),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+            size: 30.w,
+          ),
+        ),
         title: Center(
           child: Text('Nearby Trips',
             style: TextStyle(
