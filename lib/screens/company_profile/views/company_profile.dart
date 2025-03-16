@@ -152,7 +152,7 @@ class _CompanyProfileState extends State<CompanyProfile>
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: SingleChildScrollView(
-              controller: _scrollController, // Attach the ScrollController
+              controller: _scrollController,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
