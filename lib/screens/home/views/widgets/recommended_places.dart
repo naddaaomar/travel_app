@@ -6,9 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/main.dart';
+import 'package:p/screens/event_details/views/widgets/event_details_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import '../../../../models/recommended_places.dart';
-import '../../../trip_details/views/widgets/trip_details_view_body.dart';
 import 'dart:ui' as ui;
 //bool isDarkTest = true;
 
@@ -49,7 +49,7 @@ class RecommendedPlaces extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => TripDetailsViewBody(
+                                builder: (context) => EventDetailsViewBody(
                                   image: index.image,
                                 ),
                               ));
@@ -74,7 +74,7 @@ class RecommendedPlaces extends StatelessWidget {
                                     Padding(
                                       padding: EdgeInsets.only(left: 5.w),
                                       child: Text(
-                                        'place'.tr(),
+                                        'Event'.tr(),
                                         style: TextStyle(
                                             fontSize: 15.sp,
                                             fontWeight: FontWeight.bold,
@@ -85,12 +85,12 @@ class RecommendedPlaces extends StatelessWidget {
                                     ),
                                     const Spacer(),
                                     Icon(
-                                      Icons.star,
-                                      color: Colors.yellow.shade700,
+                                      Icons.date_range_rounded,
+                                      color: ColorApp.primaryColor,
                                       size: 14.w,
                                     ),
                                     Text(
-                                      'rate'.tr(),
+                                      'date'.tr(),
                                       style: TextStyle(
                                           fontSize: 12.sp,
                                           color: isLight
@@ -142,3 +142,4 @@ class RecommendedPlaces extends StatelessWidget {
     );
   }
 }
+
