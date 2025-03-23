@@ -37,14 +37,22 @@ class _HomeViewBodyState extends State<HomeViewBody>
     super.initState();
 
     _advancedDrawerController.addListener(() {
-      if (!_advancedDrawerController.value.visible) {
+      if (_advancedDrawerController.value.visible) {
+        FocusScope.of(context).unfocus(); // Close the keyboard when the drawer opens
+      } else {
         Future.delayed(
           Duration(milliseconds: 200),
-          () => setState(() {}),
+              () => setState(() {}),
         );
       }
     });
+
+    // Close keyboard on hot restart
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).unfocus();
+    });
   }
+
 
   final _advancedDrawerController = AdvancedDrawerController();
 
@@ -76,6 +84,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
       },
       child: SafeArea(
         child: AdvancedDrawer(
+
           backdrop: Container(
             width: double.infinity,
             height: double.infinity,
@@ -103,6 +112,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
             controller: _advancedDrawerController,
           ),
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             key: ValueKey(context.locale),
             extendBody: true,
             appBar: AppBar(
@@ -113,30 +123,29 @@ class _HomeViewBodyState extends State<HomeViewBody>
               leadingWidth: double.infinity,
             ),
             body: tabs[HomeViewBody.currentIndex],
-            bottomNavigationBar: Container(
-              height: 60,
-              child: CurvedNavigationBar(
-                index: HomeViewBody.currentIndex,
-                color:
-                    isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
-                backgroundColor: Colors.transparent,
-                animationDuration: const Duration(milliseconds: 400),
-                items: [
-                  Icon(Icons.home,
-                      color: isLight ? Colors.black : Colors.white),
-                  Icon(Icons.local_offer_outlined,
-                      color: isLight ? Colors.black : Colors.white),
-                  Icon(Icons.person,
-                      color: isLight ? Colors.black : Colors.white),
-                  Image.asset('assets/images/map.png',
-                      width: 35.w, color: isLight ? Colors.black : Colors.white)
-                ],
-                onTap: (index) {
-                  setState(() {
-                    HomeViewBody.currentIndex = index;
-                  });
-                },
-              ),
+            bottomNavigationBar: CurvedNavigationBar(
+
+
+              index: HomeViewBody.currentIndex,
+              color:
+                  isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
+              backgroundColor: Colors.transparent,
+              animationDuration: const Duration(milliseconds: 400),
+              items: [
+                Icon(Icons.home,
+                    color: isLight ? Colors.black : Colors.white),
+                Icon(Icons.local_offer_outlined,
+                    color: isLight ? Colors.black : Colors.white),
+                Icon(Icons.person,
+                    color: isLight ? Colors.black : Colors.white),
+                Image.asset('assets/images/map.png',
+                    width: 35.w, color: isLight ? Colors.black : Colors.white)
+              ],
+              onTap: (index) {
+                setState(() {
+                  HomeViewBody.currentIndex = index;
+                });
+              },
             ),
           ),
         ),
