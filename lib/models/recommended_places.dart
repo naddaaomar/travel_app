@@ -3,11 +3,11 @@ import 'package:p/main.dart';
 
 class RecommendedPlaceModel {
   final String image;
-  final String date;
+  final double rating;
   final String location;
   RecommendedPlaceModel({
     required this.image,
-    required this.date,
+    required this.rating,
     required this.location,
   });
 }
@@ -15,38 +15,23 @@ class RecommendedPlaceModel {
 
 List<RecommendedPlaceModel> recommendedPlaces = [
 RecommendedPlaceModel(
-  image: 'assets/images/onboard.png',
-  date: '7/7/2025',
-  location: 'event'.tr(),
+  image: 'assets/images/onboard3.png',
+  rating: 4.4,
+  location: 'taba'.tr(),
  ),
   RecommendedPlaceModel(
-    image: 'assets/images/onboard.png',
-    date: '7/7/2025',
-    location: 'event'.tr(),
+    image: 'assets/images/onboard3.png',
+    rating: 4.4,
+    location: 'taba'.tr(),
   ),
   RecommendedPlaceModel(
-    image: 'assets/images/onboard.png',
-    date: '7/7/2025',
-    location: 'event'.tr(),
+    image: 'assets/images/onboard3.png',
+    rating: 4.4,
+    location: 'taba'.tr(),
   ),
   RecommendedPlaceModel(
-    image: 'assets/images/onboard.png',
-    date: '7/7/2025',
-    location: 'event'.tr(),
-  ),
-  RecommendedPlaceModel(
-    image: 'assets/images/onboard.png',
-    date: '7/7/2025',
-    location: 'event'.tr(),
-  ),
-  RecommendedPlaceModel(
-    image: 'assets/images/onboard.png',
-    date: '7/7/2025',
-    location: 'event'.tr(),
-  ),
-  RecommendedPlaceModel(
-    image: 'assets/images/onboard.png',
-    date: '7/7/2025',
-    location: 'event'.tr(),
+    image: 'assets/images/onboard3.png',
+    rating: 4.4,
+    location: 'taba'.tr(),
   ),
 ];
