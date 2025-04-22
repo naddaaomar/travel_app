@@ -1,8 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/drawer/new_drawer.dart';
@@ -36,6 +38,18 @@ class _HomeViewBodyState extends State<HomeViewBody>
   void initState() {
     super.initState();
 
+
+    focusNode.addListener(() {
+     setState(() {
+       isFieldFocused.value = focusNode.hasFocus;
+     });
+    });
+    // Listen to keyboard visibility changes
+    KeyboardVisibilityController().onChange.listen((bool isVisible) {
+      setState(() {
+        _isKeyboardVisible = isVisible;
+      });
+    });
     _advancedDrawerController.addListener(() {
       if (_advancedDrawerController.value.visible) {
         FocusScope.of(context).unfocus(); // Close the keyboard when the drawer opens
@@ -53,8 +67,11 @@ class _HomeViewBodyState extends State<HomeViewBody>
     });
   }
 
+  final ValueNotifier<bool> isFieldFocused = ValueNotifier(false);
+  FocusNode focusNode = FocusNode();
 
   final _advancedDrawerController = AdvancedDrawerController();
+  bool _isKeyboardVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +101,6 @@ class _HomeViewBodyState extends State<HomeViewBody>
       },
       child: SafeArea(
         child: AdvancedDrawer(
-
           backdrop: Container(
             width: double.infinity,
             height: double.infinity,
@@ -111,45 +127,83 @@ class _HomeViewBodyState extends State<HomeViewBody>
           drawer: NewDrawer(
             controller: _advancedDrawerController,
           ),
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            key: ValueKey(context.locale),
-            extendBody: true,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              leading: MainRow(
-                controller: _advancedDrawerController,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              key: ValueKey(context.locale),
+              extendBody: true,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                leading: MainRow(
+                  controller: _advancedDrawerController,
+                ),
+                leadingWidth: double.infinity,
               ),
-              leadingWidth: double.infinity,
-            ),
-            body: tabs[HomeViewBody.currentIndex],
-            bottomNavigationBar: CurvedNavigationBar(
+              body: LayoutBuilder(
+                builder: (context, constraints) {
+                  return SizedBox(
+                    height: constraints.maxHeight, // Ensure it takes full height
+                    child: Stack(
+                      children: [
+                        tabs[HomeViewBody.currentIndex],
+                        ValueListenableBuilder<bool>(
+                          valueListenable: isFieldFocused,
+                          builder: (context, isFocused, child) {
+                            return isFocused
+                                ? Positioned.fill(
+                              child: GestureDetector(
+                                onTap: () {
+                                  FocusScope.of(context).unfocus(); // Close keyboard when tapping the background
+                                },
+                                child: Container(
+                                  color: Colors.white.withOpacity(0.6),
+                                ),
+                              ),
+                            )
+                                : SizedBox.shrink();
+                          },
+                        ),
+
+                      ],
+                    ),
+                  );
+                },
+              ),
 
 
-              index: HomeViewBody.currentIndex,
-              color:
-                  isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
-              backgroundColor: Colors.transparent,
-              animationDuration: const Duration(milliseconds: 400),
-              items: [
-                Icon(Icons.home,
-                    color: isLight ? Colors.black : Colors.white),
-                Icon(Icons.local_offer_outlined,
-                    color: isLight ? Colors.black : Colors.white),
-                Icon(Icons.person,
-                    color: isLight ? Colors.black : Colors.white),
-                Image.asset('assets/images/map.png',
-                    width: 35.w, color: isLight ? Colors.black : Colors.white)
-              ],
-              onTap: (index) {
-                setState(() {
-                  HomeViewBody.currentIndex = index;
-                });
-              },
+
+                bottomNavigationBar: _isKeyboardVisible
+                  ? SizedBox.shrink() // Hide navigation bar when keyboard is visible
+                  : CurvedNavigationBar(
+                index: HomeViewBody.currentIndex,
+                color: isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
+                backgroundColor: Colors.transparent,
+                animationDuration: const Duration(milliseconds: 400),
+                items: [
+                  Icon(Icons.home, color: isLight ? Colors.black : Colors.white),
+                  Icon(Icons.local_offer_outlined, color: isLight ? Colors.black : Colors.white),
+                  Icon(Icons.person, color: isLight ? Colors.black : Colors.white),
+                  Image.asset(
+                    'assets/images/map.png',
+                    width: 35.w,
+                    color: isLight ? Colors.black : Colors.white,
+                  ),
+                ],
+                onTap: (index) {
+                  setState(() {
+                    HomeViewBody.currentIndex = index;
+                  });
+                },
+              ),
             ),
           ),
         ),
       ),
     );
   }
+
 }

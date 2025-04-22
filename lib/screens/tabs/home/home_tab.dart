@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/main.dart';
 import 'package:p/screens/event_details/views/widgets/view_all_recommended_events.dart';
-import 'package:p/screens/home/views/widgets/location_card.dart';
 import 'package:p/screens/home/views/widgets/search/location_card_new.dart';
-import 'package:p/screens/home/views/widgets/main_row.dart';
 import 'package:p/screens/home/views/widgets/nearby_places.dart';
 import 'package:p/screens/home/views/widgets/recommended_places.dart';
 import 'dart:ui' as ui;
@@ -27,11 +24,10 @@ class HomeTab extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
         child: SingleChildScrollView(
           child: Column(
-          
             children: [
               LocationCardNew(),
               SizedBox(
-                height: 40,
+                height: 20,
               ),
               // LocationCard(),
               // SizedBox(height: 40.h),
@@ -41,14 +37,17 @@ class HomeTab extends StatelessWidget {
                   Text(
                     'Recommended Events'.tr(),
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22.sp,
+                        fontFamily: "vol",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 17.sp,
                         color: isLight ? Colors.black : Colors.white),
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => ViewAllEvents()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewAllEvents()));
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.black,
@@ -56,6 +55,8 @@ class HomeTab extends StatelessWidget {
                     child: Text(
                       'view All'.tr(),
                       style: TextStyle(
+                          fontFamily: "vol",
+                          fontSize: 13.sp,
                           color: isLight ? ColorApp.thirdColor : Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
@@ -71,14 +72,17 @@ class HomeTab extends StatelessWidget {
                   Text(
                     'Nearby'.tr(),
                     style: TextStyle(
+                        fontFamily: "vol",
                         fontWeight: FontWeight.bold,
-                        fontSize: 22.sp,
+                        fontSize: 17.sp,
                         color: isLight ? Colors.black : Colors.white),
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => ViewAllTrips()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewAllTrips()));
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.black,
@@ -86,6 +90,8 @@ class HomeTab extends StatelessWidget {
                     child: Text(
                       'view All'.tr(),
                       style: TextStyle(
+                          fontFamily: "vol",
+                          fontSize: 13.sp,
                           color: isLight ? ColorApp.thirdColor : Colors.white,
                           fontWeight: FontWeight.bold),
                     ),

@@ -7,6 +7,8 @@ import 'package:p/di.dart';
 import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
+import 'package:p/screens/onboard/views/widgets/onboard_view_body.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'screens/splash_screen/view/splash.dart';
@@ -16,6 +18,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   ApiManager.init();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  bool isFirstTime = prefs.getBool('onboarding_seen') ?? false;
   Bloc.observer = MyBlocObserver();
   configureDependencies();
 
@@ -31,14 +36,15 @@ void main() async {
           ),
           BlocProvider(create: (context) => LocaleBloc()),
         ],
-        child: MyApp(),
+        child: MyApp(isFirstTime: isFirstTime),
       )));
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  final bool isFirstTime;
+  MyApp({super.key,required this.isFirstTime});
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LocaleBloc, Locale>(
@@ -64,7 +70,7 @@ class MyApp extends StatelessWidget {
                   darkTheme: MyThemeData.darkTheme,
                   themeMode: themeMode,
                   debugShowCheckedModeBanner: false,
-                  home: SplashScreen(),
+                  home: isFirstTime ? SplashScreen() : OnBoardViewBody(),
                 ),
               ),
             );

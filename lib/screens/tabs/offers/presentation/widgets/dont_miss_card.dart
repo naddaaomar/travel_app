@@ -16,9 +16,9 @@ class DontMissCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 3,
+            spreadRadius: 5,
             blurRadius: 7,
-            offset: const Offset(0, 3),
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -51,8 +51,9 @@ class DontMissCard extends StatelessWidget {
                         Text(
                           dontMissModel.place,
                           style: const TextStyle(
+                            fontFamily: "pop",
                             color: Colors.black,
-                            fontSize: 15,
+                            fontSize: 13,
                           ),
                         ),
                       ],
@@ -62,14 +63,15 @@ class DontMissCard extends StatelessWidget {
                         Text(
                           dontMissModel.offer,
                           style: TextStyle(
+                            fontFamily: "pop",
                             color: ColorApp.primaryColor,
-                            fontSize: 15,
+                            fontSize: 13,
                           ),
                         ),
                         SizedBox(width: 4),
                         Text(
                           "🔥",
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 12,),
                         )
                       ],
                     ),
@@ -80,7 +82,9 @@ class DontMissCard extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 23),
                   child: Text(
                     dontMissModel.comName,
-                    style: TextStyle(color: Colors.black.withOpacity(.6)),
+                    style: TextStyle(color: Colors.black.withOpacity(.6),
+                    fontFamily: "pop",
+                    fontSize: 13),
                   ),
                 ),
               ],

@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/main.dart';
 import 'package:p/models/onboard_model.dart';
 import 'package:p/screens/home/views/home_view.dart';
+import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoardViewBody extends StatefulWidget {
   const OnBoardViewBody({super.key});
@@ -38,17 +40,45 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
       body: Stack(
         children: [
           PageView.builder(
-            itemCount: onboarding.length,
-            onPageChanged: (value) {
+            itemCount: onboarding.length + 1, // Add one extra dummy page
+            onPageChanged: (value) async {
+              if(value == onboarding.length){
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setBool('onboarding_seen', true);
+
+              }
+              else {
+                setState(() {
+                  currentIndex = value;
+                });
+              }
+              // if (value == onboarding.length) { // If user reaches the extra page
+              //   SharedPreferences prefs = await SharedPreferences.getInstance();
+              //   await prefs.setBool('onboarding_seen', true);
+              //
+              //   Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(builder: (_) => const HomeView()),
+              //         (route) => false,
+              //   );
+              // } else {
+              //   setState(() {
+              //     currentIndex = value;
+              //   });
+              // }
               setState(() {
                 currentIndex = value;
               });
             },
             itemBuilder: (context, index) {
-              return Image.asset(
-                onboarding[index].image,
-                fit: BoxFit.cover,
-              );
+              if (index == onboarding.length) {
+                return HomeViewBody();
+              } else {
+                return Image.asset(
+                  onboarding[index].image,
+                  fit: BoxFit.cover,
+                );
+              }
             },
           ),
           Padding(
@@ -86,7 +116,7 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          onboarding[currentIndex].name,
+                          currentIndex < onboarding.length ? onboarding[currentIndex].name : "",
                           style: TextStyle(
                             fontSize: 40.sp,
                             color: Colors.white,
@@ -96,7 +126,7 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                         ),
                         SizedBox(height: 20.h),
                         Text(
-                          "no matter".tr(),
+                            currentIndex < onboarding.length?"no matter".tr():"",
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w500,
@@ -116,13 +146,14 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
               height: 200.h,
               child: Column(
                 children: [
+                  currentIndex < onboarding.length?
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
                       onboarding.length,
                       dotIndicator,
                     ),
-                  ),
+                  ):SizedBox(),
                   SizedBox(height: 20.h),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(35.r),
@@ -130,7 +161,11 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                       children: [
                         currentIndex == onboarding.length - 1
                             ? GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  await prefs.setBool('onboarding_seen', true);
+
                                   Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(

@@ -25,6 +25,14 @@ class CompanyCard extends StatelessWidget {
             width: 270,
             height: 130,
             decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.8),
+                  blurRadius: 6,
+                  spreadRadius: 3,
+                  offset: Offset(0, 3),
+                ),
+              ],
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
                   image: AssetImage(
@@ -40,7 +48,10 @@ class CompanyCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                        color: ColorApp.primaryColor,
+                       // color: Color(0xffC4543D),
+                      gradient: LinearGradient(colors: [Color(0xffD56D58,),Color(0xff934D3F)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,),
                         borderRadius: BorderRadius.circular(10)),
                     child: Text(
                       "Check out company",
@@ -54,14 +65,17 @@ class CompanyCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                        color: ColorApp.primaryColor,
+                      //  color: Color(0xffC4543D),
+                        gradient: LinearGradient(colors: [Color(0xffD56D58,),Color(0xff934D3F)],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,),
                         borderRadius: BorderRadius.circular(10)),
                     child: Text(
                       "Terhal",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: 17,
                           decoration: TextDecoration.underline,
                           decorationColor: Colors.white),
                     ),

@@ -10,43 +10,43 @@ class CompanyModel {
   static List<CompanyModel> Companies() {
     return [
       CompanyModel(
-        label: "Cam 1",
+        label: "Com 1",
         imagePath: "assets/images/dahab1.jpg",
       ),
       CompanyModel(
-        label: "Cam 2",
+        label: "Com 2",
         imagePath: "assets/images/dahab2.jpg",
       ),
       CompanyModel(
-        label: "Cam 3",
+        label: "Com 3",
         imagePath: "assets/images/dahab3.jpg",
       ),
       CompanyModel(
-        label: "Cam 4",
+        label: "Com 4",
         imagePath: "assets/images/dahab4.jpg",
       ),
       CompanyModel(
-        label: "Cam 5",
+        label: "Com 5",
         imagePath: "assets/images/dahab5.jpg",
       ),
       CompanyModel(
-        label: "Cam 6",
+        label: "Com 6",
         imagePath: "assets/images/dahab6.jpg",
       ),
       CompanyModel(
-        label: "Cam 7",
+        label: "Com 7",
         imagePath: "assets/images/dahab1.jpg",
       ),
       CompanyModel(
-        label: "Cam 8",
+        label: "Com 8",
         imagePath: "assets/images/dahab2.jpg",
       ),
       CompanyModel(
-        label: "Cam 9",
+        label: "Com 9",
         imagePath: "assets/images/dahab3.jpg",
       ),
       CompanyModel(
-        label: "Cam 10",
+        label: "Com 10",
         imagePath: "assets/images/dahab4.jpg",
       )
     ];
