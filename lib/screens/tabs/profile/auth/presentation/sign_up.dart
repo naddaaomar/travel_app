@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:p/screens/tabs/profile/auth/presentation/sign_in.dart';
 import '../../pages/main_profile.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -194,7 +193,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                               duration: const Duration(milliseconds: 1600),
                                               child: MaterialButton(
                                                 onPressed: () {Navigator.push(context,
-                                                  MaterialPageRoute(builder: (context) => SignInPage ()),);
+                                                  MaterialPageRoute(builder: (context) => MainProfile()),);
                                                   },
                                                 height: 50,
                                                 color: const Color(0xFFB43E26),
