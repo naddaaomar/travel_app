@@ -10,7 +10,7 @@ class PersonTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top:40),
+        padding: const EdgeInsets.only(top:80),
         child: Container(
           height: double.infinity,
           width: double.infinity,
@@ -19,12 +19,12 @@ class PersonTab extends StatelessWidget {
               children: [
                 Text('Get Started ',
                   style: TextStyle(
-                     color: Color(0xFFB43E26),
+                     color: Colors.black,
                      fontSize: 30,
                      fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 140,),
+                SizedBox(height: 100,),
                 GestureDetector(
                   onTap: (){
                     Navigator.push(context,
@@ -48,7 +48,7 @@ class PersonTab extends StatelessWidget {
                   ),
                 ),
               ),
-            SizedBox(height: 4,),
+            SizedBox(height: 10,),
             GestureDetector(
               onTap: (){
                 Navigator.push(context,
@@ -81,7 +81,7 @@ class PersonTab extends StatelessWidget {
                         color: Colors.black
                     ),),
                 ),
-          SizedBox(height: 16,),
+          SizedBox(height: 6,),
           GestureDetector(
             onTap: (){},
             child: Container(
