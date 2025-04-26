@@ -45,7 +45,7 @@ class ActivitiesBottomSheet extends StatelessWidget {
               txt2: "Optional boat ride",
               txt3: "Farewell dinner",
             ),
-            
+
           ],
         ),
       ),
@@ -54,49 +54,49 @@ class ActivitiesBottomSheet extends StatelessWidget {
 }
 
 class Details extends StatelessWidget {
-   Details({super.key,required this.day,required this.txt1,required this.txt2, required this.txt3});
+  Details({super.key,required this.day,required this.txt1,required this.txt2, required this.txt3});
   String day;
   String txt1;
   String txt2;
   String txt3;
 
-   @override
-   Widget build(BuildContext context) {
-     return IntrinsicHeight(
-       child: Row(
-         crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
-           Container(
-             width: 2,
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 2,
 
-             decoration: BoxDecoration(
-               color: ColorApp.primaryColor,
-               borderRadius: BorderRadius.circular(40),
-             ),
-           ),
-           SizedBox(width: 10),
-           Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Text(
-                 day,
-                 style: TextStyle(fontFamily: "pop", fontWeight: FontWeight.w600),
-               ),
-               SizedBox(height: 10),
-               ActivityRow(txt: txt1),
-               ActivityRow(txt: txt2),
-               ActivityRow(txt: txt3),
-             ],
-           ),
-         ],
-       ),
-     );
-   }
+            decoration: BoxDecoration(
+              color: ColorApp.primaryColor,
+              borderRadius: BorderRadius.circular(40),
+            ),
+          ),
+          SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                day,
+                style: TextStyle(fontFamily: "pop", fontWeight: FontWeight.w600),
+              ),
+              SizedBox(height: 10),
+              ActivityRow(txt: txt1),
+              ActivityRow(txt: txt2),
+              ActivityRow(txt: txt3),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
 }
 
 class ActivityRow extends StatelessWidget {
-   ActivityRow({super.key, required this.txt});
+  ActivityRow({super.key, required this.txt});
   String txt;
 
   @override
@@ -110,11 +110,11 @@ class ActivityRow extends StatelessWidget {
         ),
         SizedBox(width: 10,),
         Text(txt,style:
-          TextStyle(fontFamily: "pop",
+        TextStyle(fontFamily: "pop",
           fontSize: 12,
-          ),
+        ),
         )
-        
+
       ],
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:p/screens/tabs/profile/pages/sign_in.dart';
+import 'package:p/screens/tabs/profile/auth/presentation/sign_in.dart';
 
 class NewPassword extends StatelessWidget {
   const NewPassword({super.key});

@@ -16,7 +16,7 @@ class ViewAllNearbyBody extends StatelessWidget {
     return MaterialButton(
       onPressed: () {
       },
-      child: Column(
+      child: ListView(
         children: List.generate(nearbyPlaces.length, (index) {
           return Padding(
             padding:  EdgeInsets.only(bottom:18.h),

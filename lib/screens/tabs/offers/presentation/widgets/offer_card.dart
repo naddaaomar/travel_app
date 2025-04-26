@@ -137,7 +137,7 @@ class OfferCard extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               gradient: LinearGradient(
-                                colors: [
+                                colors: const [
                                   Color(0xffE2A093),
                                   ColorApp.primaryColor
                                 ],

@@ -83,8 +83,8 @@ class DontMissCard extends StatelessWidget {
                   child: Text(
                     dontMissModel.comName,
                     style: TextStyle(color: Colors.black.withOpacity(.6),
-                    fontFamily: "pop",
-                    fontSize: 13),
+                        fontFamily: "pop",
+                        fontSize: 13),
                   ),
                 ),
               ],

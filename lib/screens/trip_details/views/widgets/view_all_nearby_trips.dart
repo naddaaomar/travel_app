@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,13 +32,15 @@ class ViewAllTrips extends StatelessWidget {
             style: TextStyle(
                 color: ColorApp.thirdColor,
                 fontWeight: FontWeight.bold,
-                fontSize: 28
+                fontSize: 22
             ),),
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical:20 ,horizontal: 7),
-        child: ViewAllNearbyBody(),
+        child: FadeInUp(
+            duration: const Duration(milliseconds: 1150),
+            child: ViewAllNearbyBody()),
       ),
     );
   }

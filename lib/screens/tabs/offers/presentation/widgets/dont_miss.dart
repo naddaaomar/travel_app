@@ -18,7 +18,7 @@ class _DontMissState extends State<DontMiss>
     with WidgetsBindingObserver, RouteAware {
   final CardSwiperController controller = CardSwiperController();
   final List<Widget> cards =
-      dontMissList.map((model) => DontMissCard(dontMissModel: model)).toList();
+  dontMissList.map((model) => DontMissCard(dontMissModel: model)).toList();
 
   Timer? _autoPlayTimer;
   bool _swipeRight = true;
@@ -97,7 +97,7 @@ class _DontMissState extends State<DontMiss>
               },
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
                   color: ColorApp.primaryColor.withOpacity(.8),
                   borderRadius: BorderRadius.circular(20),
@@ -128,7 +128,7 @@ class _DontMissState extends State<DontMiss>
               },
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
                   color: ColorApp.primaryColor.withOpacity(.8),
                   borderRadius: BorderRadius.circular(20),

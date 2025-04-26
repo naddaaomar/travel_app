@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/price_container.dart';
 import 'category_container.dart';
+
 bool categoryDown = false;
 bool priceDown = false;
 
@@ -13,7 +14,7 @@ void closeAll( void Function() close) {
 class TravelFiltration extends StatefulWidget {
   const TravelFiltration({super.key, required this.onFilterChanged});
   final void Function({String? category, RangeValues? priceRange,String? priceOrder,})
-      onFilterChanged;
+  onFilterChanged;
   @override
   State<TravelFiltration> createState() => _TravelFiltrationState();
 }

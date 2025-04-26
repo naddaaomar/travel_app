@@ -1,7 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/onboard/views/onboard_view.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -26,15 +25,15 @@ class _SplashScreenState extends State<SplashScreen> {
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(colors: const [
-        Color(0xffD8BCB0),
-        Color(0xffD1A994),
-        Color(0xffD2A288),
-        Color(0xffD2A288),
-        Color(0xffD1A994),
-        Color(0xffD8BCB0),
-      ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomCenter)),
+            Color(0xffD8BCB0),
+            Color(0xffD1A994),
+            Color(0xffD2A288),
+            Color(0xffD2A288),
+            Color(0xffD1A994),
+            Color(0xffD8BCB0),
+          ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomCenter)),
       child: AnimatedSplashScreen(
         disableNavigation: false,
         splash: Column(
@@ -49,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ],
         ),
         backgroundColor: Colors.transparent,
-        nextScreen: HomeViewBody(),
+        nextScreen: OnBoardView(),
         splashIconSize: 250,
         duration: 1000,
         curve: Curves.bounceOut,

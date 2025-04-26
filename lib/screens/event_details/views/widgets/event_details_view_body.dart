@@ -106,31 +106,31 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                       FadeInUp(
                         duration: Duration(milliseconds: 1150),
                         child: Row(
-                          children: [
-                            Text('Event'.tr(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.sp,
-                                    color:
-                                    isLight ? Colors.black : Colors.white)),
-                            Spacer(),
-                            Row(
-                              children: const [
-                                Text(
-                                  "Date  ",
-                                  style: TextStyle(fontSize: 12,
-                                    fontWeight: FontWeight.bold,
+                            children: [
+                              Text('Event'.tr(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.sp,
+                                      color:
+                                      isLight ? Colors.black : Colors.white)),
+                              Spacer(),
+                              Row(
+                                children: const [
+                                  Text(
+                                    "Date  ",
+                                    style: TextStyle(fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "7/7/2025",
-                                  style: TextStyle(fontSize: 10,
-                                    fontWeight: FontWeight.bold,
+                                  Text(
+                                    "7/7/2025",
+                                    style: TextStyle(fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ]),),
+                                ],
+                              ),
+                            ]),),
 
                       SizedBox(
                         height: 20,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../helpers/themes/colors.dart';
-import '../../../pages/sign_in.dart';
-import '../profile_tab_widgets/edit_profile.dart';
+import '../../../auth/presentation/sign_in.dart';
+import 'profile_tab_widgets/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({

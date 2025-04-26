@@ -18,11 +18,11 @@ import 'package:shimmer/shimmer.dart';
 class DiscountTripDetails extends StatefulWidget {
   const DiscountTripDetails(
       {Key? key,
-      required this.image,
-      required this.newPrice,
-      required this.oldPrice,
-      required this.place,
-      required this.discountAmount})
+        required this.image,
+        required this.newPrice,
+        required this.oldPrice,
+        required this.place,
+        required this.discountAmount})
       : super(key: key);
   final String image;
   final String place;
@@ -52,7 +52,7 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius:
-                          BorderRadius.vertical(bottom: Radius.circular(20.r)),
+                      BorderRadius.vertical(bottom: Radius.circular(20.r)),
                       image: DecorationImage(
                         image: AssetImage(widget.image),
                         fit: BoxFit.cover,
@@ -127,7 +127,7 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                                     fontWeight: FontWeight.w500,
                                     fontSize: 20.sp,
                                     color:
-                                        isLight ? Colors.black : Colors.white)),
+                                    isLight ? Colors.black : Colors.white)),
                             Spacer(),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -136,13 +136,13 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                                   children: [
                                     Container(
                                       padding: EdgeInsets.symmetric(horizontal: 4,vertical: 2),
-                                      decoration: 
+                                      decoration:
                                       BoxDecoration(color: Color(0xff811500),
-                                      borderRadius: BorderRadius.circular(5)),
+                                          borderRadius: BorderRadius.circular(5)),
                                       child: Text("-${widget.discountAmount.toStringAsFixed(0)}",
-                                      style: TextStyle(color: Colors.white,
-                                      fontFamily: "pop",
-                                      fontSize: 10),),
+                                        style: TextStyle(color: Colors.white,
+                                            fontFamily: "pop",
+                                            fontSize: 10),),
                                     ),
                                     SizedBox(width: 5,),
                                     Shimmer.fromColors(
@@ -183,7 +183,7 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                         child: Row(
                           children: [
                             Column(
-                              children: [
+                              children: const [
                                 Text(
                                   "start date",
                                   style: TextStyle(
@@ -233,13 +233,13 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                                       horizontal: 10, vertical: 2),
                                   decoration: BoxDecoration(
                                       border: GradientBoxBorder(
-                                          gradient: LinearGradient(colors: [
+                                          gradient: LinearGradient(colors: const [
                                             Color(0xffFF9884),
                                             ColorApp.thirdColor
                                           ]),
                                           width: 2)),
                                   child: Column(
-                                    children: [
+                                    children: const [
                                       Text(
                                         "Available",
                                         style: TextStyle(
@@ -295,9 +295,9 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                         duration: Duration(milliseconds: 1600),
                         child: Text(
                           "egypt’s Hidden Gem ,Dahab is a dream come true for thrill-seekers and nature"
-                          " enthusiasts alike. The town is world-renowned for its diving spots, "
-                          "particularly the Blue Hole, a bucket-list destination for divers"
-                          " drawn to its underwater caves and vibrant marine life.",
+                              " enthusiasts alike. The town is world-renowned for its diving spots, "
+                              "particularly the Blue Hole, a bucket-list destination for divers"
+                              " drawn to its underwater caves and vibrant marine life.",
                           style: TextStyle(
                               fontFamily: "pop",
                               fontSize: 12.sp,
@@ -341,10 +341,10 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 20),
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 20),
                           itemCount: 6,
                           itemBuilder: (context, index) {
                             return ClipRRect(
@@ -384,7 +384,7 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                                     fontSize: 13.sp,
                                     fontWeight: FontWeight.w500,
                                     color:
-                                        isLight ? Colors.black : Colors.white),
+                                    isLight ? Colors.black : Colors.white),
                               ),
                             ],
                           ),
@@ -503,14 +503,14 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                                   ),
                                   Expanded(
                                       child: Text(
-                                    "${inclusionModel[index].label.tr()}",
-                                    style: TextStyle(
-                                        fontFamily: "pop",
-                                        fontSize: 12,
-                                        color: isLight
-                                            ? Colors.black
-                                            : Colors.white),
-                                  )),
+                                        "${inclusionModel[index].label.tr()}",
+                                        style: TextStyle(
+                                            fontFamily: "pop",
+                                            fontSize: 12,
+                                            color: isLight
+                                                ? Colors.black
+                                                : Colors.white),
+                                      )),
                                 ],
                               ),
                             );
@@ -535,7 +535,7 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
 
                               Future.delayed(
                                 Duration(milliseconds: 200),
-                                () {
+                                    () {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -570,23 +570,23 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                         duration: Duration(milliseconds: 2950),
                         child: Center(
                             child: Text(
-                          "what are you waiting for ?".tr(),
-                          style: TextStyle(
-                              fontFamily: "pop",
-                              fontSize: 13,
-                              color: isLight ? Colors.black : Colors.white),
-                        )),
+                              "what are you waiting for ?".tr(),
+                              style: TextStyle(
+                                  fontFamily: "pop",
+                                  fontSize: 13,
+                                  color: isLight ? Colors.black : Colors.white),
+                            )),
                       ),
                       FadeInUp(
                         duration: Duration(milliseconds: 3100),
                         child: Center(
                             child: Text(
-                          "book your trip now.".tr(),
-                          style: TextStyle(
-                              fontFamily: "pop",
-                              fontSize: 13,
-                              color: isLight ? Colors.black : Colors.white),
-                        )),
+                              "book your trip now.".tr(),
+                              style: TextStyle(
+                                  fontFamily: "pop",
+                                  fontSize: 13,
+                                  color: isLight ? Colors.black : Colors.white),
+                            )),
                       ),
                       SizedBox(
                         height: 10.h,

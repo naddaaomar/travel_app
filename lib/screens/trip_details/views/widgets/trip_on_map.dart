@@ -12,18 +12,18 @@ class TripOnMap extends StatelessWidget {
   double hight;
   TripOnMap(
       {super.key,
-      required this.Latitude,
-      required this.Longitude,
-      required this.width,
-      required this.hight});
+        required this.Latitude,
+        required this.Longitude,
+        required this.width,
+        required this.hight});
 
   final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
+  Completer<GoogleMapController>();
 
   CameraPosition get tripPosition => CameraPosition(
-        target: LatLng(Latitude, Longitude),
-        zoom: 15.4746,
-      );
+    target: LatLng(Latitude, Longitude),
+    zoom: 15.4746,
+  );
 
   @override
   Widget build(BuildContext context) {

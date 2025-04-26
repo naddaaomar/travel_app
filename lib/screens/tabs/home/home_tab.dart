@@ -4,16 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/main.dart';
-import 'package:p/screens/event_details/views/widgets/view_all_recommended_events.dart';
 import 'package:p/screens/home/views/widgets/location_card.dart';
-import 'package:p/screens/home/views/widgets/location_card_new.dart';
 import 'package:p/screens/home/views/widgets/main_row.dart';
 import 'package:p/screens/home/views/widgets/nearby_places.dart';
 import 'package:p/screens/home/views/widgets/recommended_places.dart';
 import 'dart:ui' as ui;
 
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/trip_details/views/widgets/view_all_nearby_trips.dart';
 
 class HomeTab extends StatelessWidget {
   HomeTab({super.key});
@@ -27,65 +24,53 @@ class HomeTab extends StatelessWidget {
         shrinkWrap: true,
         physics: BouncingScrollPhysics(),
         children: [
-          LocationCardNew(),
-          SizedBox(
-            height: 40,
-          ),
           LocationCard(),
           SizedBox(height: 40.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Recommended Events'.tr(),
+                'recommendation'.tr(),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 22.sp,
                     color: isLight ? Colors.black : Colors.white),
               ),
               TextButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ViewAllEvents()));
-                },
+                onPressed: () {},
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.black,
                 ),
                 child: Text(
                   'view All'.tr(),
-                  style: TextStyle(
-                      color: isLight ? ColorApp.thirdColor : Colors.white,
-                      fontWeight: FontWeight.bold),
+                  style:
+                      TextStyle(color: isLight ? Colors.black : Colors.white),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 9.h),
+          SizedBox(height: 7.h),
           RecommendedPlaces(),
           SizedBox(height: 30.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Nearby'.tr(),
+                'nearby'.tr(),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 22.sp,
                     color: isLight ? Colors.black : Colors.white),
               ),
               TextButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ViewAllTrips()));
-                },
+                onPressed: () {},
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.black,
                 ),
                 child: Text(
                   'view All'.tr(),
-                  style: TextStyle(
-                      color: isLight ? ColorApp.thirdColor : Colors.white,
-                      fontWeight: FontWeight.bold),
+                  style:
+                      TextStyle(color: isLight ? Colors.black : Colors.white),
                 ),
               ),
             ],

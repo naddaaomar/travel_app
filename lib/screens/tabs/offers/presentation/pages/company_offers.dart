@@ -154,22 +154,22 @@ class _CompanyOffersState extends State<CompanyOffers> {
                                   duration: Duration(milliseconds: 250),
                                   child: value.visible
                                       ? Container(
-                                          width: 30,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Icon(
-                                            Icons.clear,
-                                            color: Colors.black,
-                                          ),
-                                        )
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      Icons.clear,
+                                      color: Colors.black,
+                                    ),
+                                  )
                                       : Icon(
-                                          Icons.menu,
-                                          color: Colors.black.withOpacity(.8),
-                                          key: ValueKey<bool>(value.visible),
-                                        ),
+                                    Icons.menu,
+                                    color: Colors.black.withOpacity(.8),
+                                    key: ValueKey<bool>(value.visible),
+                                  ),
                                 );
                               },
                             ),
@@ -195,7 +195,7 @@ class _CompanyOffersState extends State<CompanyOffers> {
                               reAnimateOnVisibility: false,
                               scrollDirection: Axis.vertical,
                               itemBuilder: animationItemBuilder(
-                                (index) {
+                                    (index) {
                                   // Pagination logic: Adjust the index based on currentPage and itemsPerPage
                                   int startIndex =
                                       (currentPage - 1) * itemsPerPage;
@@ -209,20 +209,20 @@ class _CompanyOffersState extends State<CompanyOffers> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   DiscountTripDetails(
-                                                image:
+                                                    image:
                                                     "assets/images/onboard3.png",
                                                     discountAmount: filteredOffers[itemIndex].discountPercentage,
                                                     newPrice: filteredOffers[itemIndex].newPrice ,
                                                     oldPrice: filteredOffers[itemIndex].oldPrice,
                                                     place: filteredOffers[itemIndex].place,
-                                              ),
+                                                  ),
                                             ),
                                           );
                                         },
                                         child: itemIndex < filteredOffers.length
                                             ? OfferCard(
-                                                companyOffersModel:
-                                                    filteredOffers[itemIndex])
+                                            companyOffersModel:
+                                            filteredOffers[itemIndex])
                                             : Container());
                                   } else {
                                     return Container(); // If no more items, return an empty widget
@@ -273,11 +273,11 @@ class _CompanyOffersState extends State<CompanyOffers> {
                                 icon: Icon(Icons.chevron_left),
                                 onPressed: currentPage > 1
                                     ? () {
-                                        setState(() {
-                                          currentPage--;
-                                          _scrollToCurrentPage();
-                                        });
-                                      }
+                                  setState(() {
+                                    currentPage--;
+                                    _scrollToCurrentPage();
+                                  });
+                                }
                                     : null,
                               ),
                               Expanded(
@@ -324,11 +324,11 @@ class _CompanyOffersState extends State<CompanyOffers> {
                                 icon: Icon(Icons.chevron_right),
                                 onPressed: currentPage < totalPages
                                     ? () {
-                                        setState(() {
-                                          currentPage++;
-                                          _scrollToCurrentPage();
-                                        });
-                                      }
+                                  setState(() {
+                                    currentPage++;
+                                    _scrollToCurrentPage();
+                                  });
+                                }
                                     : null,
                               ),
                             ],

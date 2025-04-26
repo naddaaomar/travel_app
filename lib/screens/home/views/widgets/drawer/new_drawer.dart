@@ -100,7 +100,7 @@ class _NewDrawerState extends State<NewDrawer> {
                       });
                     }
                   }
-,
+                  ,
                   child: FadeInRight(
                     child: Row(
                       children: [
@@ -125,8 +125,8 @@ class _NewDrawerState extends State<NewDrawer> {
                 );
               },
               separatorBuilder: (context, index) => const SizedBox(
-                    height: 30,
-                  ),
+                height: 30,
+              ),
               itemCount: drawer.length),
         ],
       ),

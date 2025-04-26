@@ -77,7 +77,7 @@ class _OffersScreenState extends State<OffersScreen> {
             Text(
               "don't miss".tr(),
               style: TextStyle(
-               fontFamily: "vol" ,
+                  fontFamily: "vol" ,
                   fontWeight: FontWeight.w500,
                   fontSize: 22.sp,
                   color: isLight ? Colors.black : Colors.white),
@@ -89,7 +89,7 @@ class _OffersScreenState extends State<OffersScreen> {
                   .tr(),
               maxLines: 2,
               style: TextStyle(
-                fontFamily: "vol",
+                  fontFamily: "vol",
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
                   color: isLight ? Colors.black : Colors.white),
@@ -135,18 +135,18 @@ class _OffersScreenState extends State<OffersScreen> {
 
 
 Widget Function(
-  BuildContext context,
-  int index,
-  Animation<double> animation,
-) animationItemBuilder(
-  Widget Function(int index) child, {
-  EdgeInsets padding = EdgeInsets.zero,
-}) =>
-    (
-      BuildContext context,
-      int index,
-      Animation<double> animation,
-    ) =>
+    BuildContext context,
+    int index,
+    Animation<double> animation,
+    ) animationItemBuilder(
+    Widget Function(int index) child, {
+      EdgeInsets padding = EdgeInsets.zero,
+    }) =>
+        (
+        BuildContext context,
+        int index,
+        Animation<double> animation,
+        ) =>
         FadeTransition(
           opacity: Tween<double>(
             begin: 0,

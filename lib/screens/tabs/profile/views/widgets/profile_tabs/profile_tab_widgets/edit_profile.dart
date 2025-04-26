@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../helpers/themes/colors.dart';
+import '../../../../../../../helpers/themes/colors.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({

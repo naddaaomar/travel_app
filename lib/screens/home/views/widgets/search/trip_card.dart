@@ -24,12 +24,12 @@ class TripCard extends StatelessWidget {
                 blurRadius: 10,
                 spreadRadius: 2),
           ]
-          //     gradient: LinearGradient(colors: [
-          //   Colors.black54.withOpacity(.1),
-          //   Colors.white70,
-          //       Colors.black54.withOpacity(.1),
-          // ], begin: Alignment.topRight, end: Alignment.bottomLeft)
-          ),
+        //     gradient: LinearGradient(colors: [
+        //   Colors.black54.withOpacity(.1),
+        //   Colors.white70,
+        //       Colors.black54.withOpacity(.1),
+        // ], begin: Alignment.topRight, end: Alignment.bottomLeft)
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         child: Row(

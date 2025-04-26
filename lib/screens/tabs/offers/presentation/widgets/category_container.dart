@@ -199,11 +199,11 @@ class SelectCategory extends StatelessWidget {
         gradient: LinearGradient(
             colors: isSelected
                 ? [
-                    Color(0xff9A1A00),
+              Color(0xff9A1A00),
 
-                    //    Color(0xffE3AE94),
-                    Color(0xff9A1A00)
-                  ]
+              //    Color(0xffE3AE94),
+              Color(0xff9A1A00)
+            ]
                 : [Colors.transparent, Colors.transparent]),
         borderRadius: BorderRadius.circular(15),
         border: GradientBoxBorder(

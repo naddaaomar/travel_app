@@ -54,3 +54,15 @@
 	<true/>
 </dict>
 </plist>
+
+<array>
+ <dict>
+  <key>CFBundleTypeRole</key>
+  <string>Editor</string>
+  <key>CFBundleURLSchemes</key>
+  <array>
+   <string>***IF YOU HAVE FACEBOOK SIGN IN CLIENT ID, TYPE HERE***</string>
+   <string>com.googleusercontent.apps.***907414361778-tf8r5jq9pv9va13qv6tj5bqufsvglfc2.apps.googleusercontent.com***</string>
+  </array>
+ </dict>
+</array>

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:p/screens/tabs/profile/pages/sign_in.dart';
-import 'package:p/screens/tabs/profile/pages/sign_up.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:p/screens/tabs/profile/auth/presentation/sign_in.dart';
+import 'package:p/screens/tabs/profile/auth/presentation/sign_up.dart';
 
 class PersonTab extends StatelessWidget {
   const PersonTab({Key? key}) : super(key: key);
@@ -9,21 +10,21 @@ class PersonTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 130),
+        padding: const EdgeInsets.only(top:40),
         child: Container(
           height: double.infinity,
           width: double.infinity,
 
           child: Column(
               children: [
-                Text('Welcome Back',
+                Text('Get Started ',
                   style: TextStyle(
                      color: Color(0xFFB43E26),
                      fontSize: 30,
                      fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 40,),
+                SizedBox(height: 140,),
                 GestureDetector(
                   onTap: (){
                     Navigator.push(context,
@@ -47,7 +48,7 @@ class PersonTab extends StatelessWidget {
                   ),
                 ),
               ),
-            SizedBox(height: 12,),
+            SizedBox(height: 4,),
             GestureDetector(
               onTap: (){
                 Navigator.push(context,
@@ -70,19 +71,59 @@ class PersonTab extends StatelessWidget {
                     ),),),
               ),
             ),
-                const Spacer(),
+
+                Spacer(),
                 const Center(
                   child: Text('Or Login With ',
                     style: TextStyle(
                         fontSize: 17,
+                        fontWeight: FontWeight.w700,
                         color: Colors.black
                     ),),
                 ),
+          SizedBox(height: 16,),
+          GestureDetector(
+            onTap: (){},
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Image.asset(
+                    'assets/images/google_PNG.png',
+                    height: 24.0,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ],
+              ),
+            ),
+          ),
 
-                const SizedBox(height: 180,),
+                const SizedBox(height: 140,),
           ]),
         ),
       ),
     );
   }
+}
+
+Future signIn() async {
+  await GoogleSignInApi.login();
+}
+
+class GoogleSignInApi {
+  static final _googleSignIn = GoogleSignIn();
+  static Future<GoogleSignInAccount?> login()=> GoogleSignIn().signIn();
 }

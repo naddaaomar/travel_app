@@ -26,7 +26,7 @@ class _PriceContainerState extends State<PriceContainer> {
     _selectedOrder = widget.initialOrder ?? 'Descending';
   }
   RangeValues _currentRangeValues =
-      RangeValues(200, 600);
+  RangeValues(200, 600);
   double minPrice = 100;
   double maxPrice = 700;
 
@@ -211,9 +211,9 @@ class PriceOrder extends StatelessWidget {
 
   PriceOrder(
       {super.key,
-      required this.txt,
-      required this.isSelected,
-      required this.onTap});
+        required this.txt,
+        required this.isSelected,
+        required this.onTap});
 
   @override
   Widget build(BuildContext context) {

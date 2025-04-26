@@ -48,10 +48,10 @@ class CompanyCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                       // color: Color(0xffC4543D),
-                      gradient: LinearGradient(colors: [Color(0xffD56D58,),Color(0xff934D3F)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,),
+                      // color: Color(0xffC4543D),
+                        gradient: LinearGradient(colors: [Color(0xffD56D58,),Color(0xff934D3F)],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,),
                         borderRadius: BorderRadius.circular(10)),
                     child: Text(
                       "Check out company",
