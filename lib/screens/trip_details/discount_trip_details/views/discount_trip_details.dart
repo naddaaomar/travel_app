@@ -3,29 +3,38 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/main.dart';
 import 'package:p/models/inclusion_model.dart';
 import 'package:p/models/photo_gallery_model.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
-import 'package:p/screens/payment/presentation/pages/test_form.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/company_profile/views/company_profile.dart';
-import 'trip_on_map.dart';
+import 'package:p/screens/trip_details/views/widgets/activities_bottom_sheet.dart';
+import 'package:p/screens/trip_details/views/widgets/trip_on_map.dart';
+import 'package:shimmer/shimmer.dart';
 
-class TripDetailsViewBody extends StatefulWidget {
-  const TripDetailsViewBody({
-    Key? key,
-    required this.image,
-  }) : super(key: key);
+class DiscountTripDetails extends StatefulWidget {
+  const DiscountTripDetails(
+      {Key? key,
+      required this.image,
+      required this.newPrice,
+      required this.oldPrice,
+      required this.place,
+      required this.discountAmount})
+      : super(key: key);
   final String image;
+  final String place;
+  final double oldPrice;
+  final double newPrice;
+  final double discountAmount;
 
   @override
-  State<TripDetailsViewBody> createState() => _TripDetailsViewBodyState();
+  State<DiscountTripDetails> createState() => _DiscountTripDetailsState();
 }
 
-class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
+class _DiscountTripDetailsState extends State<DiscountTripDetails> {
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
@@ -110,20 +119,61 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                       FadeInUp(
                         duration: Duration(milliseconds: 1150),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('dahab'.tr(),
+                            Text(widget.place.tr(),
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "vol",
+                                    fontWeight: FontWeight.w500,
                                     fontSize: 20.sp,
                                     color:
                                         isLight ? Colors.black : Colors.white)),
                             Spacer(),
-                            Text(
-                              "\$200",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17.sp,
-                                  color: isLight ? Colors.black : Colors.white),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 4,vertical: 2),
+                                      decoration: 
+                                      BoxDecoration(color: Color(0xff811500),
+                                      borderRadius: BorderRadius.circular(5)),
+                                      child: Text("-${widget.discountAmount.toStringAsFixed(0)}",
+                                      style: TextStyle(color: Colors.white,
+                                      fontFamily: "pop",
+                                      fontSize: 10),),
+                                    ),
+                                    SizedBox(width: 5,),
+                                    Shimmer.fromColors(
+                                      baseColor: ColorApp.primaryColor,
+                                      highlightColor: Colors.grey.shade300,
+                                      period: Duration(milliseconds: 2100),
+
+                                      child: Text(
+                                        "EGP ${widget.newPrice.toStringAsFixed(0)}",
+                                        style: TextStyle(
+                                          fontFamily: "pop",
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 17.sp,
+
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                Text(
+                                  "EGP ${widget.oldPrice.toStringAsFixed(0)}",
+                                  style: TextStyle(
+                                    fontFamily: "pop",
+                                    fontSize: 12,
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationColor: Colors.red,
+
+                                  ),
+                                )
+                              ],
                             ),
                           ],
                         ),
@@ -136,59 +186,77 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                               children: [
                                 Text(
                                   "start date",
-                                  style: TextStyle(fontSize: 12),
+                                  style: TextStyle(
+                                      fontFamily: "pop", fontSize: 11),
                                 ),
                                 Text(
                                   "7/7/2025",
-                                  style: TextStyle(fontSize: 10),
+                                  style: TextStyle(
+                                      fontFamily: "pop", fontSize: 10),
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Column(
-                              children: [
+                                SizedBox(
+                                  height: 15,
+                                ),
                                 Text("end date",
-                                    style: TextStyle(fontSize: 12)),
+                                    style: TextStyle(
+                                        fontFamily: "pop", fontSize: 11)),
                                 Text("15/7/2025",
-                                    style: TextStyle(fontSize: 10))
+                                    style: TextStyle(
+                                        fontFamily: "pop", fontSize: 10))
                               ],
                             ),
                             Spacer(),
-                            Padding(
-                              padding: EdgeInsets.only(right: 4.w),
-                              child: IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CompanyProfile(),
-                                      ));
-                                },
-                                iconSize: 20.w,
-                                icon: Icon(Ionicons.chatbubble_ellipses_outline,
-                                    color:
-                                        isLight ? Colors.black : Colors.white),
-                              ),
-                            ),
                             Column(
-                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text(
-                                  'rate'.tr(),
-                                  style: TextStyle(
-                                      color:
-                                          isLight ? Colors.black : Colors.white,
-                                      fontSize: 12.sp),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 4.w),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CompanyProfile(),
+                                          ));
+                                    },
+                                    iconSize: 20.w,
+                                    icon: Icon(
+                                        Ionicons.chatbubble_ellipses_outline,
+                                        color: isLight
+                                            ? Colors.black
+                                            : Colors.white),
+                                  ),
                                 ),
-                                Icon(
-                                  Ionicons.star,
-                                  color: Colors.yellow[800],
-                                  size: 15.w,
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 2),
+                                  decoration: BoxDecoration(
+                                      border: GradientBoxBorder(
+                                          gradient: LinearGradient(colors: [
+                                            Color(0xffFF9884),
+                                            ColorApp.thirdColor
+                                          ]),
+                                          width: 2)),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "Available",
+                                        style: TextStyle(
+                                          fontFamily: "pop",
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                      Text(
+                                        "10",
+                                        style: TextStyle(
+                                            fontFamily: "pop", fontSize: 10),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -212,7 +280,8 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                             Text(
                               'description'.tr(),
                               style: TextStyle(
-                                  fontSize: 15.sp,
+                                  fontFamily: "pop",
+                                  fontSize: 13.sp,
                                   fontWeight: FontWeight.w500,
                                   color: isLight ? Colors.black : Colors.white),
                             ),
@@ -230,7 +299,8 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                           "particularly the Blue Hole, a bucket-list destination for divers"
                           " drawn to its underwater caves and vibrant marine life.",
                           style: TextStyle(
-                              fontSize: 13.sp,
+                              fontFamily: "pop",
+                              fontSize: 12.sp,
                               color: isLight ? Colors.black : Colors.white),
                         ),
                       ),
@@ -254,7 +324,8 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                             Text(
                               'photo Gallery'.tr(),
                               style: TextStyle(
-                                  fontSize: 15.sp,
+                                  fontFamily: "pop",
+                                  fontSize: 13.sp,
                                   fontWeight: FontWeight.w500,
                                   color: isLight ? Colors.black : Colors.white),
                             ),
@@ -309,7 +380,8 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                               Text(
                                 'show on map'.tr(),
                                 style: TextStyle(
-                                    fontSize: 15.sp,
+                                    fontFamily: "pop",
+                                    fontSize: 13.sp,
                                     fontWeight: FontWeight.w500,
                                     color:
                                         isLight ? Colors.black : Colors.white),
@@ -346,10 +418,46 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                             SizedBox(
                               width: 5.w,
                             ),
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (context) => ActivitiesBottomSheet(),
+                                );
+                              },
+                              child: Text(
+                                'Activities '.tr(),
+                                style: TextStyle(
+                                  fontFamily: "pop",
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: isLight ? Colors.black : Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      FadeInUp(
+                        duration: Duration(milliseconds: 2350),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.circle,
+                              color: isLight
+                                  ? ColorApp.primaryColor
+                                  : ColorApp.primaryColorDark,
+                              size: 10.w,
+                            ),
+                            SizedBox(
+                              width: 5.w,
+                            ),
                             Text(
                               'inclusion'.tr(),
                               style: TextStyle(
-                                fontSize: 15.sp,
+                                fontFamily: "pop",
+                                fontSize: 13.sp,
                                 fontWeight: FontWeight.w500,
                                 color: isLight ? Colors.black : Colors.white,
                               ),
@@ -364,6 +472,8 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                           child: Text(
                             "why book this trip ?".tr(),
                             style: TextStyle(
+                                fontFamily: "pop",
+                                fontSize: 12,
                                 color: isLight ? Colors.black : Colors.white),
                           ),
                         ),
@@ -395,6 +505,8 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                       child: Text(
                                     "${inclusionModel[index].label.tr()}",
                                     style: TextStyle(
+                                        fontFamily: "pop",
+                                        fontSize: 12,
                                         color: isLight
                                             ? Colors.black
                                             : Colors.white),
@@ -405,6 +517,9 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                           },
                           itemCount: inclusionModel.length,
                         ),
+                      ),
+                      SizedBox(
+                        height: 10.h,
                       ),
                       SizedBox(
                         height: 30.h,
@@ -432,7 +547,9 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                             child: Text(
                               "book Trip".tr(),
                               style: TextStyle(
-                                  color: Colors.white, fontSize: 17.sp),
+                                  fontFamily: "pop",
+                                  color: Colors.white,
+                                  fontSize: 15.sp),
                             ),
                             style: ElevatedButton.styleFrom(
                               elevation: 10,
@@ -455,6 +572,8 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                             child: Text(
                           "what are you waiting for ?".tr(),
                           style: TextStyle(
+                              fontFamily: "pop",
+                              fontSize: 13,
                               color: isLight ? Colors.black : Colors.white),
                         )),
                       ),
@@ -464,6 +583,8 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                             child: Text(
                           "book your trip now.".tr(),
                           style: TextStyle(
+                              fontFamily: "pop",
+                              fontSize: 13,
                               color: isLight ? Colors.black : Colors.white),
                         )),
                       ),

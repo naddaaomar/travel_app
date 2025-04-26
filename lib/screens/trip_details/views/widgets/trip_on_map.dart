@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/main.dart';
-import 'package:rive/rive.dart';
 
 class TripOnMap extends StatelessWidget {
   double Latitude;

@@ -41,14 +41,14 @@ class _DontMissState extends State<DontMiss>
 
   @override
   void didPushNext() {
-    // Called when navigating to another screen
+
     print(" Navigated away - Stopping auto-play");
     _autoPlayTimer?.cancel();
   }
 
   @override
   void didPopNext() {
-    // Called when returning from another screen
+
     print(" Returned to home - Restarting auto-play");
     _startAutoPlay();
   }
@@ -104,11 +104,14 @@ class _DontMissState extends State<DontMiss>
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.arrow_back, color: Colors.white),
+                    Icon(Icons.arrow_back_ios_new,
+                        size: 12, color: Colors.white),
                     const SizedBox(width: 5),
                     Text("previous",
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 12)),
+                        style: const TextStyle(
+                            fontFamily: "pop",
+                            color: Colors.white,
+                            fontSize: 10)),
                   ],
                 ),
               ),
@@ -133,10 +136,13 @@ class _DontMissState extends State<DontMiss>
                 child: Row(
                   children: [
                     Text("next",
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 12)),
+                        style: const TextStyle(
+                            fontFamily: "pop",
+                            color: Colors.white,
+                            fontSize: 10)),
                     const SizedBox(width: 5),
-                    Icon(Icons.arrow_forward, color: Colors.white),
+                    Icon(Icons.arrow_forward_ios,
+                        size: 12, color: Colors.white),
                   ],
                 ),
               ),
@@ -146,13 +152,14 @@ class _DontMissState extends State<DontMiss>
         const SizedBox(height: 10),
         RepaintBoundary(
           child: SizedBox(
-            height: 263,
+            height: 255,
             child: CardSwiper(
               controller: controller,
               isDisabled: true,
               cardsCount: cards.length,
               numberOfCardsDisplayed: 3,
-              backCardOffset: const Offset(0, 25),
+              duration: Duration(milliseconds: 400),
+              backCardOffset: const Offset(0, 21),
               padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
               cardBuilder: (context, index, _, __) => cards[index],
             ),
