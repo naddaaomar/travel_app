@@ -1,3 +1,4 @@
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -111,11 +112,12 @@ class OfferCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Ionicons.heart_outline,
-                            color: Colors.red,
-                          )),
+                        iconSize: 18.w,
+                        onPressed: () {},
+                        icon: FavoriteButton(valueChanged:(_isFavorite) {
+                          print('Is Favorite : $_isFavorite');
+                        },),
+                      ),
                       Spacer(),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
