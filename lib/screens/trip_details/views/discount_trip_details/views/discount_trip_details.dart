@@ -213,12 +213,12 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                                   padding: EdgeInsets.only(right: 4.w),
                                   child: IconButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CompanyProfile(),
-                                          ));
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //       builder: (context) =>
+                                      //           CompanyProfile(),
+                                      //     ));
                                     },
                                     iconSize: 20.w,
                                     icon: Icon(
@@ -420,11 +420,11 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (context) => ActivitiesBottomSheet(),
-                                );
+                                // showModalBottomSheet(
+                                //   context: context,
+                                //   isScrollControlled: true,
+                                //   builder: (context) => ActivitiesBottomSheet(),
+                                // );
                               },
                               child: Text(
                                 'Activities '.tr(),

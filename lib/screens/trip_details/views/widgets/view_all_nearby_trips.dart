@@ -14,7 +14,6 @@ class ViewAllTrips extends StatelessWidget {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
@@ -22,21 +21,22 @@ class ViewAllTrips extends StatelessWidget {
           },
           icon: Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.white,
-            size: 30.w,
+            color: ColorApp.thirdColor,
+            size: 25.w,
           ),
         ),
-        title: Center(
-          child: Text('Nearby Trips',
-            style: TextStyle(
-                color: ColorApp.thirdColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 28
-            ),),
+        centerTitle: true,
+        title: Text(
+          'Nearby Trips',
+          style: TextStyle(
+              color: ColorApp.thirdColor,
+              fontWeight: FontWeight.w600,
+              fontFamily: "pop",
+              fontSize: 20),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical:20 ,horizontal: 7),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
         child: ViewAllNearbyBody(),
       ),
     );

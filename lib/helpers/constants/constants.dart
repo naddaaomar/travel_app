@@ -8,4 +8,5 @@ class Constants {
   static const int KIOSK_ID = 4936833;
   static const String PUPLIC_KEY =
       "egy_pk_test_xwxROTAqB7vkDmQCJhx9Jw9Kti2PVsWX";
+  static const String baseURL = "https://journeymate.runasp.net";
 }

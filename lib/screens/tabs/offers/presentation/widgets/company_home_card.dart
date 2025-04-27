@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:p/screens/all_companies/models/AllCompanies.dart';
 
 class CompanyHomeCard extends StatelessWidget {
-  String img;
-  String label;
+  Items allCompanies;
 
-  CompanyHomeCard({required this.img, required this.label});
+  CompanyHomeCard({required this.allCompanies});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(right: 8,bottom: 6,left: 8,top: 8),
       child: Container(
         width: 160,
         decoration: BoxDecoration(
@@ -32,8 +32,8 @@ class CompanyHomeCard extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      img,
+                    child: Image.network(
+                      allCompanies.profileImageUrl ?? "",
                       height: 120,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -56,33 +56,37 @@ class CompanyHomeCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.yellow[800],
-                              size: 15,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color: Colors.yellow[800],
+                            size: 15,
+                          ),
+                          Text(
+                            allCompanies.rating.toString(),
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontFamily: "pop",
                             ),
-                            Text(
-                              "4.5",
-                              style: TextStyle(fontSize: 9),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ),
                   ),
                 ],
               ),
+              SizedBox(height: 8,),
               Text(
-                label,
+                allCompanies.companyName ?? "",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: 16,
+                  fontSize: 13,
+                  fontFamily: "pop",
+                  color: Colors.black.withOpacity(.7)
                 ),
               ),
               Row(
@@ -95,9 +99,10 @@ class CompanyHomeCard extends StatelessWidget {
                   SizedBox(width: 4),
                   Expanded(
                     child: Text(
-                      "address",
+                      allCompanies.address ?? "",
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 10,
+                        fontFamily: "pop",
                         color: Colors.grey[600],
                       ),
                       overflow: TextOverflow.ellipsis,

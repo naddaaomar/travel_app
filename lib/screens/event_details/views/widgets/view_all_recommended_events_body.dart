@@ -14,22 +14,21 @@ class ViewAllEventsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return MaterialButton(
-      onPressed: () {
-      },
+      onPressed: () {},
       child: SingleChildScrollView(
         child: Column(
           children: List.generate(recommendedPlaces.length, (index) {
             return Padding(
-              padding:  EdgeInsets.only(bottom:18.h),
+              padding: EdgeInsets.only(bottom: 18.h),
               child: SizedBox(
                 height: 140.h,
                 width: double.maxFinite,
-        
                 child: Card(
-                  color: isLight?Colors.white:ColorApp.cardColorDark,
+                  color: isLight ? Colors.white : ColorApp.cardColorDark,
                   elevation: 10,
-        
-                  shadowColor: isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,
+                  shadowColor: isLight
+                      ? ColorApp.primaryColor
+                      : ColorApp.primaryColorDark,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.r),
                   ),
@@ -39,12 +38,13 @@ class ViewAllEventsBody extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EventDetailsViewBody(image: '',
+                            builder: (context) => EventDetailsViewBody(
+                              image: '',
                             ),
                           ));
                     },
                     child: Padding(
-                      padding:  EdgeInsets.all(8.0.h),
+                      padding: EdgeInsets.all(8.0.h),
                       child: Row(
                         children: [
                           ClipRRect(
@@ -56,7 +56,6 @@ class ViewAllEventsBody extends StatelessWidget {
                               fit: BoxFit.cover,
                             ),
                           ),
-        
                           SizedBox(width: 10.w),
                           Expanded(
                             child: Column(
@@ -65,16 +64,23 @@ class ViewAllEventsBody extends StatelessWidget {
                                 Text(
                                   'place'.tr(),
                                   style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: isLight?Colors.black:Colors.white
-                                  ),
+                                      fontFamily: "pop",
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: isLight
+                                          ? Colors.black
+                                          : Colors.white),
                                 ),
-                                Text('company'.tr(),
+                                Text(
+                                  'company'.tr(),
                                   style: TextStyle(
-                                      color: isLight?Colors.black:Colors.white),),
+                                      fontFamily: "pop",
+                                      fontSize: 13,
+                                      color: isLight
+                                          ? Colors.black
+                                          : Colors.white),
+                                ),
                                 const Spacer(),
-        
                                 Row(
                                   children: [
                                     Icon(
@@ -85,25 +91,31 @@ class ViewAllEventsBody extends StatelessWidget {
                                     Text(
                                       'rate'.tr(),
                                       style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: isLight?Colors.black:Colors.white
-                                      ),
+                                          fontFamily: "pop",
+                                          fontSize: 11.sp,
+                                          color: isLight
+                                              ? Colors.black
+                                              : Colors.white),
                                     ),
-        
                                     const Spacer(),
                                     RichText(
-                                      text:  TextSpan(
+                                      text: TextSpan(
                                           style: TextStyle(
-                                            fontSize: 16.sp,
-                                            color: isLight?ColorApp.thirdColor:Colors.white,
+                                            fontFamily: "pop",
+                                            fontSize: 14.sp,
+                                            color: isLight
+                                                ? ColorApp.thirdColor
+                                                : Colors.white,
                                           ),
-        
                                           text: "\$200",
                                           children: [
                                             TextSpan(
                                                 style: TextStyle(
+                                                  fontFamily: "pop",
                                                   fontSize: 12.sp,
-                                                  color:isLight? Colors.black54:Colors.white,
+                                                  color: isLight
+                                                      ? Colors.black54
+                                                      : Colors.white,
                                                 ),
                                                 text: " /Person")
                                           ]),

@@ -35,7 +35,7 @@ class HomeTab extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Recommended Events'.tr(),
+                    'Events'.tr(),
                     style: TextStyle(
                         fontFamily: "vol",
                         fontWeight: FontWeight.w600,

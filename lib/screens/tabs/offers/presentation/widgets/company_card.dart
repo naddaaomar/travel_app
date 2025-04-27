@@ -4,7 +4,10 @@ import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/company_profile/views/company_profile.dart';
 
 class CompanyCard extends StatelessWidget {
-  const CompanyCard({super.key});
+  CompanyCard({super.key, required this.companyName, required this.img,required this.id});
+  String companyName;
+  String img;
+  String id;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,7 @@ class CompanyCard extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CompanyProfile(),
+                  builder: (context) => CompanyProfile(id: id ,),
                 ));
           },
           child: Container(
@@ -35,8 +38,8 @@ class CompanyCard extends StatelessWidget {
               ],
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
-                  image: AssetImage(
-                    "assets/images/company_pic.jpeg",
+                  image: NetworkImage(
+                    img,
                   ),
                   fit: BoxFit.fill),
             ),
@@ -48,15 +51,23 @@ class CompanyCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                       // color: Color(0xffC4543D),
-                      gradient: LinearGradient(colors: [Color(0xffD56D58,),Color(0xff934D3F)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,),
+                        // color: Color(0xffC4543D),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(
+                              0xffD56D58,
+                            ),
+                            Color(0xff934D3F)
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
                         borderRadius: BorderRadius.circular(10)),
                     child: Text(
                       "Check out company",
                       style: TextStyle(
-                          fontSize: 13,
+                          fontFamily: "pop",
+                          fontSize: 11,
                           fontWeight: FontWeight.w500,
                           color: Colors.white),
                     ),
@@ -65,17 +76,26 @@ class CompanyCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                      //  color: Color(0xffC4543D),
-                        gradient: LinearGradient(colors: [Color(0xffD56D58,),Color(0xff934D3F)],
+                        //  color: Color(0xffC4543D),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(
+                              0xffD56D58,
+                            ),
+                            Color(0xff934D3F)
+                          ],
                           begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,),
+                          end: Alignment.bottomCenter,
+                        ),
                         borderRadius: BorderRadius.circular(10)),
                     child: Text(
-                      "Terhal",
+                      companyName,
                       style: TextStyle(
+                          fontFamily: "pop",
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          decorationStyle: TextDecorationStyle.solid,
                           decoration: TextDecoration.underline,
                           decorationColor: Colors.white),
                     ),

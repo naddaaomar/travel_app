@@ -6,7 +6,7 @@ import 'package:p/helpers/themes/colors.dart';
 import 'package:p/main.dart';
 import 'package:p/models/nearby_places.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/trip_details/views/widgets/trip_details_view_body.dart';
+import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
 
 class NearbyPlaces extends StatelessWidget {
   const NearbyPlaces({Key? key}) : super(key: key);
@@ -15,38 +15,35 @@ class NearbyPlaces extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return MaterialButton(
-      onPressed: () {
-
-      },
+      onPressed: () {},
       child: Column(
         children: List.generate(nearbyPlaces.length, (index) {
           return Padding(
-            padding:  EdgeInsets.only(bottom:6.h),
+            padding: EdgeInsets.only(bottom: 6.h),
             child: SizedBox(
               height: 120.h,
               width: double.maxFinite,
-
               child: Card(
-                color: isLight?Colors.white:ColorApp.cardColorDark,
+                color: isLight ? Colors.white : ColorApp.cardColorDark,
                 elevation: 10,
-
-                shadowColor: isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,
+                shadowColor:
+                    isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(10.r),
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TripDetailsViewBody(
-                            image: nearbyPlaces[index].image,
-                          ),
-                        ));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => TripDetailsViewBody(
+                    //         image: nearbyPlaces[index].image,
+                    //       ),
+                    //     ));
                   },
                   child: Padding(
-                    padding:  EdgeInsets.all(8.0.h),
+                    padding: EdgeInsets.all(8.0.h),
                     child: Row(
                       children: [
                         ClipRRect(
@@ -58,56 +55,52 @@ class NearbyPlaces extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-
-                         SizedBox(width: 10.w),
+                        SizedBox(width: 10.w),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                               Text(
+                              Text(
                                 'place'.tr(),
                                 style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: isLight?Colors.black:Colors.white
-                                ),
+                                  fontFamily: "pop",
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color:
+                                        isLight ? Colors.black : Colors.white),
                               ),
-                               SizedBox(height: 2.h),
-
-                               Text('company'.tr(),style: TextStyle(color: isLight?Colors.black:Colors.white),),
-                               SizedBox(height: 10.h),
+                              SizedBox(height: 2.h),
+                              Text(
+                                'company'.tr(),
+                                style: TextStyle(
+                                  fontFamily: "pop",
+                                    fontSize: 13,
+                                    color:
+                                        isLight ? Colors.black : Colors.white),
+                              ),
+                              SizedBox(height: 10.h),
                               const Spacer(),
-
                               Row(
                                 children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.yellow.shade700,
-                                    size: 14.w,
-                                  ),
-                                   Text(
-                                    'rate'.tr(),
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: isLight?Colors.black:Colors.white
-                                    ),
-                                  ),
-
                                   const Spacer(),
-
                                   RichText(
-                                    text:  TextSpan(
+                                    text: TextSpan(
                                         style: TextStyle(
-                                          fontSize: 16.sp,
-                                          color: isLight?ColorApp.primaryColor:Colors.white,
+                                          fontFamily: "pop",
+                                          fontSize: 14.sp,
+                                          color: isLight
+                                              ? ColorApp.primaryColor
+                                              : Colors.white,
                                         ),
-
                                         text: "\$200",
                                         children: [
                                           TextSpan(
                                               style: TextStyle(
+                                                fontFamily: "pop",
                                                 fontSize: 12.sp,
-                                                color:isLight? Colors.black54:Colors.white,
+                                                color: isLight
+                                                    ? Colors.black54
+                                                    : Colors.white,
                                               ),
                                               text: "/ Person")
                                         ]),
