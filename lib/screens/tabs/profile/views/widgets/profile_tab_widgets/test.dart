@@ -2,7 +2,29 @@
 
 import 'package:flutter/material.dart';
 
+class ProfileViewBody extends StatelessWidget {
+  const ProfileViewBody({
+    super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              NameWidget(title: 'Name', value: 'n', onPressed: (){},),
+              EmailWidget(title: 'Email', value: 'n@gmail.com', onPressed: (){},),
+              Divider(),
+              PasswordWidget(title: 'Password', value: '********', onPressed: (){},),
 
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class NameWidget extends StatelessWidget {
   const NameWidget({

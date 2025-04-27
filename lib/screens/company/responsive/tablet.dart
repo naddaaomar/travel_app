@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+import 'util/drawer.dart';
+
+class TabletScaffold extends StatefulWidget {
+  const TabletScaffold({Key? key}) : super(key: key);
+
+  @override
+  State<TabletScaffold> createState() => _TabletScaffoldState();
+}
+
+class _TabletScaffoldState extends State<TabletScaffold> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: myDrawer,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            // first 4 boxes in grid
+            AspectRatio(
+              aspectRatio: 4,
+              child: SizedBox(
+                width: double.infinity,
+                child: GridView.builder(
+                  itemCount: 4,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey[400],
+                        ),
+                      ),);
+                  },
+                ),
+              ),
+            ),
+
+            // list of previous days
+            Expanded(
+              child: ListView.builder(
+                itemCount: 6,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 78,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8), color: Colors.grey[200]),
+                    ),);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

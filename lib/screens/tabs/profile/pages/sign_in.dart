@@ -33,15 +33,15 @@ class _SignInPageState extends State<SignInPage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('email', email); // Store email for auto-login.
 
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => ProfileScreen(
-      //       value: email,
-      //       pass: password,
-      //       name: '',),
-      //   ),
-      // );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfileScreen(
+            value: email,
+            pass: password,
+            name: '',),
+        ),
+      );
     }
   }
 
@@ -189,7 +189,6 @@ class _SignInPageState extends State<SignInPage> {
                                          if (_formKey.currentState!.validate()) {
                                            String email = _emailController.text;
                                            String password = _passwordController.text;
-                                           _signIn();
                                            print('Email: $email, Password: $password');
                                            Navigator.push(context, MaterialPageRoute(builder: (context) => MainProfile()));
                                          }

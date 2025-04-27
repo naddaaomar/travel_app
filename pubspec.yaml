@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  path: ^1.8.0
   flutter:
     sdk: flutter
 
@@ -47,12 +48,12 @@ dependencies:
   dartz: ^0.10.1
   pretty_dio_logger: ^1.4.0
   get_it: ^8.0.3
-  injectable: ^2.5.0
+  injectable: ^2.4.0
   webview_flutter: ^3.0.4
   animate_do: ^3.3.4
   animated_toggle_switch: ^0.8.4
   easy_localization: ^3.0.7+1
-  shared_preferences: ^2.5.1
+  shared_preferences: ^2.3.1
   chat_bubbles: ^1.6.0
   auto_animated: ^3.2.0
   equatable: ^2.0.7
