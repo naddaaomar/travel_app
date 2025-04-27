@@ -23,7 +23,7 @@ class NoPreviousTrips extends StatelessWidget {
                 height: 130,
               ),
               Container(
-                height: 40,
+                height: 50,
                 width: 300,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(

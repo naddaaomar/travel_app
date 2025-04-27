@@ -13,7 +13,6 @@ import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/home/home_tab.dart';
 import 'package:p/screens/tabs/map/views/map_view.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
-
 import '../../../tabs/profile/views/widgets/person_tab.dart';
 
 class HomeViewBody extends StatefulWidget {

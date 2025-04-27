@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/trips_tab_widgets/no_trips.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../auth/core/signin_check.dart';
-
-class FavoritesPage extends StatefulWidget {
-  const FavoritesPage({Key? key}) : super(key: key);
+class tripsPage extends StatefulWidget {
+  const tripsPage({Key? key}) : super(key: key);
 
   @override
-  _FavoritesPageState createState() => _FavoritesPageState();
+  _TripsPageState createState() => _TripsPageState();
 }
 
-class _FavoritesPageState extends State<FavoritesPage> {
+class _TripsPageState extends State<tripsPage> {
   bool _isFirstTime = true;
 
   @override
@@ -34,20 +33,21 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Scaffold(
       body: Center(
         child: _isFirstTime
-            ? const NoFavorites()
-            : _buildFavoritesList(),
+            ? const NoPreviousTrips()
+            : _buildTripsList(),
       ),
     );
   }
 
-  Widget _buildFavoritesList() {
+  Widget _buildTripsList() {
     return ListView.builder(
       itemCount: 5,
       itemBuilder: (context, index) {
         return Card(
           margin: const EdgeInsets.all(8.0),
           child: ListTile(
-            title: Text('Favorite ${index + 1}'),
+            title: Text('Trip ${index + 1}'),
+
           ),
         );
       },

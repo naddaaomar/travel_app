@@ -31,11 +31,11 @@ class ViewAllEvents extends StatelessWidget {
         ),
         title: Center(
           child: Text('Recommended Events',
-          style: TextStyle(
-            color: ColorApp.thirdColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 22
-          ),),
+            style: TextStyle(
+                color: ColorApp.thirdColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 22
+            ),),
         ),
       ),
       body: Padding(

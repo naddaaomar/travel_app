@@ -11,6 +11,9 @@ import 'package:p/screens/home/views/widgets/recommended_places.dart';
 import 'dart:ui' as ui;
 
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/trip_details/views/widgets/view_all_nearby_trips.dart';
+
+import '../../event_details/views/widgets/view_all_recommended_events.dart';
 
 class HomeTab extends StatelessWidget {
   HomeTab({super.key});
@@ -37,7 +40,10 @@ class HomeTab extends StatelessWidget {
                     color: isLight ? Colors.black : Colors.white),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const ViewAllEvents()));
+                },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.black,
                 ),
@@ -63,7 +69,10 @@ class HomeTab extends StatelessWidget {
                     color: isLight ? Colors.black : Colors.white),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const ViewAllTrips()));
+                },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.black,
                 ),
