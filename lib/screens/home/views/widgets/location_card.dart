@@ -12,7 +12,7 @@ class LocationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return
-       Card(
+      Card(
         color: isLight? Color(0xFFD7D1D1):Color(0xFF8C8282),
         elevation: 3,
         shadowColor: isLight?ColorApp.primaryColor:ColorApp.primaryColorDark,
@@ -65,6 +65,6 @@ class LocationCard extends StatelessWidget {
             ),
           ],
         ),
-    );
+      );
   }
 }
