@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:p/screens/tabs/profile/auth/presentation/sign_in.dart';
 import 'package:p/screens/tabs/profile/auth/presentation/sign_up.dart';
+import '../../../../settings/bloc/theme_bloc/theme_bloc.dart';
 
 class PersonTab extends StatelessWidget {
   const PersonTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top:80),
@@ -19,10 +22,10 @@ class PersonTab extends StatelessWidget {
               children: [
                 Text('Get Started ',
                   style: TextStyle(
-                     color: Colors.black,
-                     fontSize: 30,
-                     fontWeight: FontWeight.w700,
-                  ),
+                      fontFamily: "vol",
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22,
+                      color: isLight ? Colors.black : Colors.white),
                 ),
                 SizedBox(height: 100,),
                 GestureDetector(
@@ -73,13 +76,13 @@ class PersonTab extends StatelessWidget {
             ),
 
                 Spacer(),
-                const Center(
+                Center(
                   child: Text('Or Login With ',
                     style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black
-                    ),),
+                        fontFamily: "vol",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: isLight ? Colors.black : Colors.white),),
                 ),
           SizedBox(height: 6,),
           GestureDetector(
