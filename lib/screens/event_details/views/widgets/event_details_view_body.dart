@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -72,12 +73,11 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                               ),
                             ),
                             IconButton(
-                              iconSize: 20.w,
+                              iconSize: 18.w,
                               onPressed: () {},
-                              icon: Icon(
-                                Ionicons.heart_outline,
-                                color: isLight ? Colors.brown : Colors.white,
-                              ),
+                              icon: FavoriteButton(valueChanged:(_isFavorite) {
+                                print('Is Favorite : $_isFavorite');
+                              },),
                             ),
                           ],
                         ),

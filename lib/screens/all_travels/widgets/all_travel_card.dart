@@ -1,5 +1,7 @@
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 
@@ -46,6 +48,7 @@ class AllTravelsCard extends StatelessWidget {
                 children: [
                   Text(
                     allTravelsModel.title ?? "",
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontFamily: "pop",
                         color: Colors.black,
@@ -83,8 +86,19 @@ class AllTravelsCard extends StatelessWidget {
                         ),
                       ),
                       Spacer(),
-                      IconButton(onPressed: () {}, icon: Icon(Ionicons.heart_outline,
-                        color: Colors.red,))
+                      Flexible(
+                        flex:10,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: IconButton(
+                            iconSize: 18,
+                            onPressed: () {},
+                            icon: FavoriteButton(valueChanged: (_isFavorite) {
+                              print('Is Favorite : $_isFavorite');
+                            }),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],

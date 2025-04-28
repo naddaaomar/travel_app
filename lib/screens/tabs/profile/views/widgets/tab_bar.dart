@@ -37,61 +37,10 @@ class _TabBarPageState extends State<TabBarPage>
             height: MediaQuery.of(context).size.height,
             child: Column(
               children: [
-                SizedBox(height: 44),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: ColorApp.secondaryColor,
-                    //  borderRadius: BorderRadius.circular(10),
-                    ),
-                  child: Column(
-                    children: [
-                       TabBar(
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          isScrollable: false,
+                SizedBox(height: 30),
 
-                          labelPadding: EdgeInsets.zero,
-                          padding: EdgeInsets.zero,
-                          indicatorPadding: EdgeInsets.zero,
-                          unselectedLabelColor: Color(0xFFB43E26),
-                          labelColor: Colors.black,
-                          indicatorColor: ColorApp.secondaryColor,
-                          indicatorWeight: 2,
-                          indicator: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [
-                                Color(0xFFFF9682),
-                                Color(0xFFDF6951),
-                                Color(0xFFB43E26),
-                                Color(0xFFDF6951),
-                                Color(0xFFFF9682),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(7),
-                          ),
-                          controller: tabController,
-                          tabs: const [
-                            Tab(
-                              icon: Icon(Icons.person),
-                              iconMargin: EdgeInsets.zero,
-                            ),
-                            Tab(
-                              icon: Icon(Icons.business_center_outlined),
-                              iconMargin: EdgeInsets.zero,
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
                 Expanded(
-                  child: TabBarView(
-                    controller: tabController,
-                    children: const [
-                      PersonTab(),
-                      CompanyTab(),
-                    ],
-                  ),
+                  child:  PersonTab(),
                 )
               ],
             ),

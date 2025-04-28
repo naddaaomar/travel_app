@@ -1,4 +1,6 @@
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 
@@ -72,12 +74,16 @@ class TripCard extends StatelessWidget {
 
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
+                  Flexible(
+                    flex:10,
+                    child: IconButton(
+                      iconSize: 18.w,
                       onPressed: () {},
-                      icon: Icon(
-                        Ionicons.heart_outline,
-                        color: Colors.red,
-                      )),
+                      icon: FavoriteButton(valueChanged: (_isFavorite) {
+                        print('Is Favorite : $_isFavorite');
+                      }),
+                    ),
+                  ),
                   Spacer(),
 
                   Text("\$200",

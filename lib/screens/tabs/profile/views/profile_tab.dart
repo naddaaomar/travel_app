@@ -24,6 +24,7 @@ class ProfileTab extends StatelessWidget {
               Center(
                 child: Text('Login with Social Media',
                   style: TextStyle(
+                    fontFamily: "pop",
                       fontSize: 17,
                       color: Colors.white
                   ),),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../helpers/themes/colors.dart';
-import '../../../pages/sign_in.dart';
-import '../profile_tab_widgets/edit_profile.dart';
+import '../../../auth/presentation/sign_in.dart';
+import 'profile_tab_widgets/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -89,6 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: const Text(
                   'Edit Profile',
                   style: TextStyle(
+                    fontFamily: "pop",
                     color: ColorApp.primaryColor,
                     fontWeight: FontWeight.w600
                   ),
@@ -118,11 +119,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: ListTile(
         title: Text(title,
           style: TextStyle(
+            fontFamily: "pop",
           fontWeight: FontWeight.w500,
             color: ColorApp.thirdColor
         ),),
         subtitle: Text(subtitle,
         style: TextStyle(
+          fontFamily: "pop",
           fontWeight: FontWeight.w600,
           fontSize: 17
         ),),
@@ -146,6 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (context) => AlertDialog(
         title: Text('Edit $title',
         style: TextStyle(
+          fontFamily: "pop",
           fontWeight: FontWeight.w500,
           color: ColorApp.thirdColor
         ),),
@@ -158,6 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel',
             style: TextStyle(
+              fontFamily: "pop",
               color: ColorApp.thirdColor,
                 fontWeight: FontWeight.w600
             ),),
@@ -169,6 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
             child: const Text('Save',
               style: TextStyle(
+                fontFamily: "pop",
                   color: ColorApp.thirdColor,
                 fontWeight: FontWeight.w600
               ),),

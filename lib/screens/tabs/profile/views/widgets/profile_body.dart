@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:p/screens/tabs/profile/views/widgets/tabs/profile.dart';
 import '../../../../../helpers/themes/colors.dart';
-import 'fav_tab_widgets/no_fav.dart';
-import 'trips_tab_widgets/no_trips.dart';
+import 'profile_tabs/fav_tab_widgets/no_fav.dart';
+import 'profile_tabs/profile.dart';
+import 'profile_tabs/trips_tab_widgets/no_trips.dart';
 
 class ProfileBody extends StatefulWidget {
   const ProfileBody({super.key});

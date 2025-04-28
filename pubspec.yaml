@@ -77,6 +77,9 @@ dependencies:
   android_alarm_manager_plus: ^4.0.7
   lottie: ^3.2.0
   url_launcher: ^6.3.1
+  google_sign_in: ^6.2.2
+  favorite_button: ^0.0.4
+
 
 
 
@@ -109,6 +112,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/google_PNG.png
     - assets/translations/
     - assets/RiveAssets/
     - assets/fonts/

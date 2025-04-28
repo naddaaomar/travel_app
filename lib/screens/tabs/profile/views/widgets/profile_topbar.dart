@@ -21,6 +21,7 @@ class TopBar extends StatelessWidget {
             padding: EdgeInsets.only(left: 4,top: 20),
             child: Text('Welcome',
               style: TextStyle(
+                fontFamily: "pop",
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
                   color: Color(0xFFF3F3F3)

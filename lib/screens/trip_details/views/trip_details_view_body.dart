@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -96,14 +97,11 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                       ),
                                     ),
                                     IconButton(
-                                      iconSize: 20.w,
+                                      iconSize: 18.w,
                                       onPressed: () {},
-                                      icon: Icon(
-                                        Ionicons.heart_outline,
-                                        color: isLight
-                                            ? Colors.brown
-                                            : Colors.white,
-                                      ),
+                                      icon: FavoriteButton(valueChanged:(_isFavorite) {
+                                        print('Is Favorite : $_isFavorite');
+                                      },),
                                     ),
                                   ],
                                 ),
@@ -133,29 +131,39 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                               FadeInUp(
                                 duration: Duration(milliseconds: 1150),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(info.title ?? "",
-                                        style: TextStyle(
-                                            fontFamily: "vol",
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 17.sp,
-                                            color: isLight
-                                                ? Colors.black
-                                                : Colors.white)),
-                                    Spacer(),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start, // Align the title to the left
+                                        children: [
+                                          Text(
+                                            info.title ?? "",
+                                            style: TextStyle(
+                                              fontFamily: "vol",
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 17.sp,
+                                              color: isLight ? Colors.black : Colors.white,
+                                            ),
+                                            overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
+                                            maxLines: 2, // Allow the title to use up to two lines
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                     Text(
                                       "${info.price} EGP",
                                       style: TextStyle(
-                                          fontFamily: "pop",
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16.sp,
-                                          color: isLight
-                                              ? Colors.black
-                                              : Colors.white),
+                                        fontFamily: "pop",
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16.sp,
+                                        color: isLight ? Colors.black : Colors.white,
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
+                              )
+,
                               FadeInUp(
                                 duration: Duration(milliseconds: 1300),
                                 child: Row(

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/screens/chatbot/views/chatbot.dart';
 import 'package:p/screens/home/views/widgets/drawer/new_drawer.dart';
 import 'package:p/screens/home/views/widgets/main_row.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
@@ -38,11 +39,10 @@ class _HomeViewBodyState extends State<HomeViewBody>
   void initState() {
     super.initState();
 
-
     focusNode.addListener(() {
-     setState(() {
-       isFieldFocused.value = focusNode.hasFocus;
-     });
+      setState(() {
+        isFieldFocused.value = focusNode.hasFocus;
+      });
     });
     // Listen to keyboard visibility changes
     KeyboardVisibilityController().onChange.listen((bool isVisible) {
@@ -52,11 +52,12 @@ class _HomeViewBodyState extends State<HomeViewBody>
     });
     _advancedDrawerController.addListener(() {
       if (_advancedDrawerController.value.visible) {
-        FocusScope.of(context).unfocus(); // Close the keyboard when the drawer opens
+        FocusScope.of(context)
+            .unfocus(); // Close the keyboard when the drawer opens
       } else {
         Future.delayed(
           Duration(milliseconds: 200),
-              () => setState(() {}),
+          () => setState(() {}),
         );
       }
     });
@@ -146,7 +147,8 @@ class _HomeViewBodyState extends State<HomeViewBody>
               body: LayoutBuilder(
                 builder: (context, constraints) {
                   return SizedBox(
-                    height: constraints.maxHeight, // Ensure it takes full height
+                    height:
+                        constraints.maxHeight, // Ensure it takes full height
                     child: Stack(
                       children: [
                         tabs[HomeViewBody.currentIndex],
@@ -155,55 +157,71 @@ class _HomeViewBodyState extends State<HomeViewBody>
                           builder: (context, isFocused, child) {
                             return isFocused
                                 ? Positioned.fill(
-                              child: GestureDetector(
-                                onTap: () {
-                                  FocusScope.of(context).unfocus(); // Close keyboard when tapping the background
-                                },
-                                child: Container(
-                                  color: Colors.white.withOpacity(0.6),
-                                ),
-                              ),
-                            )
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        FocusScope.of(context)
+                                            .unfocus(); // Close keyboard when tapping the background
+                                      },
+                                      child: Container(
+                                        color: Colors.white.withOpacity(0.6),
+                                      ),
+                                    ),
+                                  )
                                 : SizedBox.shrink();
                           },
                         ),
-
                       ],
                     ),
                   );
                 },
               ),
-
-
-
-                bottomNavigationBar: _isKeyboardVisible
-                  ? SizedBox.shrink() // Hide navigation bar when keyboard is visible
-                  : CurvedNavigationBar(
-                index: HomeViewBody.currentIndex,
-                color: isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
-                backgroundColor: Colors.transparent,
-                animationDuration: const Duration(milliseconds: 400),
-                items: [
-                  Icon(Icons.home, color: isLight ? Colors.black : Colors.white),
-                  Icon(Icons.local_offer_outlined, color: isLight ? Colors.black : Colors.white),
-                  Icon(Icons.person, color: isLight ? Colors.black : Colors.white),
-                  Image.asset(
-                    'assets/images/map.png',
-                    width: 35.w,
-                    color: isLight ? Colors.black : Colors.white,
-                  ),
-                ],
-                onTap: (index) {
-                  setState(() {
-                    HomeViewBody.currentIndex = index;
-                  });
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Chatbot(),
+                      ));
                 },
+                backgroundColor: ColorApp.secondaryColor,
+                elevation: 10,
+                shape: CircleBorder(
+                    side: BorderSide(width: 3.w, color: ColorApp.primaryColor)),
+                child: Image.asset("assets/images/ai.png"),
               ),
+              bottomNavigationBar: _isKeyboardVisible
+                  ? SizedBox
+                      .shrink() // Hide navigation bar when keyboard is visible
+                  : CurvedNavigationBar(
+                      index: HomeViewBody.currentIndex,
+                      color: isLight
+                          ? ColorApp.primaryColor
+                          : ColorApp.primaryColorDark,
+                      backgroundColor: Colors.transparent,
+                      animationDuration: const Duration(milliseconds: 400),
+                      items: [
+                        Icon(Icons.home,
+                            color: isLight ? Colors.black : Colors.white),
+                        Icon(Icons.local_offer_outlined,
+                            color: isLight ? Colors.black : Colors.white),
+                        Icon(Icons.person,
+                            color: isLight ? Colors.black : Colors.white),
+                        Image.asset(
+                          'assets/images/map.png',
+                          width: 35.w,
+                          color: isLight ? Colors.black : Colors.white,
+                        ),
+                      ],
+                      onTap: (index) {
+                        setState(() {
+                          HomeViewBody.currentIndex = index;
+                        });
+                      },
+                    ),
             ),
           ),
         ),
       ),
     );
   }
-
 }

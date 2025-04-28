@@ -14,6 +14,7 @@ class CompanyTab extends StatelessWidget {
             Center(
               child: Text('Welcome Back',
                 style: TextStyle(
+                  fontFamily: "pop",
                   color: Color(0xFFB43E26),
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
@@ -37,6 +38,7 @@ class CompanyTab extends StatelessWidget {
                   decoration: InputDecoration(
                       hintText: "Company Email",
                       hintStyle: TextStyle(
+                        fontFamily: "pop",
                           fontSize: 16,
                           color: Colors.grey),
                       border: InputBorder.none
@@ -62,6 +64,7 @@ class CompanyTab extends StatelessWidget {
                   decoration: InputDecoration(
                       hintText: "Company Password",
                       hintStyle: TextStyle(
+                        fontFamily: "pop",
                           fontSize: 16,
                           color: Colors.grey),
                       border: InputBorder.none

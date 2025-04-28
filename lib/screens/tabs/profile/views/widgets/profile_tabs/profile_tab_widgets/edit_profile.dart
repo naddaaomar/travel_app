@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../helpers/themes/colors.dart';
+import '../../../../../../../helpers/themes/colors.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({
@@ -75,6 +75,7 @@ class _EditProfileScreenState extends State<EditProfile> {
           child: Text(
             'Edit Profile  ',
             style: TextStyle(
+              fontFamily: "pop",
                 fontWeight: FontWeight.w600,
                 fontSize: 24,
                 color: ColorApp.thirdColor),
@@ -119,6 +120,7 @@ class _EditProfileScreenState extends State<EditProfile> {
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyle(
+            fontFamily: "pop",
               color: ColorApp.thirdColor,
               fontWeight: FontWeight.w800,
               fontSize: 22),
@@ -174,6 +176,7 @@ class _EditProfileScreenState extends State<EditProfile> {
                   ),
                   child: const Text('CANCEL',
                       style: TextStyle(
+                        fontFamily: "pop",
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
                           letterSpacing: 2.2,
@@ -217,6 +220,7 @@ class _EditProfileScreenState extends State<EditProfile> {
                   ),
                   child: const Text('SAVE',
                       style: TextStyle(
+                        fontFamily: "pop",
                           fontWeight: FontWeight.w700,
                           fontSize: 18,
                           letterSpacing: 2.2,

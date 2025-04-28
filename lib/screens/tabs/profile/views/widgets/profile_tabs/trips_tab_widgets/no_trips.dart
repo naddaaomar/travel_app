@@ -14,6 +14,7 @@ class NoPreviousTrips extends StatelessWidget {
             children: [
               Text('No Previous Trips',
                 style: TextStyle(
+                  fontFamily: "pop",
                   color: Colors.black,
                   fontSize: 26,
                   fontWeight: FontWeight.w700,
@@ -23,7 +24,7 @@ class NoPreviousTrips extends StatelessWidget {
                 height: 130,
               ),
               Container(
-                height: 40,
+                height: 50,
                 width: 300,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
@@ -46,6 +47,7 @@ class NoPreviousTrips extends StatelessWidget {
                         },
                         child: Text('Explore Trips',
                           style: TextStyle(
+                            fontFamily: "pop",
                             color: Colors.white,
                             fontSize: 24,
                           ),))),

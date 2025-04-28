@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:p/screens/tabs/profile/pages/sign_in.dart';
+import 'package:p/screens/tabs/profile/auth/presentation/sign_in.dart';
 
 class NewPassword extends StatelessWidget {
   const NewPassword({super.key});
@@ -14,6 +14,7 @@ class NewPassword extends StatelessWidget {
             Center(
               child: Text('Create New Password',
                 style: TextStyle(
+                  fontFamily: "pop",
                   color: Colors.black,
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
@@ -24,6 +25,7 @@ class NewPassword extends StatelessWidget {
             Center(
               child: Text('Your new password must be different \n from previous used password ',
                 style: TextStyle(
+                  fontFamily: "pop",
                   color: Colors.black,
                 ),),
             ),
@@ -43,6 +45,7 @@ class NewPassword extends StatelessWidget {
                   decoration: InputDecoration(
                       hintText: "Password",
                       hintStyle: TextStyle(
+                        fontFamily: "pop",
                           fontSize: 16,
                           color: Colors.grey),
                       border: InputBorder.none
@@ -66,6 +69,7 @@ class NewPassword extends StatelessWidget {
                   decoration: InputDecoration(
                       hintText: "Confirm Password",
                       hintStyle: TextStyle(
+                        fontFamily: "pop",
                           fontSize: 16,
                           color: Colors.grey),
                       border: InputBorder.none
@@ -95,6 +99,7 @@ class NewPassword extends StatelessWidget {
                         },
                         child: Text('Reset Password',
                           style: TextStyle(
+                            fontFamily: "pop",
                               color: Colors.white
                           ),))),
               ),
