@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
 import '../../../../../../../helpers/themes/colors.dart';
+import '../profile.dart';
 
 class EditProfile extends StatefulWidget {
+  final UserProfile initialProfile;
+
   const EditProfile({
     super.key,
-    required this.initialName,
-    required this.initialEmail,
-    required this.initialPassword,
+    required this.initialProfile,
   });
 
-  final String initialName, initialEmail, initialPassword;
-
   @override
-  State<EditProfile> createState() => _EditProfileScreenState();
+  State<EditProfile> createState() => _EditProfileState();
 }
 
-class _EditProfileScreenState extends State<EditProfile> {
-  bool _showPassword = false;
+class _EditProfileState extends State<EditProfile> {
+  late UserProfile _editedProfile;
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+
+  // Password change fields
+  final _currentPasswordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  bool _showCurrentPassword = false;
+  bool _showNewPassword = false;
+  bool _showConfirmPassword = false;
+  bool _isPasswordVerified = false;
   bool _isLoading = false;
 
   double _cancelButtonYOffset = 0.0;
@@ -31,20 +39,22 @@ class _EditProfileScreenState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    _nameController.text = widget.initialName;
-    _emailController.text = widget.initialEmail;
-    _passwordController.text = widget.initialPassword;
+    _editedProfile = widget.initialProfile;
+    _nameController.text = _editedProfile.name;
+    _emailController.text = _editedProfile.email;
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
-    _passwordController.dispose();
+    _currentPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
-// Buttons animation
+  // Buttons animation
   void _onCancelTapDown(TapDownDetails details) {
     setState(() => _cancelButtonYOffset = 5.0);
   }
@@ -64,42 +74,91 @@ class _EditProfileScreenState extends State<EditProfile> {
     setState(() => _saveButtonYOffset = 0.0);
   }
 
+
+  Future<void> _verifyCurrentPassword() async {
+    if (_currentPasswordController.text != _editedProfile.password) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Incorrect current password')),
+      );
+      return;
+    }
+    setState(() => _isPasswordVerified = true);
+  }
+
+  Future<void> _updatePassword() async {
+    if (_newPasswordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Passwords do not match')),
+      );
+      return;
+    }
+
+    if (_newPasswordController.text.length < 8) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password must be at least 8 characters')),
+      );
+      return;
+    }
+
+    setState(() {
+      _editedProfile = _editedProfile.copyWith(
+          password: _newPasswordController.text
+      );
+      _isPasswordVerified = false;
+      _currentPasswordController.clear();
+      _newPasswordController.clear();
+      _confirmPasswordController.clear();
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Password updated successfully')),
+    );
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      Navigator.pop(context, _editedProfile.copyWith(
+        name: _nameController.text,
+        email: _emailController.text,
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
-        backgroundColor: Colors.transparent,
-        leading: const BackButton(color: Colors.black),
-        title: const Center(
-          child: Text(
-            'Edit Profile  ',
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 24,
-                color: ColorApp.thirdColor),
+        title: const Text(
+          'Edit Profile',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 24,
+            color: ColorApp.thirdColor,
           ),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 80),
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                _buildTextField('Name', 'Enter your name', _nameController),
-                _buildTextField(
-                    'Email', 'Enter your email', _emailController,
-                    isEmail: true),
-                _buildTextField('Password', 'Enter new password',
-                    _passwordController,
-                    isPassword: true),
-                const SizedBox(height: 140),
-                _buildActionButtons(context),
+          : GestureDetector(
+           onTap: () => FocusScope.of(context).unfocus(),
+           child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 64, vertical: 20),
+             child: Form(
+               key: _formKey,
+               child: ListView(
+                 children: [
+                _buildTextField('Name', _nameController),
+                const SizedBox(height: 20),
+                _buildTextField('Email', _emailController, isEmail: true),
+                const SizedBox(height: 20),
+                _buildPasswordChangeSection(),
+                const SizedBox(height:240),
+                _buildActionButtons(),
               ],
             ),
           ),
@@ -109,123 +168,216 @@ class _EditProfileScreenState extends State<EditProfile> {
   }
 
   Widget _buildTextField(
-      String labelText, String placeholder, TextEditingController controller,
-      {bool isPassword = false, bool isEmail = false}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30),
-      child: TextFormField(
-        controller: controller,
-        obscureText: isPassword ? !_showPassword : false,
-        decoration: InputDecoration(
-          labelText: labelText,
-          labelStyle: TextStyle(
-              color: ColorApp.thirdColor,
-              fontWeight: FontWeight.w800,
-              fontSize: 22),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          hintText: placeholder,
-
-          suffixIcon: isPassword
-              ? IconButton(
-              onPressed: () =>
-                setState(() => _showPassword = !_showPassword),
-               icon: Icon(
-                _showPassword ? Icons.visibility : Icons.visibility_off,
-              ),
-            )
-              : null,
+      String label,
+      TextEditingController controller, {
+        bool isEmail = false,
+      }) {
+    return TextFormField(
+      controller: controller,
+      style: TextStyle(color: Colors.black), // Text color
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: ColorApp.thirdColor,
+            fontFamily: 'vol',
+            fontWeight: FontWeight.w700),
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: ColorApp.primaryColor),
         ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter $labelText';
-          }
-          if (isEmail && !value.contains('@')) {
-            return 'Please enter a valid email';
-          }
-          return null;
-        },
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: ColorApp.primaryColor.withOpacity(0.5)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: ColorApp.primaryColor, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter $label';
+        }
+        if (isEmail && !value.contains('@')) {
+          return 'Please enter a valid email';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildPasswordChangeSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!_isPasswordVerified) ...[
+          _buildPasswordField(
+            controller: _currentPasswordController,
+            label: 'Current Password',
+            showPassword: _showCurrentPassword,
+            onToggleVisibility: () => setState(
+                    () => _showCurrentPassword = !_showCurrentPassword),
+          ),
+          const SizedBox(height: 6),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: _verifyCurrentPassword,
+              child: const Text('VERIFY PASSWORD',
+                style: TextStyle(
+                  fontFamily: 'vol',
+                  fontSize: 16,
+                  color: ColorApp.thirdColor,),),
+            ),
+          ),
+        ],
+        if (_isPasswordVerified) ...[
+          _buildPasswordField(
+            controller: _newPasswordController,
+            label: 'New Password',
+            showPassword: _showNewPassword,
+            onToggleVisibility: () => setState(
+                    () => _showNewPassword = !_showNewPassword),
+          ),
+          const SizedBox(height: 10),
+          _buildPasswordField(
+            controller: _confirmPasswordController,
+            label: 'Confirm Password',
+            showPassword: _showConfirmPassword,
+            onToggleVisibility: () => setState(
+                    () => _showConfirmPassword = !_showConfirmPassword),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: _updatePassword,
+              child: const Text('UPDATE PASSWORD',
+                style: TextStyle(
+                  fontFamily: 'vol',
+                  color: Colors.black,),),
+            ),
+          ),
+        ],
+        const SizedBox(height: 6),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: _verifyCurrentPassword,
+            child: const Text('FORGOT PASSWORD?',
+              style: TextStyle(
+                fontFamily: 'vol',
+                fontSize: 16,
+                color: ColorApp.thirdColor,),),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPasswordField({
+    required TextEditingController controller,
+    required String label,
+    required bool showPassword,
+    required VoidCallback onToggleVisibility,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: !showPassword,
+      style: TextStyle(color: Colors.black,
+        fontFamily: 'vol',),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: ColorApp.thirdColor,
+          fontFamily: 'vol',
+          fontWeight: FontWeight.w700),
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: ColorApp.primaryColor),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: ColorApp.primaryColor.withOpacity(0.5)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: ColorApp.primaryColor, width: 2),
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(
+            showPassword ? Icons.visibility : Icons.visibility_off,
+            color: ColorApp.thirdColor,
+          ),
+          onPressed: onToggleVisibility,
+        ),
       ),
     );
   }
 
-  Widget _buildActionButtons(BuildContext context) {
+  Widget _buildActionButtons() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
-        children: [
-          MouseRegion(
-            onEnter: (_) => setState(() => _cancelHovered = true),
-            onExit: (_) => setState(() => _cancelHovered = false),
-            child: GestureDetector(
-              onTapDown: _onCancelTapDown,
-              onTapUp: _onCancelTapUp,
-              onTapCancel: _onCancelTapCancel,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 100),
-                transform: Matrix4.translationValues(
-                    0, _cancelHovered ? -10.0 : _cancelButtonYOffset, 0),
-                child: OutlinedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text('CANCEL',
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MouseRegion(
+              onEnter: (_) => setState(() => _cancelHovered = true),
+              onExit: (_) => setState(() => _cancelHovered = false),
+              child: GestureDetector(
+                onTapDown: _onCancelTapDown,
+                onTapUp: _onCancelTapUp,
+                onTapCancel: _onCancelTapCancel,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 100),
+                  transform: Matrix4.translationValues(0, _cancelHovered ? -10.0 : _cancelButtonYOffset, 0),
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),),),
+
+                    child: const Text('CANCEL',
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          letterSpacing: 2.2,
-                          color: ColorApp.thirdColor)),
-                ),
-              ),
-            ),
-          ),
-          const Spacer(),
-          MouseRegion(
-            onEnter: (_) => setState(() => _saveHovered = true),
-            onExit: (_) => setState(() => _saveHovered = false),
-            child: GestureDetector(
-              onTapDown: _onSaveTapDown,
-              onTapUp: _onSaveTapUp,
-              onTapCancel: _onSaveTapCancel,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 100),
-                transform: Matrix4.translationValues(
-                    0, _saveHovered ? -10.0 : _saveButtonYOffset, 0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      print({
-                        'name': _nameController.text,
-                        'email': _emailController.text,
-                        'password': _passwordController.text,
-                      });
-                      Navigator.pop(context, {
-                        'name': _nameController.text,
-                        'email': _emailController.text,
-                        'password': _passwordController.text,
-                      });
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text('SAVE',
+                        fontFamily: 'vol',
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 2.2,
+                        color: ColorApp.thirdColor,),),
+                  ),),),),
+            Spacer(),
+            MouseRegion(
+              onEnter: (_) => setState(() => _saveHovered = true),
+              onExit: (_) => setState(() => _saveHovered = false),
+              child: GestureDetector(
+                onTapDown: _onSaveTapDown,
+                onTapUp: _onSaveTapUp,
+                onTapCancel: _onSaveTapCancel,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 100),
+                  transform: Matrix4.translationValues(0, _saveHovered ? -10.0 : _saveButtonYOffset, 0),
+                  child: ElevatedButton(
+                    onPressed: _submitForm,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),),
+                    child: const Text('SAVE',
                       style: TextStyle(
+                          fontFamily: 'vol',
                           fontWeight: FontWeight.w700,
                           fontSize: 18,
                           letterSpacing: 2.2,
-                          color: ColorApp.thirdColor)),
+                          color: ColorApp.thirdColor),),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ]
       ),
     );
   }

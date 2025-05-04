@@ -12,6 +12,7 @@ import 'package:p/models/photo_gallery_model.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/company_profile/views/company_profile.dart';
+import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/fav_tab_widgets/favorites.dart';
 import 'package:p/screens/trip_details/views/widgets/activities_bottom_sheet.dart';
 import 'trip_on_map.dart';
 
@@ -19,14 +20,30 @@ class TripDetailsViewBody extends StatefulWidget {
   const TripDetailsViewBody({
     Key? key,
     required this.image,
+    required this.tripId,
   }) : super(key: key);
   final String image;
+  final String tripId;
 
   @override
   State<TripDetailsViewBody> createState() => _TripDetailsViewBodyState();
 }
 
 class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
+  bool _isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFavoriteStatus();
+  }
+  Future<void> _checkFavoriteStatus() async {
+    final favorites = FavoriteManager().favoritesNotifier.value;
+    setState(() {
+      _isFavorite = favorites.contains(widget.tripId);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
@@ -78,7 +95,20 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                             ),
                             IconButton(
                               iconSize: 18.w,
-                              onPressed: () {},
+                              onPressed: () {
+                                ValueListenableBuilder<List<String>>(
+                                  valueListenable: FavoriteManager().favoritesNotifier,
+                                  builder: (context, favorites, _) {
+                                    return FavoriteButton(
+                                      isFavorite: favorites.contains(widget.tripId),
+                                      iconSize: 30,
+                                      valueChanged: (isFavorite) {
+                                        FavoriteManager().toggleFavorite(widget.tripId, context);
+                                      },
+                                    );
+                                  },
+                                );
+                              },
                               icon: FavoriteButton(valueChanged:(_isFavorite) {
                                 print('Is Favorite : $_isFavorite');
                               },),

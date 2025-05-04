@@ -42,7 +42,7 @@ dependencies:
   carousel_slider: ^5.0.0
   dio: ^5.7.0
   bloc: ^9.0.0
-  flutter_bloc: ^9.0.0
+  flutter_bloc: ^9.1.1
   flutter_screenutil: ^5.9.3
   dartz: ^0.10.1
   pretty_dio_logger: ^1.4.0
@@ -76,6 +76,7 @@ dependencies:
   android_alarm_manager_plus: ^4.0.7
   google_sign_in: ^6.3.0
   favorite_button: ^0.0.4
+  firebase_auth: ^5.5.3
 
 
 

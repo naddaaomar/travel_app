@@ -73,6 +73,7 @@ class _SignInPageState extends State<SignInPage> {
                           child: const Text(
                             "Sign In",
                             style: TextStyle(
+                                fontFamily: 'vol',
                                 color: Colors.white,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold),
@@ -85,7 +86,10 @@ class _SignInPageState extends State<SignInPage> {
                           duration: const Duration(milliseconds: 1300),
                           child: const Text(
                             "Welcome Back!",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: TextStyle(
+                                fontFamily: 'vol',
+                                color: Colors.white,
+                                fontSize: 20),
                           ),
                         ),
                       ],
@@ -151,6 +155,7 @@ class _SignInPageState extends State<SignInPage> {
                                                   decoration: const InputDecoration(
                                                       hintText: "Email",
                                                       hintStyle: TextStyle(
+                                                          fontFamily: 'vol',
                                                           color: Colors.grey),
                                                       border: InputBorder.none),
                                                   validator: (value) {
@@ -171,6 +176,7 @@ class _SignInPageState extends State<SignInPage> {
                                                   decoration: const InputDecoration(
                                                     hintText: "Password",
                                                     hintStyle: TextStyle(
+                                                        fontFamily: 'vol',
                                                         color: Colors.grey),
                                                     border:
                                                     InputBorder.none,
@@ -189,7 +195,7 @@ class _SignInPageState extends State<SignInPage> {
                                         ),
                                       ),
                                       const SizedBox(
-                                        height: 80,
+                                        height: 64,
                                       ),
                                       FadeInUp(
                                         duration:
@@ -215,7 +221,8 @@ class _SignInPageState extends State<SignInPage> {
                                             child: Text(
                                             "Sign In",
                                             style: TextStyle(
-                                            color: Colors.white,
+                                                fontFamily: 'vol',
+                                                color: Colors.white,
                                             fontWeight: FontWeight.bold),
                                             ),),),),
                                             const SizedBox(
@@ -236,7 +243,9 @@ class _SignInPageState extends State<SignInPage> {
                                           child: const Text(
                                             "Forget Password?",
                                             style:
-                                            TextStyle(color: Colors.grey),
+                                            TextStyle(
+                                                fontFamily: 'vol',
+                                                color: Colors.grey),
                                           ),
                                         ),
                                       ),
@@ -258,7 +267,9 @@ class _SignInPageState extends State<SignInPage> {
                                           child: const Text(
                                             "Don’t have account? SIGN UP",
                                             style:
-                                            TextStyle(color: Colors.grey),
+                                            TextStyle(
+                                                fontFamily: 'vol',
+                                                color: Colors.grey),
                                           ),
                                         ),
                                       ),

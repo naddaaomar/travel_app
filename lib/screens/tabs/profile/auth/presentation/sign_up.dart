@@ -63,6 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: const Text(
                             "Create Your Account",
                             style: TextStyle(
+                                fontFamily: 'vol',
                                 color: Colors.white,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold),
@@ -75,7 +76,10 @@ class _SignUpPageState extends State<SignUpPage> {
                           duration: const Duration(milliseconds: 1300),
                           child: const Text(
                             "Welcome!",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: TextStyle(
+                                fontFamily: 'vol',
+                                color: Colors.white,
+                                fontSize: 20),
                           ),
                         ),
                       ],
@@ -138,6 +142,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                 decoration: const InputDecoration(
                                                     hintText: "Name",
                                                     hintStyle: TextStyle(
+                                                        fontFamily: 'vol',
                                                         color: Colors.grey),
                                                     border:
                                                     InputBorder.none),
@@ -167,6 +172,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                     hintText:
                                                     "Email or Phone number",
                                                     hintStyle: TextStyle(
+                                                        fontFamily: 'vol',
                                                         color: Colors.grey),
                                                     border:
                                                     InputBorder.none),
@@ -196,6 +202,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                 decoration: InputDecoration(
                                                   hintText: "Password",
                                                   hintStyle: const TextStyle(
+                                                      fontFamily: 'vol',
                                                       color: Colors.grey),
                                                   border:
                                                   InputBorder.none,
@@ -234,6 +241,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                 decoration: InputDecoration(
                                                   hintText: "Re-Password",
                                                   hintStyle: const TextStyle(
+                                                      fontFamily: 'vol',
                                                       color: Colors.grey),
                                                   border:
                                                   InputBorder.none,
@@ -288,7 +296,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                             );
                                           }
                                         },
-                                        height: 50,
+                                        height: 60,
                                         color: const Color(0xFFB43E26),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -298,6 +306,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                           child: Text(
                                             "Sign Up",
                                             style: TextStyle(
+                                                fontFamily: 'vol',
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold),
                                           ),

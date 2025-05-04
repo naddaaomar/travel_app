@@ -13,6 +13,7 @@ import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'screens/splash_screen/view/splash.dart';
 
+
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
 
@@ -25,7 +26,8 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   configureDependencies();
 
-  runApp(EasyLocalization(
+
+  runApp( EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],
       path: 'assets/translations',
       startLocale: Locale("en"),

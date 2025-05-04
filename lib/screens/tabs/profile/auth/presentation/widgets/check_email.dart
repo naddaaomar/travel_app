@@ -14,6 +14,7 @@ class CheckEmail extends StatelessWidget {
             children: [
               Text('Check your Email',
               style: TextStyle(
+                fontFamily: 'vol',
                 color: Colors.black,
                 fontSize: 26,
                 fontWeight: FontWeight.w700,
@@ -27,6 +28,7 @@ class CheckEmail extends StatelessWidget {
               Text('Check the Email address or SMS \n'
                   '    associated with your account',
                 style: TextStyle(
+                  fontFamily: 'vol',
                   color: Colors.black,
                 ),),
               SizedBox(
@@ -49,7 +51,8 @@ class CheckEmail extends StatelessWidget {
                         },
                         child: Text('Continue',
                           style: TextStyle(
-                              color: Colors.white,
+                            fontFamily: 'vol',
+                            color: Colors.white,
                               fontSize: 24,
                           ),))),
               ),

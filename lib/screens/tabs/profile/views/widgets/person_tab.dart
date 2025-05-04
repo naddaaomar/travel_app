@@ -44,6 +44,7 @@ class PersonTab extends StatelessWidget {
                   child: const Center(
                     child: Text('SIGN IN',
                     style: TextStyle(
+                      fontFamily: 'vol',
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white
@@ -68,6 +69,7 @@ class PersonTab extends StatelessWidget {
                 child: const Center(
                   child: Text('SIGN UP',
                     style: TextStyle(
+                        fontFamily: 'vol',
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.black

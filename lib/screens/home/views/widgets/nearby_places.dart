@@ -40,7 +40,7 @@ class NearbyPlaces extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => TripDetailsViewBody(
-                            image: nearbyPlaces[index].image,
+                            image: nearbyPlaces[index].image, tripId: '',
                           ),
                         ));
                   },

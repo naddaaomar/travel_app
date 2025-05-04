@@ -14,6 +14,7 @@ class NewPassword extends StatelessWidget {
             Center(
               child: Text('Create New Password',
                 style: TextStyle(
+                  fontFamily: 'vol',
                   color: Colors.black,
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
@@ -24,6 +25,7 @@ class NewPassword extends StatelessWidget {
             Center(
               child: Text('Your new password must be different \n from previous used password ',
                 style: TextStyle(
+                  fontFamily: 'vol',
                   color: Colors.black,
                 ),),
             ),
@@ -66,6 +68,7 @@ class NewPassword extends StatelessWidget {
                   decoration: InputDecoration(
                       hintText: "Confirm Password",
                       hintStyle: TextStyle(
+                          fontFamily: 'vol',
                           fontSize: 16,
                           color: Colors.grey),
                       border: InputBorder.none
@@ -95,6 +98,7 @@ class NewPassword extends StatelessWidget {
                         },
                         child: Text('Reset Password',
                           style: TextStyle(
+                              fontFamily: 'vol',
                               color: Colors.white
                           ),))),
               ),

@@ -118,7 +118,8 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                         Text(
                           currentIndex < onboarding.length ? onboarding[currentIndex].name : "",
                           style: TextStyle(
-                            fontSize: 40.sp,
+                            fontFamily: 'vol',
+                            fontSize: 36.sp,
                             color: Colors.white,
                             fontWeight: FontWeight.w400,
                             height: 1,
@@ -128,6 +129,7 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                         Text(
                           currentIndex < onboarding.length?"no matter".tr():"",
                           style: TextStyle(
+                            fontFamily: 'vol',
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,

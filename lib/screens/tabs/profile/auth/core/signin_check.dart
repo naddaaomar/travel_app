@@ -117,7 +117,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Scaffold(
       body: Center(
         child: _isFirstTime
-            ? const NoFavorites()
+            ?  NoFavorites(onAddFavorite: () {},)
             : _buildFavoritesList(), //
       ),
       floatingActionButton: FloatingActionButton(
@@ -171,7 +171,7 @@ class SignInPage extends StatelessWidget {
 }
 
 class NoFavorites extends StatelessWidget{
-  const NoFavorites({super.key});
+  const NoFavorites({super.key, required Null Function() onAddFavorite});
   @override
   Widget build(BuildContext context) {
     return const Center(child: Text("No Favorites"));

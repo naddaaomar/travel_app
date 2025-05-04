@@ -20,6 +20,7 @@ class ForgetPassword extends StatelessWidget {
             Center(
               child: Text('Reset Password',
                 style: TextStyle(
+                  fontFamily: 'vol',
                   color: Colors.black,
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
@@ -31,6 +32,7 @@ class ForgetPassword extends StatelessWidget {
               child: Text('Enter the Email address or Phone number \n'
                   '         associated with your account',
                 style: TextStyle(
+                  fontFamily: 'vol',
                   color: Colors.black,
                 ),),
             ),
@@ -50,6 +52,7 @@ class ForgetPassword extends StatelessWidget {
                   decoration: InputDecoration(
                       hintText: "Your Email",
                       hintStyle: TextStyle(
+                          fontFamily: 'vol',
                           fontSize: 16,
                           color: Colors.grey),
                       border: InputBorder.none
@@ -79,7 +82,8 @@ class ForgetPassword extends StatelessWidget {
                         },
                       child: Text('Send Email',
                       style: TextStyle(
-                        color: Colors.white
+                          fontFamily: 'vol',
+                          color: Colors.white
                       ),))),
               ),
             ),

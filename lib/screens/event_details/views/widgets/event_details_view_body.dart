@@ -8,6 +8,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/fav_tab_widgets/favorites.dart';
 import 'event_on_map.dart';
 import 'view_all_recommended_events.dart';
 
@@ -23,6 +24,18 @@ class EventDetailsViewBody extends StatefulWidget {
 }
 
 class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
+  bool _isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFavoriteStatus();
+  }
+  Future<void> _checkFavoriteStatus() async {
+    final favorites = FavoriteManager().favoritesNotifier.value;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
@@ -74,7 +87,19 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                             ),
                             IconButton(
                               iconSize: 18.w,
-                              onPressed: () {},
+                              onPressed: () {
+                                ValueListenableBuilder<List<String>>(
+                                  valueListenable: FavoriteManager().favoritesNotifier,
+                                  builder: (context, favorites, _) {
+                                    return FavoriteButton(
+                                      iconSize: 30,
+                                      valueChanged: (isFavorite) {
+                                        FavoriteManager().toggleFavorite('',context);
+                                      },
+                                    );
+                                  },
+                                );
+                              },
                               icon: FavoriteButton(valueChanged:(_isFavorite) {
                                 print('Is Favorite : $_isFavorite');
                               },),
