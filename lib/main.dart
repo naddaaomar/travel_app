@@ -8,6 +8,7 @@ import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
 import 'package:p/screens/onboard/views/widgets/onboard_view_body.dart';
+import 'package:p/screens/tabs/profile/auth/core/auth_data/auth_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
@@ -18,8 +19,10 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
+
   await EasyLocalization.ensureInitialized();
   ApiManager.init();
+  await AuthData.signUp(password: '', email: '', userName: '');
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   bool isFirstTime = prefs.getBool('onboarding_seen') ?? false;
@@ -40,7 +43,8 @@ void main() async {
           BlocProvider(create: (context) => LocaleBloc()),
         ],
         child: MyApp(isFirstTime: isFirstTime),
-      )));
+      ),
+  ),);
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

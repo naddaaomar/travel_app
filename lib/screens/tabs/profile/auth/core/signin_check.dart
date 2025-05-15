@@ -1,3 +1,6 @@
+// To control access to 'Add to fav' after SignIn
+//Not used
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -5,7 +5,7 @@ import 'profile_tabs/profile.dart';
 import 'profile_tabs/trips_tab_widgets/no_trips.dart';
 
 class ProfileBody extends StatefulWidget {
-  const ProfileBody({super.key});
+  const ProfileBody({super.key, required token});
 
   @override
   State<ProfileBody> createState() => _ProfileBodyState();

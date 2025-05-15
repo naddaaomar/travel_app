@@ -1,6 +1,11 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:p/screens/tabs/profile/pages/main_profile.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:p/screens/tabs/profile/auth/core/auth_data/auth_data.dart';
+import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
+import 'package:p/screens/tabs/profile/auth/core/cubit/auth_state.dart';
+import 'package:p/screens/tabs/profile/auth/presentation/widgets/wrapper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -26,14 +31,46 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
+  Future<void> _signUp() async {
+    if (_formKey.currentState!.validate()) {
+      String email = _emailPhoneController.text;
+      String password = _passwordController.text;
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('email', email);
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: Form(
-        key: _formKey,
-        child: Stack(children: [
-          Container(
+    return BlocProvider(
+      create: (context) => AuthCubit(dio: AuthData.dio),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: BlocConsumer<AuthCubit, AuthState>(
+         listener: (context, state) {
+          if (state is AuthSuccess) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Wrapper(),
+              ),
+            );
+          } else if (state is AuthError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.errorMessage)),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is AuthLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return Form(
+            key: _formKey,
+            child: Stack(children: [
+              Container(
             height: double.infinity,
             width: double.infinity,
             decoration: const BoxDecoration(
@@ -46,8 +83,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 ],
               ),
             ),
-            child: SizedBox(
-              child: Column(
+                child: SizedBox(
+                  child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   const SizedBox(
@@ -285,7 +322,47 @@ class _SignUpPageState extends State<SignUpPage> {
                                       duration:
                                       const Duration(milliseconds: 1600),
                                       child: MaterialButton(
-                                        onPressed: () {
+                                        onPressed: () async {
+                                          if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
+                                            return;
+                                          }
+
+                                          try {
+                                            final authCubit = context.read<AuthCubit>();
+                                            if (authCubit == null) {
+                                              throw Exception('Authentication service not available');
+                                            }
+                                            await authCubit.signIn(
+                                              email: _emailPhoneController.text.trim(),
+                                              password: _passwordController.text.trim(),
+                                              context: context,
+                                            );
+                                            await _signUp();
+                                          } catch (e) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(content: Text(e.toString())),
+                                            );
+                                          }
+                                        },
+                                        height: 60,
+                                        color: const Color(0xFFB43E26),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(50),
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                            "Sign Up",
+                                            style: TextStyle(
+                                                fontFamily: 'vol',
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                       /* onPressed: () {
                                           if (_formKey.currentState!
                                               .validate()) {
                                             Navigator.push(
@@ -312,7 +389,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                           ),
                                         ),
                                       ),
-                                    ),
+                                    ),*/
                                     const SizedBox(
                                       height: 50,
                                     ),
@@ -330,6 +407,8 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
         ]),
+      );
+   },),
       ),
     );
   }

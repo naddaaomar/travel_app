@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../helpers/themes/colors.dart';
 import '../../../auth/presentation/sign_in.dart';
@@ -25,6 +27,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _currentPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+
+ /* final User? user = Auth().currentUser;
+
+  Future<void> signOut() async {
+    await Auth().signOut();
+  }
+*/
 
   bool _isPasswordCorrect = false;
   bool _showCurrentPassword = false;
@@ -351,7 +360,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),),
                                 ),
                                 TextButton(
-                                  onPressed: () => Navigator.pop(context, true),
+                                  onPressed: () async {
+                                    await context.read<AuthCubit>().signOut();
+                                    Navigator.pushReplacement(
+                                        context, MaterialPageRoute(builder:
+                                        (context) => SignInPage()));
+                                  },
                                   child: const Text('Sign Out',
                                       style: TextStyle(color: Colors.red,  fontFamily: 'vols')),
                                 ),
