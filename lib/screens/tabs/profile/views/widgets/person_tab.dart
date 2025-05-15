@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:p/screens/tabs/profile/auth/presentation/sign_in.dart';
 import 'package:p/screens/tabs/profile/auth/presentation/sign_up.dart';
+import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/profile.dart';
 import '../../../../settings/bloc/theme_bloc/theme_bloc.dart';
 
 class PersonTab extends StatelessWidget {
@@ -88,7 +89,37 @@ class PersonTab extends StatelessWidget {
                 ),
           SizedBox(height: 6,),
           GestureDetector(
-            onTap: (){},
+            onTap: () async {
+              try {
+                final user = await GoogleSignInApi.login();
+                if (user != null) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileScreen(
+                        name: user.displayName ?? '',
+                        email: user.email ?? '',
+                        password: '',
+                      ),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Google sign in was canceled'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
+              } catch (error) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Error signing in: $error"),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
+            },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               decoration: BoxDecoration(
@@ -103,6 +134,7 @@ class PersonTab extends StatelessWidget {
                   ),
                 ],
               ),
+
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
