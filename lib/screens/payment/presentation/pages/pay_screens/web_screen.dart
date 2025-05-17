@@ -2,23 +2,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/di.dart';
-import 'package:p/helpers/constants/constants.dart';
-import 'package:p/helpers/enums/enums.dart';
-import 'package:p/screens/payment/presentation/bloc/payment_bloc.dart';
+import 'package:p/screens/payment/presentation/cubit/payment_cubit.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebScreen extends StatelessWidget {
-  int integrationId;
-  String fName;
-  String lName;
-  String phone;
-  double amount;
+  String paymentMethod;
+  num bookingId;
+  num amount;
 
   WebScreen(
-      {required this.integrationId,
-      required this.fName,
-      required this.lName,
-      required this.phone,
+      {required this.paymentMethod,
+      required this.bookingId,
       required this.amount});
 
   final Completer<WebViewController> _controller =
@@ -27,42 +21,46 @@ class WebScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<PaymentBloc>()
-        ..add(ClientSecretEvent(
-            fName: fName,
-            lName: lName,
-            phone: phone,
-            amount: amount,
-            integrationId: integrationId)),
-      child: BlocConsumer<PaymentBloc, PaymentResponseState>(
+      create: (context) => getIt<PaymentCubit>()
+        ..paymentMethod(
+          bookingId: bookingId,
+          paymentMethod: paymentMethod,
+          amount: amount,
+          currency: "EGP",
+        ),
+      child: BlocConsumer<PaymentCubit, PaymentState>(
         listener: (context, state) {
-          // TODO: implement listener
+          // Optional: show snackbar on error or success
         },
         builder: (context, state) {
-          if (state.clientSecretRequestState == RequestState.loading &&
-              state.paymentModel?.clientSecret == null) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
+          if (state is PaymentLoading) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
           }
-          if (state.clientSecretRequestState == RequestState.success &&
-              state.paymentModel?.clientSecret != null) {
+
+          if (state is PaymentError) {
+            return const Scaffold(
+              body: Center(child: Text("Something went wrong")),
+            );
+          }
+
+          if (state is PaymentSuccess &&
+              state.paymentModel.paymentUrl != null) {
             return Scaffold(
               body: WebView(
-                initialUrl:
-                    "https://accept.paymob.com/unifiedcheckout/?publicKey=${Constants.PUPLIC_KEY}&clientSecret=${state.paymentModel?.clientSecret}",
+                initialUrl: state.paymentModel.paymentUrl,
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController webViewController) {
                   _controller.complete(webViewController);
                 },
                 navigationDelegate: (NavigationRequest request) {
                   if (request.url.startsWith('https://www.youtube.com/')) {
-                    print('blocking navigation to $request}');
+                    print('Blocking navigation to $request');
                     return NavigationDecision.prevent;
                   }
-                  print('allowing navigation to $request');
+                  print('Allowing navigation to $request');
                   return NavigationDecision.navigate;
-                },
-                onProgress: (int progress) {
-                  print('WebView is loading (progress : $progress%)');
                 },
                 javascriptChannels: <JavascriptChannel>{
                   _toasterJavascriptChannel(context),
@@ -77,7 +75,10 @@ class WebScreen extends StatelessWidget {
               ),
             );
           }
-          return Scaffold(body: Center(child: Text("something went wrong")));
+
+          return const Scaffold(
+            body: Center(child: Text("Unknown state")),
+          );
         },
       ),
     );

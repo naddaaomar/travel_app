@@ -1,132 +1,171 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:p/helpers/constants/constants.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/main.dart';
 import 'package:p/models/paymet_methods_model.dart';
-import 'package:p/screens/payment/presentation/widgets/pay_card.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-
 import 'pay_screens/web_screen.dart';
 
-class PayMethod extends StatelessWidget {
-  String fName;
-  String lName;
-  String phone;
-  double amount;
+class PayMethod extends StatefulWidget {
+  final int bookingId;
+  final num amount;
 
-  PayMethod(
-      {super.key,
-      required this.fName,
-      required this.lName,
-      required this.phone,
-      required this.amount});
+  final String people;
+
+
+  PayMethod({
+    Key? key,
+    required this.bookingId,
+    required this.amount,
+
+    required this.people
+  }) : super(key: key);
+
+  @override
+  State<PayMethod> createState() => _PayMethodState();
+}
+
+class _PayMethodState extends State<PayMethod> {
+  final double _itemHeight = 120;
+  late FixedExtentScrollController _scrollController;
+
+
+  final int _repeatCount = 100;
+
+  List<PaymentMethodesModel> get _loopedList {
+    return List.generate(_repeatCount, (index) {
+      return payModel[index % payModel.length];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final middleIndex = (_repeatCount / 2).floor();
+    _scrollController = FixedExtentScrollController(initialItem: middleIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
+
     return SafeArea(
       child: Scaffold(
-        backgroundColor: ColorApp.primaryColor,
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 10.h,),
-              IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_new,
-                    size: 30.w,
-                    color: ColorApp.secondaryColor,
-                  )),
-              SizedBox(height: 10.h,),
-              Container(
-                decoration: BoxDecoration(color: ColorApp.secondaryColor,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(30.r),
-                  topLeft: Radius.circular(30.r)
-                )),
-                child: Padding(
-                  padding:  EdgeInsets.symmetric(
-                      horizontal: 20.w, vertical: 20.h),
-                  child: FadeInUp(
-                    child: Column(
-                      children: [
-                        FadeInUp(
-                          child: RichText(
-                            textAlign: TextAlign.center,
-                    
-                            text: TextSpan(children: [
-                              TextSpan(
-                    
-                                  style: TextStyle(
-                                    fontSize: 28.sp,
-                                    color:
-                                        isLight ? Colors.black : Colors.white,
-                                  ),
-                                  text: "Select "),
-                              TextSpan(
-                                  style: TextStyle(
-                                    fontSize: 32.sp,
-                                    color: isLight
-                                        ? ColorApp.thirdColor
-                                        : Colors.white,
-                                  ),
-                                  text: "PAYMENT METHOD")
-                            ]),
+        backgroundColor: ColorApp.secondaryColor,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: ColorApp.secondaryColor,
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(Icons.arrow_back_ios_new, size: 22),
+          ),
+          centerTitle: true,
+          title: Text(
+            "Payment Preferences",
+            style: TextStyle(fontFamily: "pop", fontSize: 14),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.people,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "pop"),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "Your total is ",
+                      style: TextStyle(
+                        fontFamily: "pop",
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                      widget.amount.toString(),
+                      style: TextStyle(
+                        fontFamily: "pop",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: ColorApp.primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15),
+                Text(
+                  "Please select your preferred payment method to complete your transaction.",
+                  style: TextStyle(
+                    fontFamily: "pop",
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                  ),
+                ),
+                SizedBox(height: 50,),
+                SizedBox(
+                  height: 400,
+                  child: ClickableListWheelScrollView(
+                    scrollController: _scrollController,
+                    loop: true,
+                    animationDuration: Duration(milliseconds: 2000),
+                    itemHeight: _itemHeight,
+
+                    itemCount: _loopedList.length,
+
+                    onItemTapCallback: (index) {
+                      final method = _loopedList[index % payModel.length];
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WebScreen(
+
+                            bookingId: widget.bookingId,
+                            paymentMethod: method.id.toString(),
+                            amount: widget.amount * 100,
+
                           ),
                         ),
-                        FadeInUp(
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            "Just one step left to complete!",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                        SizedBox(height: 12,),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => WebScreen(
-                                        fName: fName,
-                                        lName: lName,
-                                        phone: phone,
-                                        amount: amount * 100,
-                                        integrationId: payModel[index].id,
-                                      ),
-                                    ));
-                              },
-                              child: PayCard(
-                                image: payModel[index].image,
-                              ),
-                            );
-                          },
-                          itemCount: payModel.length,
-                        )
-                      ],
+                      );
+                    },
+                    child: ListWheelScrollView.useDelegate(
+                      controller: _scrollController,
+                      itemExtent: _itemHeight,
+
+
+                      physics: FixedExtentScrollPhysics(),
+                      perspective: 0.002,
+                      overAndUnderCenterOpacity: 0.36,
+                      childDelegate: ListWheelChildBuilderDelegate(
+                        childCount: _loopedList.length,
+                        builder: (context, index) {
+                          final method = _loopedList[index];
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              method.image,
+                              height: 60,
+                              width: 150,
+                              fit: BoxFit.fill,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+

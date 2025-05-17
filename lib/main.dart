@@ -22,7 +22,7 @@ void main() async {
 
   bool isFirstTime = prefs.getBool('onboarding_seen') ?? false;
   Bloc.observer = MyBlocObserver();
-  configureDependencies();
+   configureDependencies();
 
   runApp(EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],

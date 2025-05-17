@@ -9,4 +9,7 @@ class Constants {
   static const String PUPLIC_KEY =
       "egy_pk_test_xwxROTAqB7vkDmQCJhx9Jw9Kti2PVsWX";
   static const String baseURL = "https://journeymate.runasp.net";
+  static const String bookingEndpoint = "/api/Booking";
+  static const String paymentEndpoint = "/api/Payment/initiate";
 }
+

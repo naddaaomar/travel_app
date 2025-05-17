@@ -8,6 +8,7 @@ import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/models/inclusion_model.dart';
+import 'package:p/screens/booking/presentation/pages/booking_screen.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/company_profile/views/company_profile.dart';
@@ -99,9 +100,11 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                     IconButton(
                                       iconSize: 18.w,
                                       onPressed: () {},
-                                      icon: FavoriteButton(valueChanged:(_isFavorite) {
-                                        print('Is Favorite : $_isFavorite');
-                                      },),
+                                      icon: FavoriteButton(
+                                        valueChanged: (_isFavorite) {
+                                          print('Is Favorite : $_isFavorite');
+                                        },
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -131,11 +134,13 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                               FadeInUp(
                                 duration: Duration(milliseconds: 1150),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start, // Align the title to the left
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start, // Align the title to the left
                                         children: [
                                           Text(
                                             info.title ?? "",
@@ -143,10 +148,14 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                               fontFamily: "vol",
                                               fontWeight: FontWeight.w500,
                                               fontSize: 17.sp,
-                                              color: isLight ? Colors.black : Colors.white,
+                                              color: isLight
+                                                  ? Colors.black
+                                                  : Colors.white,
                                             ),
-                                            overflow: TextOverflow.ellipsis, // Handle overflow with ellipsis
-                                            maxLines: 2, // Allow the title to use up to two lines
+                                            overflow: TextOverflow
+                                                .ellipsis, // Handle overflow with ellipsis
+                                            maxLines:
+                                                2, // Allow the title to use up to two lines
                                           ),
                                         ],
                                       ),
@@ -157,13 +166,14 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                         fontFamily: "pop",
                                         fontWeight: FontWeight.w500,
                                         fontSize: 16.sp,
-                                        color: isLight ? Colors.black : Colors.white,
+                                        color: isLight
+                                            ? Colors.black
+                                            : Colors.white,
                                       ),
                                     ),
                                   ],
                                 ),
-                              )
-,
+                              ),
                               FadeInUp(
                                 duration: Duration(milliseconds: 1300),
                                 child: Row(
@@ -696,12 +706,18 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                       Future.delayed(
                                         Duration(milliseconds: 200),
                                         () {
-                                          Navigator.pushReplacement(
+                                          Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    HomeViewBody(),
+                                                    BookingScreen(model: info,),
                                               ));
+                                          // Navigator.pushReplacement(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //       builder: (context) =>
+                                          //           HomeViewBody(),
+                                          //     ));
                                         },
                                       );
                                     },

@@ -11,15 +11,16 @@ class PaymentUseCase {
   PaymentUseCase(this.clientSecretRepo);
 
   Future<Either<ErrorFailures, PaymentModel>> call(
-          {required int integrationId,
-          required String phone,
-          required String fName,
-          required String lName,
-          required double amount}) =>
+          {
+            required num bookingId,
+            required String paymentMethod,
+            required num amount,
+            required String currency,
+          }) =>
       clientSecretRepo.clientSecret(
-          lName: lName,
-          integrationId: integrationId,
-          fName: fName,
-          phone: phone,
-          amount: amount);
+          bookingId: bookingId,
+        paymentMethod: paymentMethod,
+        amount: amount,
+        currency: currency
+      );
 }

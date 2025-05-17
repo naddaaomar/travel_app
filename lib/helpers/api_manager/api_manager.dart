@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:p/helpers/constants/constants.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 @lazySingleton
@@ -8,7 +9,7 @@ class ApiManager {
 
   static void init() {
     dio = Dio(BaseOptions(
-      baseUrl: "https://accept.paymob.com",
+      baseUrl: Constants.baseURL,
       receiveDataWhenStatusError: true,
     ));
     dio.interceptors.add(PrettyDioLogger(
