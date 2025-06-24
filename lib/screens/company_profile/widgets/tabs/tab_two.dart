@@ -18,12 +18,12 @@ class _TabTwoState extends State<TabTwo> {
 
   final ScrollController _scrollController = ScrollController();
 
-  late List<Widget> items; // Declare without initializing
+  late List<Widget> items;
 
   @override
   void initState() {
     super.initState();
-    items = List.generate(100, (index) => widget.card); // Initialize here
+    items = List.generate(100, (index) => widget.card);
   }
 
   @override

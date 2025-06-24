@@ -1,20 +1,73 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:p/screens/company_profile/models/CompanyDetails.dart';
 
 class TabOne extends StatelessWidget {
-  const TabOne({super.key});
+  TabOne({super.key, required this.data});
+  CompanyDetailsModel data;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
           height: 25,
         ),
+        InfoWidget(title: "Description", txt: data.description ?? ""),
+        SizedBox(
+          height: 15,
+        ),
+        InfoWidget(title: "Email", txt: data.email ?? ""),
+        SizedBox(
+          height: 15,
+        ),
+        InfoWidget(title: "Address", txt: data.address ?? ""),
+        SizedBox(
+          height: 15,
+        ),
+        InfoWidget(title: "Phone", txt: data.phoneNumber ?? ""),
+        SizedBox(
+          height: 15,
+        ),
+        InfoWidget(title: "Website", txt: data.website ?? ""),
+        SizedBox(
+          height: 15,
+        ),
+        InfoWidget(title: "Established Date", txt: data.establishedDate ?? ""),
+
+      ],
+    );
+  }
+}
+
+class InfoWidget extends StatelessWidget {
+  InfoWidget({super.key, required this.title, required this.txt});
+  String title;
+  String txt;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         FadeInUp(
-          duration: Duration(milliseconds: 2300),
+            duration: Duration(milliseconds: 2300),
+            child: Text(
+              title,
+              style: TextStyle(fontFamily: "pop", fontWeight: FontWeight.w600),
+            )),
+        SizedBox(
+          height: 5,
+        ),
+        FadeInUp(
+          duration: Duration(milliseconds: 2500),
           child: Text(
-              "Explore Egypt with Terhal! 🇪🇬✨\n\nDiscover the beauty of Egypt with expertly planned trips to iconic destinations like the Pyramids, the Nile, and the Red Sea. Whether you seek adventure, relaxation, or cultural experiences, we offer customized itineraries and professional guides for a seamless journey. Let us take you beyond the ordinary and unveil the wonders of Egypt!"),
+            txt,
+            style: TextStyle(
+              fontFamily: "pop",
+            ),
+          ),
         ),
       ],
     );

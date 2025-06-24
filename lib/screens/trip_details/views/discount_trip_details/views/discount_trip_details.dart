@@ -12,38 +12,30 @@ import 'package:p/models/photo_gallery_model.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/company_profile/views/company_profile.dart';
-import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/fav_tab_widgets/favorites.dart';
 import 'package:p/screens/trip_details/views/widgets/activities_bottom_sheet.dart';
-import 'trip_on_map.dart';
+import 'package:p/screens/trip_details/views/widgets/trip_on_map.dart';
+import 'package:shimmer/shimmer.dart';
 
-class TripDetailsViewBody extends StatefulWidget {
-  const TripDetailsViewBody({
-    Key? key,
-    required this.image,
-    required this.tripId,
-  }) : super(key: key);
+class DiscountTripDetails extends StatefulWidget {
+  const DiscountTripDetails(
+      {Key? key,
+        required this.image,
+        required this.newPrice,
+        required this.oldPrice,
+        required this.place,
+        required this.discountAmount})
+      : super(key: key);
   final String image;
-  final String tripId;
+  final String place;
+  final double oldPrice;
+  final double newPrice;
+  final double discountAmount;
 
   @override
-  State<TripDetailsViewBody> createState() => _TripDetailsViewBodyState();
+  State<DiscountTripDetails> createState() => _DiscountTripDetailsState();
 }
 
-class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
-  bool _isFavorite = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _checkFavoriteStatus();
-  }
-  Future<void> _checkFavoriteStatus() async {
-    final favorites = FavoriteManager().favoritesNotifier.value;
-    setState(() {
-      _isFavorite = favorites.contains(widget.tripId);
-    });
-  }
-
+class _DiscountTripDetailsState extends State<DiscountTripDetails> {
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
@@ -87,7 +79,7 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              iconSize: 18.w,
+                              iconSize: 20.w,
                               icon: Icon(
                                 Ionicons.chevron_back,
                                 color: isLight ? Colors.brown : Colors.white,
@@ -95,24 +87,11 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                             ),
                             IconButton(
                               iconSize: 18.w,
-                              onPressed: () {
-                                ValueListenableBuilder<List<String>>(
-                                  valueListenable: FavoriteManager().favoritesNotifier,
-                                  builder: (context, favorites, _) {
-                                    return FavoriteButton(
-                                      isFavorite: favorites.contains(widget.tripId),
-                                      iconSize: 30,
-                                      valueChanged: (isFavorite) {
-                                        FavoriteManager().toggleFavorite(widget.tripId, context);
-                                      },
-                                    );
-                                  },
-                                );
-                              },
+                              onPressed: () {},
                               icon: FavoriteButton(valueChanged:(_isFavorite) {
                                 print('Is Favorite : $_isFavorite');
                               },),
-                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -140,8 +119,9 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                       FadeInUp(
                         duration: Duration(milliseconds: 1150),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('dahab'.tr(),
+                            Text(widget.place.tr(),
                                 style: TextStyle(
                                     fontFamily: "vol",
                                     fontWeight: FontWeight.w500,
@@ -149,13 +129,51 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                     color:
                                     isLight ? Colors.black : Colors.white)),
                             Spacer(),
-                            Text(
-                              "\$200",
-                              style: TextStyle(
-                                  fontFamily: "pop",
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17.sp,
-                                  color: isLight ? Colors.black : Colors.white),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 4,vertical: 2),
+                                      decoration:
+                                      BoxDecoration(color: Color(0xff811500),
+                                          borderRadius: BorderRadius.circular(5)),
+                                      child: Text("-${widget.discountAmount.toStringAsFixed(0)}",
+                                        style: TextStyle(color: Colors.white,
+                                            fontFamily: "pop",
+                                            fontSize: 10),),
+                                    ),
+                                    SizedBox(width: 5,),
+                                    Shimmer.fromColors(
+                                      baseColor: ColorApp.primaryColor,
+                                      highlightColor: Colors.grey.shade300,
+                                      period: Duration(milliseconds: 2100),
+
+                                      child: Text(
+                                        "EGP ${widget.newPrice.toStringAsFixed(0)}",
+                                        style: TextStyle(
+                                          fontFamily: "pop",
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 17.sp,
+
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                Text(
+                                  "EGP ${widget.oldPrice.toStringAsFixed(0)}",
+                                  style: TextStyle(
+                                    fontFamily: "pop",
+                                    fontSize: 12,
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationColor: Colors.red,
+
+                                  ),
+                                )
+                              ],
                             ),
                           ],
                         ),
@@ -195,12 +213,12 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                   padding: EdgeInsets.only(right: 4.w),
                                   child: IconButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CompanyProfile(),
-                                          ));
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //       builder: (context) =>
+                                      //           CompanyProfile(),
+                                      //     ));
                                     },
                                     iconSize: 20.w,
                                     icon: Icon(
@@ -215,13 +233,13 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                       horizontal: 10, vertical: 2),
                                   decoration: BoxDecoration(
                                       border: GradientBoxBorder(
-                                          gradient: LinearGradient(colors: [
+                                          gradient: LinearGradient(colors: const [
                                             Color(0xffFF9884),
                                             ColorApp.thirdColor
                                           ]),
                                           width: 2)),
                                   child: Column(
-                                    children: [
+                                    children: const [
                                       Text(
                                         "Available",
                                         style: TextStyle(
@@ -230,7 +248,7 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                         ),
                                       ),
                                       Text(
-                                        "20",
+                                        "10",
                                         style: TextStyle(
                                             fontFamily: "pop", fontSize: 10),
                                       )
@@ -402,11 +420,11 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (context) => ActivitiesBottomSheet(),
-                                );
+                                // showModalBottomSheet(
+                                //   context: context,
+                                //   isScrollControlled: true,
+                                //   builder: (context) => ActivitiesBottomSheet(),
+                                // );
                               },
                               child: Text(
                                 'Activities '.tr(),

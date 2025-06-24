@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/screens/trip_details/models/TravelDetailsModel.dart';
 
 class ActivitiesBottomSheet extends StatelessWidget {
-  const ActivitiesBottomSheet({super.key});
+  ActivitiesBottomSheet({super.key, required this.itenraries});
+  List<Itenraries> itenraries;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 18),
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.5,
       decoration: BoxDecoration(
           color: ColorApp.secondaryColor,
           borderRadius: BorderRadius.only(
@@ -22,30 +23,26 @@ class ActivitiesBottomSheet extends StatelessWidget {
               "Activities",
               style: TextStyle(fontFamily: "vol", fontSize: 15),
             ),
-            SizedBox(
-              height: 15,
-            ),
-            Details(
-              day: "Day 1",
-              txt1: "Arrival at hotel",
-              txt2: "Welcome dinner",
-              txt3: "City orientation walk",
-            ),
-            SizedBox(height: 20),
-            Details(
-              day: "Day 2",
-              txt1: "Morning sightseeing tour",
-              txt2: "Lunch by the river",
-              txt3: "Evening at the local market",
-            ),
-            SizedBox(height: 20),
-            Details(
-              day: "Day 3",
-              txt1: "Visit historical museum",
-              txt2: "Optional boat ride",
-              txt3: "Farewell dinner",
-            ),
-
+            SizedBox(height: 15),
+            ...itenraries
+                .map((day) => Column(
+                      children: [
+                        Details(
+                          day: "Day ${day.dayNumber ?? ''}",
+                          txt1: day.activities?.isNotEmpty == true
+                              ? day.activities![0]
+                              : '',
+                          txt2: (day.activities?.length ?? 0) > 1
+                              ? day.activities![1]
+                              : '',
+                          txt3: (day.activities?.length ?? 0) > 2
+                              ? day.activities![2]
+                              : '',
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    ))
+                .toList(),
           ],
         ),
       ),
@@ -54,7 +51,12 @@ class ActivitiesBottomSheet extends StatelessWidget {
 }
 
 class Details extends StatelessWidget {
-  Details({super.key,required this.day,required this.txt1,required this.txt2, required this.txt3});
+  Details(
+      {super.key,
+      required this.day,
+      required this.txt1,
+      required this.txt2,
+      required this.txt3});
   String day;
   String txt1;
   String txt2;
@@ -68,7 +70,6 @@ class Details extends StatelessWidget {
         children: [
           Container(
             width: 2,
-
             decoration: BoxDecoration(
               color: ColorApp.primaryColor,
               borderRadius: BorderRadius.circular(40),
@@ -80,7 +81,8 @@ class Details extends StatelessWidget {
             children: [
               Text(
                 day,
-                style: TextStyle(fontFamily: "pop", fontWeight: FontWeight.w600),
+                style:
+                    TextStyle(fontFamily: "pop", fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 10),
               ActivityRow(txt: txt1),
@@ -92,7 +94,6 @@ class Details extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class ActivityRow extends StatelessWidget {
@@ -108,13 +109,16 @@ class ActivityRow extends StatelessWidget {
           color: Colors.black54,
           size: 10,
         ),
-        SizedBox(width: 10,),
-        Text(txt,style:
-        TextStyle(fontFamily: "pop",
-          fontSize: 12,
+        SizedBox(
+          width: 10,
         ),
+        Text(
+          txt,
+          style: TextStyle(
+            fontFamily: "pop",
+            fontSize: 12,
+          ),
         )
-
       ],
     );
   }

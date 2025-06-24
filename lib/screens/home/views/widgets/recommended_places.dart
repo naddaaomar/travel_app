@@ -74,10 +74,11 @@ class RecommendedPlaces extends StatelessWidget {
                                     Padding(
                                       padding: EdgeInsets.only(left: 5.w),
                                       child: Text(
-                                        'Event'.tr(),
+                                        'Event',
                                         style: TextStyle(
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.bold,
+                                          fontFamily: "pop",
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w600,
                                             color: isLight
                                                 ? Colors.black
                                                 : Colors.white),
@@ -92,7 +93,8 @@ class RecommendedPlaces extends StatelessWidget {
                                     Text(
                                       'date'.tr(),
                                       style: TextStyle(
-                                          fontSize: 12.sp,
+                                        fontFamily: "pop",
+                                          fontSize: 11.sp,
                                           color: isLight
                                               ? Colors.black
                                               : Colors.white),
@@ -112,7 +114,8 @@ class RecommendedPlaces extends StatelessWidget {
                                     Text(
                                       'location'.tr(),
                                       style: TextStyle(
-                                          fontSize: 12.sp,
+                                        fontFamily: "pop",
+                                          fontSize: 11.sp,
                                           color: isLight
                                               ? Colors.black
                                               : Colors.white),

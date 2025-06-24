@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +7,6 @@ import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/fav_tab_widgets/favorites.dart';
 import 'event_on_map.dart';
 import 'view_all_recommended_events.dart';
 
@@ -24,18 +22,6 @@ class EventDetailsViewBody extends StatefulWidget {
 }
 
 class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
-  bool _isFavorite = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _checkFavoriteStatus();
-  }
-  Future<void> _checkFavoriteStatus() async {
-    final favorites = FavoriteManager().favoritesNotifier.value;
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
@@ -86,23 +72,12 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                               ),
                             ),
                             IconButton(
-                              iconSize: 18.w,
-                              onPressed: () {
-                                ValueListenableBuilder<List<String>>(
-                                  valueListenable: FavoriteManager().favoritesNotifier,
-                                  builder: (context, favorites, _) {
-                                    return FavoriteButton(
-                                      iconSize: 30,
-                                      valueChanged: (isFavorite) {
-                                        FavoriteManager().toggleFavorite('',context);
-                                      },
-                                    );
-                                  },
-                                );
-                              },
-                              icon: FavoriteButton(valueChanged:(_isFavorite) {
-                                print('Is Favorite : $_isFavorite');
-                              },),
+                              iconSize: 20.w,
+                              onPressed: () {},
+                              icon: Icon(
+                                Ionicons.heart_outline,
+                                color: isLight ? Colors.brown : Colors.white,
+                              ),
                             ),
                           ],
                         ),
@@ -131,31 +106,31 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                       FadeInUp(
                         duration: Duration(milliseconds: 1150),
                         child: Row(
-                            children: [
-                              Text('Event'.tr(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.sp,
-                                      color:
-                                      isLight ? Colors.black : Colors.white)),
-                              Spacer(),
-                              Row(
-                                children: const [
-                                  Text(
-                                    "Date  ",
-                                    style: TextStyle(fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                          children: [
+                            Text('Event'.tr(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20.sp,
+                                    color:
+                                    isLight ? Colors.black : Colors.white)),
+                            Spacer(),
+                            Row(
+                              children: const [
+                                Text(
+                                  "Date  ",
+                                  style: TextStyle(fontSize: 12,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  Text(
-                                    "7/7/2025",
-                                    style: TextStyle(fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                ),
+                                Text(
+                                  "7/7/2025",
+                                  style: TextStyle(fontSize: 10,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                ],
-                              ),
-                            ]),),
+                                ),
+                              ],
+                            ),
+                          ]),),
 
                       SizedBox(
                         height: 20,

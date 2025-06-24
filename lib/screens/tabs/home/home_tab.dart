@@ -8,6 +8,7 @@ import 'package:p/screens/home/views/widgets/search/location_card_new.dart';
 import 'package:p/screens/home/views/widgets/nearby_places.dart';
 import 'package:p/screens/home/views/widgets/recommended_places.dart';
 import 'dart:ui' as ui;
+
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/trip_details/views/widgets/view_all_nearby_trips.dart';
 
@@ -34,7 +35,7 @@ class HomeTab extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Recommended Events'.tr(),
+                    'Events'.tr(),
                     style: TextStyle(
                         fontFamily: "vol",
                         fontWeight: FontWeight.w600,
