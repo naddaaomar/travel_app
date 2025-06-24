@@ -8,35 +8,39 @@ class TabOne extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 25,
-        ),
-        InfoWidget(title: "Description", txt: data.description ?? ""),
-        SizedBox(
-          height: 15,
-        ),
-        InfoWidget(title: "Email", txt: data.email ?? ""),
-        SizedBox(
-          height: 15,
-        ),
-        InfoWidget(title: "Address", txt: data.address ?? ""),
-        SizedBox(
-          height: 15,
-        ),
-        InfoWidget(title: "Phone", txt: data.phoneNumber ?? ""),
-        SizedBox(
-          height: 15,
-        ),
-        InfoWidget(title: "Website", txt: data.website ?? ""),
-        SizedBox(
-          height: 15,
-        ),
-        InfoWidget(title: "Established Date", txt: data.establishedDate ?? ""),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 18),
 
-      ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 25,
+          ),
+          InfoWidget(title: "Description", txt: data.description ?? ""),
+          SizedBox(
+            height: 15,
+          ),
+          InfoWidget(title: "Email", txt: data.email ?? ""),
+          SizedBox(
+            height: 15,
+          ),
+          InfoWidget(title: "Address", txt: data.address ?? ""),
+          SizedBox(
+            height: 15,
+          ),
+          InfoWidget(title: "Phone", txt: data.phoneNumber ?? ""),
+          SizedBox(
+            height: 15,
+          ),
+          InfoWidget(title: "Website", txt: data.website ?? ""),
+          SizedBox(
+            height: 15,
+          ),
+          InfoWidget(title: "Established Date", txt: data.establishedDate ?? ""),
+
+        ],
+      ),
     );
   }
 }

@@ -13,13 +13,14 @@ class BookingUseCase {
   BookingUseCase(this.bookingRepo);
 
   Future<Either<ErrorFailures, BookingModel>> call(
-      {required String buyerEmail,
-        required int travelId,
-        required int quantity,
+      {
+        //required String buyerEmail,
+        required num travelId,
+        required num quantity,
       }
       ) =>
       bookingRepo.Booking(
-      buyerEmail: buyerEmail,
+      //buyerEmail: buyerEmail,
         quantity: quantity,
         travelId: travelId
       );

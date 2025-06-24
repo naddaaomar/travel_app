@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/all_companies/manager/all_com_cubit.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/tabs/offers/presentation/pages/company_offers.dart';
+import 'package:p/screens/company_offers/presentation/pages/company_offers.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/companies.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/company_home_card.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/dont_miss.dart';

@@ -10,8 +10,8 @@ import 'package:p/screens/payment/domain/use_cases/payment_use_case.dart';
 part 'payment_state.dart';
 @injectable
 class PaymentCubit extends Cubit<PaymentState> {
-  PaymentCubit() : super(PaymentInitial());
-  PaymentUseCase? paymentUseCase;
+  PaymentCubit({required this.paymentUseCase}) : super(PaymentInitial());
+  PaymentUseCase paymentUseCase;
 
   static PaymentCubit get(context) => BlocProvider.of(context);
 
@@ -21,7 +21,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       required num amount,
       required String currency}) async {
     emit(PaymentLoading());
-    var payment = await paymentUseCase!.call(
+    var payment = await paymentUseCase.call(
         bookingId: bookingId,
         paymentMethod: paymentMethod,
         amount: amount,

@@ -8,7 +8,7 @@ class CompanyCard extends StatelessWidget {
   String companyName;
   String img;
   String id;
-
+// setState
   @override
   Widget build(BuildContext context) {
     return Positioned(

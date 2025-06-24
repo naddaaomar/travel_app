@@ -65,14 +65,16 @@ class _BookingScreenState extends State<BookingScreen> {
             child: BlocConsumer<BookingCubit, BookingState>(
               listener: (context, state) {
                 if (state is BookingSuccess) {
+                  final cubit = BookingCubit.get(context);
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => PayMethod(
-                            bookingId: state.bookingModel.id!.toInt(),
+                            bookingId: state.bookingModel.id!,
                             amount: state.bookingModel.totalCost!,
-                            people:
-                                state.bookingModel.paymentIntentId.toString()),
+                            people: cubit.getSummaryText()
+                                ),
                       ));
                 }
               },
@@ -424,7 +426,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                       fiveController: cubit.fiveController,
                                     );
                                     await cubit.bookingCall(
-                                        buyerEmail: "alaa@.com",
+                                     //   buyerEmail: "alaa@.com",
                                         travelId: widget.model.id!.toInt(),
                                         quantity: int.parse(
                                             cubit.numPeopleController.text));

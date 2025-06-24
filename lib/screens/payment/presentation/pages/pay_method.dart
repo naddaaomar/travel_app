@@ -7,7 +7,7 @@ import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'pay_screens/web_screen.dart';
 
 class PayMethod extends StatefulWidget {
-  final int bookingId;
+  final num bookingId;
   final num amount;
 
   final String people;

@@ -38,7 +38,6 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i500.PaymentCubit>(() => _i500.PaymentCubit());
     gh.lazySingleton<_i501.ApiManager>(() => _i501.ApiManager());
     gh.factory<_i61.BookingDs>(
         () => _i708.BookingDsImpl(gh<_i501.ApiManager>()));
@@ -54,6 +53,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i425.ClientSecretRepoImpl(gh<_i25.ClientSecretDs>()));
     gh.factory<_i601.PaymentUseCase>(
         () => _i601.PaymentUseCase(gh<_i437.ClientSecretRepo>()));
+    gh.factory<_i500.PaymentCubit>(
+        () => _i500.PaymentCubit(paymentUseCase: gh<_i601.PaymentUseCase>()));
     return this;
   }
 }

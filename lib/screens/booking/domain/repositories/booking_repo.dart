@@ -5,9 +5,10 @@ import 'package:p/screens/payment/data/models/PaymentModel.dart';
 
 abstract class BookingRepo {
   Future<Either<ErrorFailures, BookingModel>> Booking(
-      {required String buyerEmail,
-        required int travelId,
-        required int quantity,
+      {
+        //required String buyerEmail,
+        required num travelId,
+        required num quantity,
       }
       );
 }

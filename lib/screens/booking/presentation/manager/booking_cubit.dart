@@ -36,21 +36,34 @@ class BookingCubit extends Cubit<BookingState> {
   BookingUseCase bookingUseCase;
 
   bookingCall({
-    required String buyerEmail,
-    required int travelId,
-    required int quantity,
+    //  required String buyerEmail,
+    required num travelId,
+    required num quantity,
   }) async {
     try {
 
       emit(BookingLoading());
-      var booking = await bookingUseCase!
-          .call(buyerEmail: buyerEmail, travelId: travelId, quantity: quantity);
+      var booking = await bookingUseCase
+          .call(
+        //  buyerEmail: buyerEmail,
+          travelId: travelId, quantity: quantity);
       booking.fold(
-        (l) {
-          emit(BookingLoading());
+            (l) {
+          emit(BookingError());
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
           print(l);
         },
-        (r) {
+            (r) {
           emit(BookingSuccess(bookingModel: r));
           print(r.buyerEmail);
           print(r.buyerEmail);
@@ -148,19 +161,19 @@ class BookingCubit extends Cubit<BookingState> {
     return super.close();
   }
 
-  // void onFocusChanged(bool focus) {
-  //   isFocusedPeople = focus;
-  //   emit(focus ? BookingInputFocused() : BookingInputUnfocused());
-  // }
+// void onFocusChanged(bool focus) {
+//   isFocusedPeople = focus;
+//   emit(focus ? BookingInputFocused() : BookingInputUnfocused());
+// }
 
-  // void onInputChanged(String value) {
-  //   input = value;
-  //   emit(BookingInputChanged());
-  //
-  //   if (value.trim().isNotEmpty) {
-  //     emit(BookingInputValid());
-  //   } else {
-  //     emit(BookingInputInvalid());
-  //   }
-  // }
+// void onInputChanged(String value) {
+//   input = value;
+//   emit(BookingInputChanged());
+//
+//   if (value.trim().isNotEmpty) {
+//     emit(BookingInputValid());
+//   } else {
+//     emit(BookingInputInvalid());
+//   }
+// }
 }

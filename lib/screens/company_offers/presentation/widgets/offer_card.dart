@@ -5,12 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/tabs/offers/data/models/company_offers_model.dart';
+import 'package:p/screens/company_offers/data/models/company_offers_model.dart';
 
 class OfferCard extends StatelessWidget {
   OfferCard({Key? key, required this.companyOffersModel}) : super(key: key);
   CompanyOffersModel companyOffersModel;
-
+// setState
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;

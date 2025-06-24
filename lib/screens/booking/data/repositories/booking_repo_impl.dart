@@ -14,12 +14,14 @@ class BookingRepoImpl implements BookingRepo {
 
   @override
   Future<Either<ErrorFailures, BookingModel>> Booking(
-      {required String buyerEmail,
-      required int travelId,
-      required int quantity}) async {
+      {
+        //required String buyerEmail,
+      required num travelId,
+      required num quantity}) async {
     try {
       var data = await bookingDs.booking(
-          buyerEmail: buyerEmail, travelId: travelId, quantity: quantity);
+          //buyerEmail: buyerEmail,
+          travelId: travelId, quantity: quantity);
       return Right(data);
     } catch (e) {
       return Left(ErrorRemoteFailure(e.toString()));

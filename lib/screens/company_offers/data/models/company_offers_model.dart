@@ -18,10 +18,10 @@ class CompanyOffersModel {
 
 List<CompanyOffersModel> companyOffersModel = [
   // Beach
-  CompanyOffersModel(place: "Dahab", location: "South Sinai, Egypt", oldPrice:  200, newPrice:  100, category: "Beach"),
-  CompanyOffersModel(place: "Hurghada", location: "Red Sea Governorate", oldPrice:  250, newPrice:  150, category: "Beach"),
-  CompanyOffersModel(place: "Sharm El Sheikh", location: "South Sinai", oldPrice:  300, newPrice:  180, category: "Beach"),
-  CompanyOffersModel(place: "Marsa Alam", location: "Red Sea Coast", oldPrice:  220, newPrice:  130, category: "Beach"),
+  CompanyOffersModel(place: "Dahab", location: "South Sinai, Egypt", oldPrice:  500, newPrice:  400, category: "Beach"),
+  CompanyOffersModel(place: "Hurghada", location: "Red Sea Governorate", oldPrice:  700, newPrice:  500, category: "Beach"),
+  CompanyOffersModel(place: "Sharm El Sheikh", location: "South Sinai", oldPrice:  1000, newPrice:  800, category: "Beach"),
+  CompanyOffersModel(place: "Marsa Alam", location: "Red Sea Coast", oldPrice:  2000, newPrice:  1000, category: "Beach"),
   CompanyOffersModel(place: "North Coast", location: "Mediterranean Sea, Egypt", oldPrice:  270, newPrice:  160, category: "Beach"),
 
   // Religious
