@@ -140,8 +140,7 @@ class _OffersScreenState extends State<OffersScreen> {
                   ],
                 ),
               );
-            }
-            ;
+            };
             if (state is Loading) {
               return Center(
                 child: CircularProgressIndicator(

@@ -28,12 +28,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
- /* final User? user = Auth().currentUser;
-
-  Future<void> signOut() async {
-    await Auth().signOut();
-  }
-*/
 
   bool _isPasswordCorrect = false;
   bool _showCurrentPassword = false;
@@ -44,11 +38,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _profile = UserProfile(
-      name: widget.name,
-      email: widget.email,
-      password: widget.password,
-    );
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _profile = UserProfile(
+        name: prefs.getString('name') ?? widget.name,
+        email: prefs.getString('email') ?? widget.email,
+        password: prefs.getString('password') ?? widget.password,
+      );
+    });
   }
 
   @override
@@ -66,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const SignInPage()),
+      MaterialPageRoute(builder: (context) => SignInPage()),
     );
     setState(() => _isLoading = false);
   }
@@ -135,7 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 1)); // Simulate save operation
+    await Future.delayed(const Duration(seconds: 1));
 
     if (!mounted) return;
     setState(() {
@@ -212,10 +213,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: TextButton(
                             onPressed: _sendResetEmail,
                             child: const Text('Forgot Password?',
-                            style: TextStyle(
-                              fontFamily: "vol",
-                              color: Colors.black
-                            ),),
+                              style: TextStyle(
+                                  fontFamily: "vol",
+                                  color: Colors.black
+                              ),),
                           ),
                         ),
                       ],
@@ -317,9 +318,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-          padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
-          child: Column(
-           children: [
+        padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+        child: Column(
+          children: [
             const SizedBox(height: 20),
             _buildProfileCard(),
             const SizedBox(height: 30),
@@ -355,8 +356,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   onPressed: () => Navigator.pop(context, false),
                                   child: const Text('Cancel',
                                     style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'vols'
+                                        color: Colors.black,
+                                        fontFamily: 'vols'
                                     ),),
                                 ),
                                 TextButton(
@@ -378,7 +379,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             if (mounted) {
                               Navigator.pushNamedAndRemoveUntil(
                                 context,
-                               '/person_tab' ,
+                                '/person_tab' ,
                                     (route) => false,
                               );
                             }
@@ -387,16 +388,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         tooltip: 'Sign Out',
                       ),
                       Text('Sign Out',
-                      style: TextStyle(
-                        fontFamily: 'vol',
-                        color: ColorApp.primaryColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),),
+                        style: TextStyle(
+                          fontFamily: 'vol',
+                          color: ColorApp.primaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),),
                     ],
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 100,
             ),
           ],
         ),
@@ -469,8 +473,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       trailing: onTap != null
           ? IconButton(
-           icon: const Icon(Icons.edit, size: 20),
-           onPressed: onTap,
+        icon: const Icon(Icons.edit, size: 20),
+        onPressed: onTap,
       )
           : null,
       onTap: onTap,
@@ -533,14 +537,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: const Text('Cancel',
-            style:  TextStyle(color: ColorApp.thirdColor,
-              fontFamily: 'vol',),),
+              style:  TextStyle(color: ColorApp.thirdColor,
+                fontFamily: 'vol',),),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: const Text('Save',
-            style:  TextStyle(color: ColorApp.thirdColor,
-              fontFamily: 'vol',),),
+              style:  TextStyle(color: ColorApp.thirdColor,
+                fontFamily: 'vol',),),
           ),
         ],
       ),

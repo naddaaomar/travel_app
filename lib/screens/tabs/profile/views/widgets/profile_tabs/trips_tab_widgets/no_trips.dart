@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:p/screens/home/views/home_view.dart';
+import '../../../../../../all_travels/view/all_travels.dart';
 
 class NoPreviousTrips extends StatefulWidget {
   const NoPreviousTrips({super.key});
@@ -97,7 +97,7 @@ class _NoTripsYetState extends State<NoPreviousTrips> with SingleTickerProviderS
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const HomeView()),
+                        MaterialPageRoute(builder: (context) =>  AllTravels()),
                       );
                     },
                   ),

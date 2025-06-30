@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:p/screens/tabs/profile/auth/core/signin_check.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'no_fav.dart';
-
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({Key? key}) : super(key: key);
@@ -11,32 +10,77 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
+  Future<bool> _isSignedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isSignedIn') ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Favorites'),
       ),
-      body: ValueListenableBuilder<List<String>>(
-        valueListenable: FavoriteManager().favoritesNotifier,
-        builder: (context, favorites, _) {
-          if (favorites.isEmpty) {
-            return  NoFavorites(onAddFavorite: () {  },);
+      body: FutureBuilder<bool>(
+        future: _isSignedIn(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
           }
-          return ListView.builder(
-            itemCount: favorites.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(favorites[index]),
-                trailing: IconButton(
-                  icon: const Icon(Icons.favorite, color: Colors.red),
-                  onPressed: () {
-                    FavoriteManager().toggleFavorite(favorites[index], context);
+          if (snapshot.hasError) {
+            return const Center(child: Text('Error loading sign-in status.'));
+          }
+
+          final bool isSignedIn = snapshot.data ?? false;
+          if (isSignedIn) {
+            return ValueListenableBuilder<List<String>>(
+              valueListenable: FavoriteManager().favoritesNotifier,
+              builder: (context, favorites, _) {
+                if (favorites.isEmpty) {
+                  return NoFavorites(onAddFavorite: () {});
+                }
+                return ListView.builder(
+                  itemCount: favorites.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(favorites[index]),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.favorite, color: Colors.red),
+                        onPressed: () {
+                          FavoriteManager().toggleFavorite(favorites[index], context);
+                        },
+                      ),
+                    );
                   },
-                ),
-              );
-            },
-          );
+                );
+              },
+            );
+          } else {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Please sign in to view your favorites.',
+                    style: TextStyle(fontSize: 18),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SignInPage(),
+                        ),
+                      );
+                      setState(() {});
+                    },
+                    child: const Text('Sign In'),
+                  ),
+                ],
+              ),
+            );
+          }
         },
       ),
     );
@@ -73,7 +117,7 @@ class FavoriteManager {
       favoritesNotifier.value = currentFavorites;
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to update favorites')),
+        const SnackBar(content: Text('Failed to update favorites.')),
       );
     }
   }

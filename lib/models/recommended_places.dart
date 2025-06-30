@@ -14,14 +14,6 @@ class RecommendedPlaceModel {
 
 
 List<RecommendedPlaceModel> recommendedPlaces = [
-<<<<<<<<< Temporary merge branch 1
-RecommendedPlaceModel(
-  image: 'assets/images/onboard.png',
-  date: '7/7/2025',
-  location: 'event'.tr(),
- ),
-=========
->>>>>>>>> Temporary merge branch 2
   RecommendedPlaceModel(
     image: 'assets/images/onboard.png',
     date: '7/7/2025',
@@ -51,13 +43,10 @@ RecommendedPlaceModel(
     image: 'assets/images/onboard.png',
     date: '7/7/2025',
     location: 'event'.tr(),
-<<<<<<<<< Temporary merge branch 1
-=========
   ),
   RecommendedPlaceModel(
     image: 'assets/images/onboard.png',
     date: '7/7/2025',
     location: 'event'.tr(),
->>>>>>>>> Temporary merge branch 2
   ),
 ];

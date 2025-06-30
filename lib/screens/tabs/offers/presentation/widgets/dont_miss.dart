@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/main.dart';
 import 'package:p/screens/tabs/offers/presentation/widgets/dont_miss_model.dart';
+import '../../../../../main.dart';
 import 'dont_miss_card.dart';
 
 class DontMiss extends StatefulWidget {

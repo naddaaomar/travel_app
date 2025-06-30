@@ -4,12 +4,15 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Android 13+ -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:label="p"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCt0ohn2ChF33rE2pbaDmFcM7EjT_XNpXE"/>
+            android:value="907414361778-75oo6cb1lku9jojibe3fa3p4mj7h16nm.apps.googleusercontent.com"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

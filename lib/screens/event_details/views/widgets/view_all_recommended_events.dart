@@ -1,9 +1,9 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/main.dart';
 import 'package:p/screens/event_details/views/widgets/view_all_recommended_events_body.dart';
 import 'dart:ui' as ui;
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
@@ -16,6 +16,7 @@ class ViewAllEvents extends StatelessWidget {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
@@ -23,23 +24,24 @@ class ViewAllEvents extends StatelessWidget {
           },
           icon: Icon(
             Icons.arrow_back_ios_new,
-            color: ColorApp.thirdColor,
-            size: 25.w,
+            color: Colors.white,
+            size: 30.w,
           ),
         ),
-        centerTitle: true,
-        title: Text(
-          'Events',
-          style: TextStyle(
-              fontFamily: "pop",
-              color: ColorApp.thirdColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 20),
+        title: Center(
+          child: Text('Recommended Events',
+            style: TextStyle(
+                color: ColorApp.thirdColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 22
+            ),),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-        child: ViewAllEventsBody(),
+        padding: const EdgeInsets.symmetric(vertical:20 ,horizontal: 7),
+        child: FadeInUp(
+            duration: const Duration(milliseconds: 1150),
+            child: ViewAllEventsBody()),
       ),
     );
   }

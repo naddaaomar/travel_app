@@ -8,43 +8,41 @@ import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
 import 'package:p/screens/onboard/views/widgets/onboard_view_body.dart';
-import 'package:p/screens/tabs/profile/auth/core/auth_data/auth_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'screens/splash_screen/view/splash.dart';
-
+import 'screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
-
   await EasyLocalization.ensureInitialized();
   ApiManager.init();
-  await AuthData.signUp(password: '', email: '', userName: '');
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   bool isFirstTime = prefs.getBool('onboarding_seen') ?? false;
   Bloc.observer = MyBlocObserver();
   configureDependencies();
 
-
-  runApp( EasyLocalization(
+  runApp(EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],
       path: 'assets/translations',
       startLocale: Locale("en"),
       saveLocale: true,
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<AuthCubit>(
+            create: (context) => AuthCubit(),
+          ),
           BlocProvider(
             create: (context) => ThemeBloc(),
           ),
           BlocProvider(create: (context) => LocaleBloc()),
         ],
         child: MyApp(isFirstTime: isFirstTime),
-      ),
-  ),);
+      )));
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

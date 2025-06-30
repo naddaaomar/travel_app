@@ -7,7 +7,6 @@ import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/all_companies/manager/all_com_cubit.dart';
 import 'package:p/screens/all_travels/manager/all_travels_cubit.dart';
 import 'package:p/screens/all_travels/widgets/all_travel_card.dart';
-import 'package:p/screens/company_profile/views/company_profile.dart';
 import 'package:p/screens/home/views/widgets/drawer/new_drawer.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
 import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
@@ -169,9 +168,9 @@ class AllTravels extends StatelessWidget {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   TripDetailsViewBody(
-                                                      id: state.allTravelsModel
+                                                    tripId: state.allTravelsModel
                                                           .items![index].id
-                                                          .toString()),
+                                                          .toString(), image: '',),
                                             ));
                                       },
                                       child: AllTravelsCard(

@@ -32,14 +32,14 @@ class GoogleAuth {
         await _auth.signInWithCredential(credential);
         final User? user = userCredential.user;
 
-        if (user != null) {
-          return AuthDataModel(
-            userName: user.displayName,
-            email: user.email,
-            token: await user.getIdToken(),
-            // Add any additional fields from your API response
-          );
-        }
+        // if (user != null) {
+        //   return AuthDataModel(
+        //     userName: user.displayName,
+        //     email: user.email,
+        //     token: await user.getIdToken(),
+        //     // Add any additional fields from your API response
+        //   );
+        // }
       }
       return null;
     } catch (e) {

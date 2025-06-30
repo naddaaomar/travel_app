@@ -28,52 +28,52 @@ class _ProfileBodyState extends State<ProfileBody>
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80)),
             ),
             child: SizedBox(
-                height: 20,
-                child: Row(
-                  children:
-                    ProfileData.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final item = entry.value;
-                          return Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only( left: 20, bottom: 4,),
-                              child: InkWell(
-                                onTap: (){
-                                  setState(() {
-                                    selectedIndex = index;
-                                  });
-                                },
-                                child: Material(
-                                  elevation: 3,
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Container(
-                                    height: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color:  selectedIndex == index ? Colors.white :ColorApp.secondaryColor,
-                                        borderRadius: BorderRadius.circular(20)),
-                                    child:Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(ProfileData[index].icon),
-                                          const SizedBox(
-                                            height: 3,),
-                                          Center(
-                                            child: Text(
-                                               ProfileData[index].name,
-                                            style: TextStyle(
-                                              fontFamily: "vol",
-                                            ),),
-                                          ),
-                                  ]),
-                                ),
-                              ),
-                            ),),
-                          );
-                        }).toList(),
-                    ),
-                ),
+              height: 20,
+              child: Row(
+                children:
+                ProfileData.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final item = entry.value;
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only( left: 20, bottom: 4,),
+                      child: InkWell(
+                        onTap: (){
+                          setState(() {
+                            selectedIndex = index;
+                          });
+                        },
+                        child: Material(
+                          elevation: 3,
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                                color:  selectedIndex == index ? Colors.white :ColorApp.secondaryColor,
+                                borderRadius: BorderRadius.circular(20)),
+                            child:Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(ProfileData[index].icon),
+                                  const SizedBox(
+                                    height: 3,),
+                                  Center(
+                                    child: Text(
+                                      ProfileData[index].name,
+                                      style: TextStyle(
+                                        fontFamily: "vol",
+                                      ),),
+                                  ),
+                                ]),
+                          ),
+                        ),
+                      ),),
+                  );
+                }).toList(),
+              ),
             ),
           ),
+        ),
         SizedBox(height: 80,),
         Expanded(
           child: _buildSelectedContent(),
@@ -86,7 +86,7 @@ class _ProfileBodyState extends State<ProfileBody>
     switch (selectedIndex) {
       case 0:
         return const Center(
-            child: ProfileScreen(name: 'n', email: 'n@gmail.com', password: '********',));
+            child: ProfileScreen(name: '',  email: '', password: '',));
       case 1:
         return Center(
             child: NoFavorites(onAddFavorite: (){},));

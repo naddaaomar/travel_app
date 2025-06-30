@@ -7,42 +7,43 @@ import 'package:p/screens/tabs/profile/auth/core/auth_data/auth_data.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final Dio _dio;
-
-  AuthCubit({required Dio dio})
-      : _dio = dio,
-        super(AuthInitial());
+  AuthCubit() : super(AuthInitial());
 
   Future<void> signIn({
-    required String email,
+    required String username,
     required String password,
     required BuildContext context,
   }) async {
     emit(AuthLoading());
     try {
       final user = await AuthData.signIn(
-          email: email,
-          password: password);
+        username: username,
+        password: password,
+      );
 
       if (user?.token == null) {
-        emit(AuthError(errorMessage: 'Authentication failed - no token received'));
+        emit(AuthError(
+            errorMessage: 'Authentication failed - no token received'));
         return;
       }
 
       emit(AuthSuccess(user: user!));
     } catch (e) {
-      emit(AuthError(
-          errorMessage: e is DioException
-              ? _parseDioError(e)
-              : 'Authentication failed: ${e.toString()}'
-      ));
+      if (e is DioException) {
+        print('Status Code: ${e.response?.statusCode}');
+        print('Error Data: ${e.response?.data}');
+        emit(AuthError(errorMessage: _parseDioError(e)));
+      } else {
+        print('Error: ${e.toString()}');
+        emit(AuthError(errorMessage: 'Authentication failed: ${e.toString()}'));
+      }
     }
   }
-  
+
   Future<void> signUp({
     required String userName,
     required String email,
-    required String password, 
+    required String password,
     required BuildContext context,
   }) async {
     emit(AuthLoading());
@@ -52,13 +53,21 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
         password: password,
       );
+
       if (user != null) {
         emit(AuthSuccess(user: user));
       } else {
         emit(AuthError(errorMessage: 'Registration failed'));
       }
     } catch (e) {
-      emit(AuthError(errorMessage: _cleanError(e)));
+      if (e is DioException) {
+        print('Status Code: ${e.response?.statusCode}');
+        print('Error Data: ${e.response?.data}');
+        emit(AuthError(errorMessage: _parseDioError(e)));
+      } else {
+        print('Error: ${e.toString()}');
+        emit(AuthError(errorMessage: _cleanError(e)));
+      }
     }
   }
 
@@ -91,5 +100,4 @@ class AuthCubit extends Cubit<AuthState> {
     }
     return e.message ?? 'Network error occurred';
   }
-  
 }
