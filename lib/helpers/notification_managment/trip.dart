@@ -1,27 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:p/helpers/notification_managment/notification_service.dart';
+class Trip {
+  final String id;
+  final String destination;
+  final DateTime endTime;
 
-Future<void> scheduleNotificationForTrip(String tripId) async {
-  try {
-    final response = await http.get(
-      Uri.parse('https://journeymate.runasp.net/api/Trip/$tripId'),
-      headers: {'Accept': 'application/json'},
-    );  // Fetch trip details from API
+  Trip({
+    required this.id,
+    required this.destination,
+    required this.endTime,
+  });
 
-    if (response.statusCode == 200) {
-      final tripData = json.decode(response.body);
-      final endTime = DateTime.parse(tripData['endTime']);
-
-      await NotificationService.scheduleTripEndNotification(
-        id: UniqueKey().hashCode,
-        title: 'Trip Completed!',
-        body: 'Your journey to ${tripData['destination']} has ended ,Would you like to rate ?',
-        endTime: endTime,
-      );  // Schedule notification
+  factory Trip.fromJson(Map<String, dynamic> json, {required String tripId}) {
+    if (json['destination'] == null || json['endTime'] == null) {
+      throw const FormatException("Missing required fields (destination, endTime) in JSON");
     }
-  } catch (e) {
-    print('Error scheduling notification: $e');
+
+    return Trip(
+      id: tripId,
+      destination: json['destination'] as String,
+      endTime: DateTime.parse(json['endTime'] as String),
+    );
   }
 }
