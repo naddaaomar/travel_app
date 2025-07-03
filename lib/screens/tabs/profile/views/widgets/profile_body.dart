@@ -2,10 +2,21 @@ import 'package:flutter/material.dart';
 import '../../../../../helpers/themes/colors.dart';
 import 'profile_tabs/fav_tab_widgets/no_fav.dart';
 import 'profile_tabs/profile.dart';
-import 'profile_tabs/trips_tab_widgets/no_trips.dart';
+import 'profile_tabs/payment_tab.dart';
+import 'profile_tabs/trips_tab_widgets/pre_trips.dart';
 
 class ProfileBody extends StatefulWidget {
-  const ProfileBody({super.key, required token});
+  final String? token;
+  final String name;
+  final String email;
+
+  const ProfileBody({
+    super.key,
+    required this.token,
+    required this.name,
+    required this.email,
+  });
+
 
   @override
   State<ProfileBody> createState() => _ProfileBodyState();
@@ -85,14 +96,20 @@ class _ProfileBodyState extends State<ProfileBody>
   Widget _buildSelectedContent() {
     switch (selectedIndex) {
       case 0:
-        return const Center(
-            child: ProfileScreen(name: '',  email: '', password: '',));
+        return Center(
+            child: ProfileScreen(
+              name: widget.name,
+              email: widget.email,
+              password: '',));
       case 1:
         return Center(
             child: NoFavorites(onAddFavorite: (){},));
       case 2:
+        return  Center(
+            child: PreviousTripsPage());
+      case 3:
         return const Center(
-            child: NoPreviousTrips());
+            child: PaymentTab());
       default:
         return Container(); // Default case
     }
@@ -111,7 +128,8 @@ class ProfileModel {
 List ProfileData = [
   ProfileModel(name: "Profile", icon: Icons.person),
   ProfileModel(name: "favorite", icon: Icons.favorite),
-  ProfileModel(name: "Previous Trips", icon: Icons.u_turn_right_outlined),
+  ProfileModel(name: "Previous \n   Trips", icon: Icons.u_turn_right_outlined),
+  ProfileModel(name: "Payment \n  History", icon: Icons.monetization_on_outlined),
 ];
 
 

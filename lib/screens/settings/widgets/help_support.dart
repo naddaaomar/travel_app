@@ -29,7 +29,7 @@ class HelpSupportWidget extends StatelessWidget {
             context,
             icon: Icons.language_outlined,
             label: "Website",
-            value: "journeymate.app/help",             //waiting for web for real link
+            value: "https://journeymate1.netlify.app/",
             onTap: () => _launchWebsite(),
             isLight: isLight,
           ),
@@ -91,7 +91,7 @@ class HelpSupportWidget extends StatelessWidget {
   }
 
   Future<void> _launchWebsite() async {
-    final uri = Uri.parse("https://journeymate.app/help");                      //waiting for web for real link
+    final uri = Uri.parse("https://journeymate1.netlify.app/");
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     }

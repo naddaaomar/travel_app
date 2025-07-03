@@ -18,14 +18,14 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   bool _passwordVisible = false;
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailPhoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _rePasswordController = TextEditingController();
 
   @override
   void dispose() {
     _nameController.dispose();
-    _emailPhoneController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     _rePasswordController.dispose();
     super.dispose();
@@ -43,13 +43,38 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<void> _signUp() async {
     if (_formKey.currentState!.validate()) {
-      String email = _emailPhoneController.text;
-      String password = _passwordController.text;
+      try {
+        final authCubit = context.read<AuthCubit>();
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('email', email);
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+
+        await authCubit.signUp(
+          userName: _nameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+          context: context,
+        );
+
+        await prefs.setBool('isSignedIn', true);
+        await prefs.setString('email', _emailController.text.trim());
+        await prefs.setString('name', _nameController.text.trim());
+        await prefs.setString('password', _passwordController.text.trim());
+
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MainProfile()),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -97,6 +122,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: IconButton(
+                            icon: const Icon(
+                                Icons.arrow_back,
+                                color: Colors.white),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
                         const SizedBox(
                           height: 80,
                         ),
@@ -214,7 +248,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                     ),
                                                     child: TextFormField(
                                                       controller:
-                                                      _emailPhoneController,
+                                                      _emailController,
                                                       decoration: const InputDecoration(
                                                           hintText:
                                                           "Email ",
@@ -226,7 +260,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                       validator: (value) {
                                                         if (value == null ||
                                                             value.isEmpty) {
-                                                          return 'Please enter your email or phone number';
+                                                          return 'Please enter your email ';
                                                         }
                                                         return null;
                                                       },
@@ -343,12 +377,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                                     throw Exception('Authentication service not available');
                                                   }
                                                   await authCubit.signUp(
-                                                    email: _emailPhoneController.text.trim(),
+                                                    email: _emailController.text.trim(),
                                                     password: _passwordController.text.trim(),
                                                     userName: _nameController.text.trim(),
                                                     context: context,
                                                   );
-                                                  //await _signUp();
+                                                 await _signUp();
                                                 } catch (e) {
                                                   ScaffoldMessenger.of(context).showSnackBar(
                                                     SnackBar(content: Text(e.toString())),

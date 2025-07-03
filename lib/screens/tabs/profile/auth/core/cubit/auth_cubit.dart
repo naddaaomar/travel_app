@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/screens/tabs/profile/auth/core/auth_data/AuthDataModel.dart';
 import 'package:p/screens/tabs/profile/auth/core/auth_data/auth_data.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
@@ -22,23 +23,31 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       if (user?.token == null) {
-        emit(AuthError(
-            errorMessage: 'Authentication failed - no token received'));
+        emit(AuthError(errorMessage: 'Authentication failed - no token received'));
         return;
       }
 
-      emit(AuthSuccess(user: user!));
-    } catch (e) {
-      if (e is DioException) {
-        print('Status Code: ${e.response?.statusCode}');
-        print('Error Data: ${e.response?.data}');
-        emit(AuthError(errorMessage: _parseDioError(e)));
-      } else {
-        print('Error: ${e.toString()}');
-        emit(AuthError(errorMessage: 'Authentication failed: ${e.toString()}'));
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isSignedIn', true);
+      final storedEmail = prefs.getString('email');
+      await prefs.setString('email', storedEmail ?? username);
+      // Store email during sign-up BUT be careful "sometime conflict :(" (غالبا بيفتكر اخر واحد)
+
+      await prefs.setString('name', username);
+      await prefs.setString('token', user!.token!);
+
+      emit(AuthSuccess(user: user));
+    }  catch (e) {if (e is DioException) {
+      print('Status Code: ${e.response?.statusCode}');
+      print('Error Data: ${e.response?.data}');
+      emit(AuthError(errorMessage: _parseDioError(e)));
+    } else {
+      print('Error: ${e.toString()}');
+      emit(AuthError(errorMessage: 'Authentication failed: ${e.toString()}'));
       }
     }
   }
+
 
   Future<void> signUp({
     required String userName,
@@ -56,6 +65,12 @@ class AuthCubit extends Cubit<AuthState> {
 
       if (user != null) {
         emit(AuthSuccess(user: user));
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isSignedIn', true);
+        await prefs.setString('email', email );
+        await prefs.setString('name', userName);
+        await prefs.setString('token', user.token!);
       } else {
         emit(AuthError(errorMessage: 'Registration failed'));
       }
@@ -70,6 +85,7 @@ class AuthCubit extends Cubit<AuthState> {
       }
     }
   }
+
 
   Future<void> signOut() async {
     await AuthData.signOut();

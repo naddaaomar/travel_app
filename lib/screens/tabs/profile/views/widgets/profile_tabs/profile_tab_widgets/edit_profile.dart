@@ -20,7 +20,6 @@ class _EditProfileState extends State<EditProfile> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
 
-  // Password change fields
   final _currentPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -54,7 +53,6 @@ class _EditProfileState extends State<EditProfile> {
     super.dispose();
   }
 
-  // Buttons animation
   void _onCancelTapDown(TapDownDetails details) {
     setState(() => _cancelButtonYOffset = 5.0);
   }
@@ -73,7 +71,6 @@ class _EditProfileState extends State<EditProfile> {
   void _onSaveTapCancel() {
     setState(() => _saveButtonYOffset = 0.0);
   }
-
 
   Future<void> _verifyCurrentPassword() async {
     if (_currentPasswordController.text != _editedProfile.password) {

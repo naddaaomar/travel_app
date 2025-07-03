@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
+import 'package:p/screens/tabs/profile/views/widgets/person_tab.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../helpers/themes/colors.dart';
-import '../../../auth/presentation/sign_in.dart';
 import 'profile_tab_widgets/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
+  final String? token;
   final String name;
   final String email;
   final String password;
 
   const ProfileScreen({
     super.key,
+    this.token,
     required this.name,
     required this.email,
     required this.password,
@@ -42,14 +44,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _profile = UserProfile(
-        name: prefs.getString('name') ?? widget.name,
-        email: prefs.getString('email') ?? widget.email,
-        password: prefs.getString('password') ?? widget.password,
-      );
-    });
+    setState(() => _isLoading = true);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      print('Loaded from SharedPreferences - '
+          'Name: ${prefs.getString('name')}, '
+          'Email: ${prefs.getString('email')}');
+      print('Received from widget - '
+          'Name: ${widget.name}, '
+          'Email: ${widget.email}');
+
+      setState(() {
+        _profile = UserProfile(
+          name: prefs.getString('name') ?? widget.name,
+          email: prefs.getString('email') ?? widget.email,
+          password: prefs.getString('password') ?? widget.password,
+        );
+      });
+    } catch (e) {
+      debugPrint('Error loading user data: $e');
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -63,11 +79,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _signOut() async {
     setState(() => _isLoading = true);
     final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isSignedIn');
     await prefs.remove('email');
+    await prefs.remove('name');
+    await prefs.remove('password');
+
     if (!mounted) return;
-    Navigator.pushReplacement(
+    context.read<AuthCubit>().signOut();
+    Navigator.pushNamedAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => SignInPage()),
+      '/',
+          (route) => false,
     );
     setState(() => _isLoading = false);
   }
@@ -76,9 +98,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final updatedProfile = await Navigator.push<UserProfile>(
       context,
       MaterialPageRoute(
-        builder: (context) => EditProfile(
-          initialProfile: _profile,
-        ),
+        builder: (context) =>
+            EditProfile(
+              initialProfile: _profile,
+            ),
       ),
     );
 
@@ -92,18 +115,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _showError('Please enter your current password');
       return;
     }
+    setState(() => _isLoading = true);
 
-    if (_currentPasswordController.text != _profile.password) {
+    final prefs = await SharedPreferences.getInstance();
+    final storedPassword = prefs.getString('password') ?? _profile.password;
+
+    if (_currentPasswordController.text != storedPassword) {
       _showError('Incorrect current password');
+      setState(() {
+        _isPasswordCorrect = false;
+        _isLoading = false;
+      });
       return;
     }
-
-    setState(() => _isPasswordCorrect = true);
+    setState(() {
+      _isPasswordCorrect = true;
+      _isLoading = false;
+    });
   }
 
   Future<void> _sendResetEmail() async {
     setState(() => _isLoading = true);
-    // email sending logic
 
     await Future.delayed(const Duration(seconds: 1));
     if (!mounted) return;
@@ -135,21 +167,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return;
     }
 
+    final prefs = await SharedPreferences.getInstance();
+    final currentPassword = prefs.getString('password') ?? _profile.password;
+    if (_newPasswordController.text == currentPassword) {
+      _showError('New password must be different from current password');
+      return;
+    }
+
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 1));
 
-    if (!mounted) return;
-    setState(() {
-      _profile = _profile.copyWith(password: _newPasswordController.text);
-      _isPasswordCorrect = false;
-      _currentPasswordController.clear();
-      _newPasswordController.clear();
-      _confirmPasswordController.clear();
-    });
+    try {
+      await prefs.setString('password', _newPasswordController.text);
 
-    Navigator.pop(context);
-    _showSuccess('Password updated successfully');
-    setState(() => _isLoading = false);
+      if (!mounted) return;
+      setState(() {
+        _profile = _profile.copyWith(password: _newPasswordController.text);
+        _isPasswordCorrect = false;
+        _currentPasswordController.clear();
+        _newPasswordController.clear();
+        _confirmPasswordController.clear();
+      });
+
+      Navigator.pop(context);
+      _showSuccess('Password updated successfully');
+    } catch (e) {
+      _showError('Failed to update password: ${e.toString()}');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   void _showError(String message) {
@@ -175,102 +222,111 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _editPassword() async {
     await showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
-          return AlertDialog(
-            title: const Text('Change Password'),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (!_isPasswordCorrect) ...[
-                    _buildPasswordField(
-                      controller: _currentPasswordController,
-                      label: 'Current Password',
-                      showPassword: _showCurrentPassword,
-                      onToggleVisibility: () => setState(
-                              () => _showCurrentPassword = !_showCurrentPassword),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: _verifyPassword,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: ColorApp.primaryColor,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                            ),
-                            child: const Text('Verify Password',
-                              style: TextStyle(
-                                  fontFamily: "vol",
-                                  color: Colors.black
-                              ),),
-                          ),
+      builder: (context) =>
+          StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                title: const Text('Change Password'),
+                content: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (!_isPasswordCorrect) ...[
+                        _buildPasswordField(
+                          controller: _currentPasswordController,
+                          label: 'Current Password',
+                          showPassword: _showCurrentPassword,
+                          onToggleVisibility: () =>
+                              setState(
+                                      () =>
+                                  _showCurrentPassword = !_showCurrentPassword),
                         ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: TextButton(
-                            onPressed: _sendResetEmail,
-                            child: const Text('Forgot Password?',
-                              style: TextStyle(
-                                  fontFamily: "vol",
-                                  color: Colors.black
-                              ),),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: _verifyPassword,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: ColorApp.primaryColor,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 12),
+                                ),
+                                child: const Text('Verify Password',
+                                  style: TextStyle(
+                                      fontFamily: "vol",
+                                      color: Colors.black
+                                  ),),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: TextButton(
+                                onPressed: _sendResetEmail,
+                                child: const Text('Forgot Password?',
+                                  style: TextStyle(
+                                      fontFamily: "vol",
+                                      color: Colors.black
+                                  ),),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(height: 24),
+                      ],
+                      if (_isPasswordCorrect) ...[
+                        _buildPasswordField(
+                          controller: _newPasswordController,
+                          label: 'New Password',
+                          showPassword: _showNewPassword,
+                          onToggleVisibility: () =>
+                              setState(
+                                      () =>
+                                  _showNewPassword = !_showNewPassword),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildPasswordField(
+                          controller: _confirmPasswordController,
+                          label: 'Confirm Password',
+                          showPassword: _showConfirmPassword,
+                          onToggleVisibility: () =>
+                              setState(
+                                      () =>
+                                  _showConfirmPassword = !_showConfirmPassword),
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton(
+                          onPressed: _updatePassword,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorApp.primaryColor,
+                            minimumSize: const Size(double.infinity, 48),
                           ),
+                          child: _isLoading
+                              ? const CircularProgressIndicator(color: Colors
+                              .white)
+                              : const Text('Update Password',
+                            style: TextStyle(
+                                fontFamily: "vol",
+                                color: Colors.black
+                            ),),
                         ),
                       ],
-                    ),
-                    const Divider(height: 24),
-                  ],
-                  if (_isPasswordCorrect) ...[
-                    _buildPasswordField(
-                      controller: _newPasswordController,
-                      label: 'New Password',
-                      showPassword: _showNewPassword,
-                      onToggleVisibility: () => setState(
-                              () => _showNewPassword = !_showNewPassword),
-                    ),
-                    const SizedBox(height: 16),
-                    _buildPasswordField(
-                      controller: _confirmPasswordController,
-                      label: 'Confirm Password',
-                      showPassword: _showConfirmPassword,
-                      onToggleVisibility: () => setState(
-                              () => _showConfirmPassword = !_showConfirmPassword),
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: _updatePassword,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorApp.primaryColor,
-                        minimumSize: const Size(double.infinity, 48),
-                      ),
-                      child: _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text('Update Password',
-                        style: TextStyle(
-                            fontFamily: "vol",
-                            color: Colors.black
-                        ),),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cancel',
+                      style: TextStyle(
+                          fontFamily: "vol",
+                          color: Colors.black
+                      ),),
+                  ),
                 ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel',
-                  style: TextStyle(
-                      fontFamily: "vol",
-                      color: Colors.black
-                  ),),
-              ),
-            ],
-          );
-        },
-      ),
+              );
+            },
+          ),
     );
   }
 
@@ -315,15 +371,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isLoading
+      body: _isLoading || _profile == null
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
+          padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+           child: Column(
+           children: [
+            const SizedBox(height: 10),
             _buildProfileCard(),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
@@ -348,30 +404,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onPressed: () async {
                           final shouldLogout = await showDialog<bool>(
                             context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Sign Out'),
-                              content: const Text('Are you sure you want to sign out?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, false),
-                                  child: const Text('Cancel',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontFamily: 'vols'
-                                    ),),
+                            builder: (context) =>
+                                AlertDialog(
+                                  title: const Text('Sign Out'),
+                                  content: const Text(
+                                      'Are you sure you want to sign out?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, false),
+                                      child: const Text('Cancel',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: 'vols'
+                                        ),),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        await context.read<AuthCubit>()
+                                            .signOut();
+                                        Navigator.pushReplacement(
+                                            context, MaterialPageRoute(builder:
+                                            (context) => PersonTab()));
+                                      },
+                                      child: const Text('Sign Out',
+                                          style: TextStyle(color: Colors.red,
+                                              fontFamily: 'vols')),
+                                    ),
+                                  ],
                                 ),
-                                TextButton(
-                                  onPressed: () async {
-                                    await context.read<AuthCubit>().signOut();
-                                    Navigator.pushReplacement(
-                                        context, MaterialPageRoute(builder:
-                                        (context) => SignInPage()));
-                                  },
-                                  child: const Text('Sign Out',
-                                      style: TextStyle(color: Colors.red,  fontFamily: 'vols')),
-                                ),
-                              ],
-                            ),
                           );
                           if (shouldLogout == true) {
                             final prefs = await SharedPreferences.getInstance();
@@ -379,7 +440,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             if (mounted) {
                               Navigator.pushNamedAndRemoveUntil(
                                 context,
-                                '/person_tab' ,
+                                '/person_tab',
                                     (route) => false,
                               );
                             }
@@ -400,7 +461,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(
-              height: 100,
+              height: 64,
             ),
           ],
         ),
@@ -409,6 +470,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildProfileCard() {
+    if (_profile == null) return const SizedBox();
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -419,26 +481,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             _buildProfileItem(
-              title: 'Name',
+              title: 'Username',
               value: _profile.name,
               icon: Icons.person,
-              onTap: () => _editField('Name', _profile.name, (newValue) {
-                setState(() => _profile = _profile.copyWith(name: newValue));
-              }),
+              onTap: () =>
+                  _editField('Username', _profile.name, (newValue) {
+                    setState(() =>
+                    _profile = _profile.copyWith(name: newValue));
+                  }),
             ),
             const Divider(height: 24),
             _buildProfileItem(
               title: 'Email',
               value: _profile.email,
               icon: Icons.email,
-              onTap: () => _editField('Email', _profile.email, (newValue) {
-                setState(() => _profile = _profile.copyWith(email: newValue));
-              }),
+              onTap: () =>
+                  _editField('Email', _profile.email, (newValue) {
+                    setState(() =>
+                    _profile = _profile.copyWith(email: newValue));
+                  }),
             ),
             const Divider(height: 24),
             _buildProfileItem(
               title: 'Password',
-              value: '••••••••',
+              value: '•' * _profile.passwordLength,
               icon: Icons.lock,
               onTap: _editPassword,
             ),
@@ -464,7 +530,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: Colors.grey,
         ),
       ),
-      subtitle: Text(
+      subtitle: title == 'Password'
+          ? Text(
+        '......',
+       //  '•' * _profile.passwordLength,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+      )
+          : Text(
         value,
         style: const TextStyle(
           fontSize: 16,
@@ -473,8 +548,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       trailing: onTap != null
           ? IconButton(
-        icon: const Icon(Icons.edit, size: 20),
-        onPressed: onTap,
+          icon: const Icon(Icons.edit, size: 20),
+          onPressed: onTap,
       )
           : null,
       onTap: onTap,
@@ -507,54 +582,104 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Future<void> _editField(String field, String currentValue, Function(String) onSave) async {
+  Future<void> _editField(String field, String currentValue,
+      Function(String) onSave) async {
     final controller = TextEditingController(text: currentValue);
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Edit $field'),
-        content: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            labelText: field,
-            labelStyle: TextStyle(color: ColorApp.thirdColor,
-              fontFamily: 'vol',),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: ColorApp.primaryColor),
+      builder: (context) =>
+          AlertDialog(
+            title: Text('Edit $field'),
+            content: field == 'Email'
+                ? TextFormField(
+              controller: controller,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                labelText: field,
+                labelStyle: TextStyle(
+                  color: ColorApp.thirdColor,
+                  fontFamily: 'vol',
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your email';
+                }
+                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(
+                    value)) {
+                  return 'Please enter a valid email';
+                }
+                return null;
+              },
+            )
+                : TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                labelText: field,
+                labelStyle: TextStyle(
+                  color: ColorApp.thirdColor,
+                  fontFamily: 'vol',
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
             ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: ColorApp.primaryColor.withOpacity(0.5)),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: ColorApp.primaryColor, width: 2),
-            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Cancel',
+                  style: TextStyle(
+                    color: ColorApp.thirdColor,
+                    fontFamily: 'vol',
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (field == 'Email') {
+                    if (controller.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Email cannot be empty')),
+                      );
+                      return;
+                    }
+                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                        .hasMatch(controller.text)) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Please enter a valid email')),
+                      );
+                      return;
+                    }
+                  }
+                  Navigator.pop(context, true);
+                },
+                child: const Text('Save',
+                  style: TextStyle(
+                    color: ColorApp.thirdColor,
+                    fontFamily: 'vol',
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel',
-              style:  TextStyle(color: ColorApp.thirdColor,
-                fontFamily: 'vol',),),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Save',
-              style:  TextStyle(color: ColorApp.thirdColor,
-                fontFamily: 'vol',),),
-          ),
-        ],
-      ),
     );
 
-    if (result == true && controller.text.trim().isNotEmpty && mounted) {
+    if (result == true && controller.text
+        .trim()
+        .isNotEmpty && mounted) {
+      if (field == 'Email') {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('email', controller.text.trim());
+      }
       onSave(controller.text.trim());
     }
   }
 }
+
 
 class UserProfile {
   final String name;
@@ -566,6 +691,8 @@ class UserProfile {
     required this.email,
     required this.password,
   });
+
+  int get passwordLength => password.length;
 
   UserProfile copyWith({
     String? name,

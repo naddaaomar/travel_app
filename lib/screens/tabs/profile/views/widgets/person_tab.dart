@@ -6,6 +6,7 @@ import 'package:p/screens/tabs/profile/auth/core/google_auth/google_auth_service
 import 'package:p/screens/tabs/profile/auth/presentation/sign_in.dart';
 import 'package:p/screens/tabs/profile/auth/presentation/sign_up.dart';
 import 'package:p/screens/tabs/profile/views/main_profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../settings/bloc/theme_bloc/theme_bloc.dart';
 
 class PersonTab extends StatefulWidget {
@@ -17,9 +18,47 @@ class PersonTab extends StatefulWidget {
 
 class _PersonTabState extends State<PersonTab> {
   final GlobalKey<NavigatorState> _profileTabNavigatorKey = GlobalKey<NavigatorState>();
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthStatus();
+  }
+
+  Future<void> _checkAuthStatus() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final isSignedIn = prefs.getBool('isSignedIn') ?? false;
+      final token = prefs.getString('token');
+
+      if (isSignedIn && token != null && mounted) {
+        final isValid = await _verifyToken(token);
+        if (isValid) {
+          _profileTabNavigatorKey.currentState?.pushReplacementNamed('/mainProfile');
+        } else {
+          await prefs.clear();
+        }
+      }
+    } catch (e) {
+      debugPrint('Auth initialization error: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+  Future<bool> _verifyToken(String token) async {
+    return true;
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(
+          child: CircularProgressIndicator());
+    }
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {

@@ -45,14 +45,24 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<void> _signIn() async {
     if (_formKey.currentState!.validate()) {
-      String email = _usernameController.text;
-      String password = _passwordController.text;
-      await AppSignInController.setSignedIn(true);
+      try {
+        final authCubit = context.read<AuthCubit>();
+        await authCubit.signIn(
+          username: _usernameController.text.trim(),
+          password: _passwordController.text.trim(),
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('email', email);
-      await prefs.setString('name', _usernameController.text);
-      await prefs.setString('password', password);
+          context: context,
+        );
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isSignedIn', true);
+        await prefs.setString('name', _usernameController.text.trim());
+        await prefs.setString('password', _passwordController.text.trim());
+
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
     }
   }
 
@@ -105,6 +115,15 @@ class _SignInPageState extends State<SignInPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: IconButton(
+                              icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          ),
                           const SizedBox(
                             height: 80,
                           ),

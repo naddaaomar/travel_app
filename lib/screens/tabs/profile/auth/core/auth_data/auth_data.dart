@@ -92,13 +92,13 @@ class AuthData {
     if (authData.token != null) {
       await _storage.write(key: 'token', value: authData.token);
     }
-    if (authData.emailorNumber != null) {
-      await _storage.write(key: 'user_email',  value: authData.emailorNumber,);
+    if (authData.email != null) {
+      await _storage.write(key: 'user_email',  value: authData.email,);
     }
     if (authData.userName != null) {
-      await _storage.write(key: 'user_name', value: authData.emailorNumber,);
+      await _storage.write(key: 'user_name', value: authData.email,);
     }
-    await _storage.write(key: 'user_id', value: authData.emailorNumber?? 'default_user');
+    await _storage.write(key: 'user_id', value: authData.email?? 'default_user');
   }
 
 
