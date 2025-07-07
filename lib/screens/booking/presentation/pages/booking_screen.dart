@@ -61,7 +61,7 @@ class _BookingScreenState extends State<BookingScreen> {
             centerTitle: true,
           ),
           body: BlocProvider(
-            create: (context) =>  getIt<BookingCubit>()..init(),
+            create: (context) => getIt<BookingCubit>()..init(),
             child: BlocConsumer<BookingCubit, BookingState>(
               listener: (context, state) {
                 if (state is BookingSuccess) {
@@ -73,8 +73,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         builder: (context) => PayMethod(
                             bookingId: state.bookingModel.id!,
                             amount: state.bookingModel.totalCost!,
-                            people: cubit.getSummaryText()
-                                ),
+                            people: cubit.getSummaryText()),
                       ));
                 }
               },
@@ -407,7 +406,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
                           Center(
                             child: ElevatedButton(
-                                onPressed: () async{
+                                onPressed: () async {
                                   if (cubit.selectedChoice == null) {
                                     cubit.choiceState();
                                   }
@@ -426,7 +425,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                       fiveController: cubit.fiveController,
                                     );
                                     await cubit.bookingCall(
-                                     //   buyerEmail: "alaa@.com",
+                                        //   buyerEmail: "alaa@.com",
                                         travelId: widget.model.id!.toInt(),
                                         quantity: int.parse(
                                             cubit.numPeopleController.text));
@@ -448,11 +447,14 @@ class _BookingScreenState extends State<BookingScreen> {
                                     backgroundColor: cubit.isDone
                                         ? Color(0xff794242)
                                         : Color(0xff866F6F)),
-                                child: Text(
-                                  "Pay",
-                                  style: TextStyle(
-                                      fontFamily: "pop", color: Colors.white),
-                                )),
+                                child: (state is BookingLoading)
+                                    ? CircularProgressIndicator(color: Colors.white,value: 2,)
+                                    : Text(
+                                        "Pay",
+                                        style: TextStyle(
+                                            fontFamily: "pop",
+                                            color: Colors.white),
+                                      )),
                           )
                         ],
                       ),

@@ -1,0 +1,192 @@
+import 'package:favorite_button/favorite_button.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../../data/remote/models/AllNewestModel.dart';
+
+
+class AllNewestCard extends StatelessWidget {
+  AllNewestCard({super.key, required this.allTravelsModel});
+
+  Items allTravelsModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final imageUrl = allTravelsModel.coverImageUrl;
+    final isValidImageUrl = imageUrl != null &&
+        imageUrl.isNotEmpty &&
+        Uri.tryParse(imageUrl)?.hasAbsolutePath == true;
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: 18),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black.withOpacity(.2),
+                  blurRadius: 4,
+                  spreadRadius: 3,
+                  offset: Offset(0, 3))
+            ]),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    topLeft: Radius.circular(20)),
+                child: isValidImageUrl
+                    ? Image.network(
+                  imageUrl!,
+                  width: 140,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      "assets/images/no_image.png",
+                      width: 140,
+                      fit: BoxFit.fill,
+                    );
+                  },
+                )
+                    : Image.asset(
+                  "assets/images/no_image.png",
+                  width: 140,
+                  height: 130,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 7,
+                    ),
+                    Text(
+                      allTravelsModel.title ?? "",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontFamily: "pop",
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13),
+                    ),
+                    Text(
+                      allTravelsModel.categoryName ?? "",
+                      style: TextStyle(
+                          fontFamily: "pop",
+                          fontSize: 10,
+
+                          color: Colors.black54),
+                    ),
+                    Text(
+                      "${allTravelsModel.companyName}",
+                      style: TextStyle(
+                          fontFamily: "pop",
+                          fontSize: 10,
+                          color: Colors.black54),
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          padding:
+                          EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: LinearGradient(
+                              colors: [Color(0xffCDBBBB), Color(0xffDE8162)],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
+                          child: Text(
+                            "${allTravelsModel.price.toString()} EGP",
+                            style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: "pop"),
+                          ),
+                        ),
+                        Spacer(),
+                        Flexible(
+                          flex: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 50),
+                            child: IconButton(
+                              iconSize: 18,
+                              onPressed: () {},
+                              icon: FavoriteButton(valueChanged: (_isFavorite) {
+                                print('Is Favorite : $_isFavorite');
+                              }),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        )
+      // Row(
+      //   crossAxisAlignment: CrossAxisAlignment.center,
+      //   children: [
+
+      //     Expanded(
+      //       child: Column(
+      //         crossAxisAlignment: CrossAxisAlignment.start,
+      //         children: [
+      //           Row(
+      //             children: [
+      //               for (int i = 0; i < fullStars; i++)
+      //                 Icon(Icons.star, color: Colors.yellow.shade800, size: 17),
+      //               if (fractional >= 0.5)
+      //                 Icon(Icons.star_half,
+      //                     color: Colors.yellow.shade800, size: 17),
+      //               for (int i = 0;
+      //               i < emptyStars - (fractional >= 0.5 ? 1 : 0);
+      //               i++)
+      //                 Icon(Icons.star_border,
+      //                     color: Colors.yellow.shade800, size: 17),
+      //             ],
+      //           ),
+      //
+      //           SizedBox(
+      //             height: 40,
+      //           ),
+      //           Row(
+      //             mainAxisAlignment: MainAxisAlignment.start,
+      //             crossAxisAlignment: CrossAxisAlignment.start,
+      //             children: [
+      //               Icon(
+      //                 Icons.location_on_outlined,
+      //                 color: ColorApp.primaryColor.withOpacity(.6),
+      //                 size: 17,
+      //               ),
+      //               Expanded(
+      //                 child: Text(
+      //                   allTravelsModel.address ?? "",
+      //                   overflow: TextOverflow.ellipsis,
+      //                   style: TextStyle(
+      //                       fontSize: 11,
+      //                       color: Colors.black54,
+      //                       fontFamily: "pop"),
+      //                 ),
+      //               )
+      //             ],
+      //           ),
+      //           // Rating stars
+      //         ],
+      //       ),
+      //     )
+      //   ],
+      // ),
+    );
+  }
+}

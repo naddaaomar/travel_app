@@ -39,8 +39,50 @@ class ApiManager {
     }
   }
 
-  static Future<Response> getData(
-      {required String endPoint, required Map<String, dynamic> query}) {
-    return dio.get(endPoint, queryParameters: query);
+   Future<Response> getData({
+    required String endPoint,
+     Map<String, dynamic>? query,
+     Map<String, dynamic>? data,
+     Map<String, dynamic>? headers,
+
+  }) {
+    return dio.get(endPoint, queryParameters: query,
+      data: data,
+      options: Options(headers: headers),
+    );
+  }
+
+  Future<Response> putData({
+    required String endPoint,
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? headers,
+  }) async {
+    try {
+      return await dio.put(
+        endPoint,
+        data: data,
+        options: Options(headers: headers),
+      );
+    } catch (e) {
+      print('PUT Error: $e');
+      rethrow;
+    }
+  }
+
+  Future<Response> deleteData({
+    required String endPoint,
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? headers,
+  }) async {
+    try {
+      return await dio.delete(
+        endPoint,
+        data: data,
+        options: Options(headers: headers),
+      );
+    } catch (e) {
+      print('DELETE Error: $e');
+      rethrow;
+    }
   }
 }

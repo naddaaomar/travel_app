@@ -21,3 +21,13 @@ final class BookingSuccess extends BookingState {
   BookingSuccess({required this.bookingModel});
 }
 final class BookingError extends BookingState {}
+final class BookingDeleteLoading extends BookingState {}
+final class BookingDeleteSuccess extends BookingState {}
+final class BookingDeleteError extends BookingState {}
+final class BookingPutLoading extends BookingState {}
+final class BookingPutSuccess extends BookingState {
+  BookingModel bookingModel;
+
+  BookingPutSuccess({required this.bookingModel});
+}
+final class BookingPutError extends BookingState {}

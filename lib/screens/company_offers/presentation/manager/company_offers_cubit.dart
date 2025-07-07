@@ -2,75 +2,66 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-import 'package:p/screens/company_offers/data/models/company_offers_model.dart';
+import 'package:p/screens/all_travels/data/models/AllTravelsModel.dart';
+import 'package:p/screens/company_offers/domain/use_cases/company_discounts_use_case.dart';
 
 part 'company_offers_state.dart';
-
+@injectable
 class CompanyOffersCubit extends Cubit<CompanyOffersState> {
-  CompanyOffersCubit() : super(CompanyOffersInitial());
-
+  CompanyOffersCubit(this.companyDiscountsUseCase) : super(CompanyOffersState());
+  CompanyDiscountsUseCase companyDiscountsUseCase;
   static CompanyOffersCubit get(context) => BlocProvider.of(context);
   final advancedDrawerController = AdvancedDrawerController();
 
   int currentPage = 1;
-  final int itemsPerPage = 5;
-  final int totalItems = companyOffersModel.length;
-  List<int> pages = [];
   final ScrollController scrollController = ScrollController();
-  List<CompanyOffersModel> filteredOffers = [];
-  Set<String>? selectedCategory;
-  RangeValues? selectedPriceRange;
-  String? selectedPriceOrder;
-  void applyFilters({
-    Set<String>? categories,
-    RangeValues? priceRange,
-    String? priceOrder,
-  }) {
-    // Use new values if provided, else fallback to existing
-    selectedCategory = categories ?? selectedCategory;
-    selectedPriceRange = priceRange ?? selectedPriceRange;
-    selectedPriceOrder = priceOrder ?? selectedPriceOrder;
 
-    filteredOffers = companyOffersModel.where((offer) {
-      bool matchesCategory = selectedCategory == null ||
-          selectedCategory!.contains("All") ||
-          selectedCategory!.contains(offer.category);
+  Future<void> getAllTravels({
+    required int PageIndex,
+    required int PageSize,
+    String? Sort,
+    double?MinPrice,
+    double?MaxPrice,
+    int? CategorieyId,required String companyId
 
+  }) async {
+    try {
+      emit(state.copyWith(isLoading: true, hasError: false));
+      final response = await companyDiscountsUseCase.callDiscount(
+          PageIndex: PageIndex,
+          PageSize: PageSize,
+          Sort: Sort,
+          MaxPrice: MaxPrice,
+          MinPrice: MinPrice,
+          companyId: companyId,
+          CategorieyId: CategorieyId
+      );
 
-      bool matchesPrice = selectedPriceRange == null ||
-          (offer.newPrice >= selectedPriceRange!.start &&
-              offer.newPrice <= selectedPriceRange!.end);
+      currentPage = PageIndex;
 
-      return matchesCategory && matchesPrice;
-    }).toList();
-
-    // Sorting
-    if (selectedPriceOrder == "Descending") {
-      filteredOffers.sort((a, b) => b.newPrice.compareTo(a.newPrice));
-      emit(PriceDescending());
-    } else {
-      filteredOffers.sort((a, b) => a.newPrice.compareTo(b.newPrice));
-      emit(PriceAscending());
+      response.fold(
+            (l) {
+          print(l.toString());
+          emit(state.copyWith(isLoading: false, hasError: true));
+        },
+            (r) {
+          emit(state.copyWith(
+            isLoading: false,
+            hasError: false,
+            allTravelsModel: r,
+          ));
+        },
+      );
+    } catch (e) {
+      print(e.toString());
+      emit(state.copyWith(isLoading: false, hasError: true));
     }
-
-    // Reset pagination
-    currentPage = 1;
-    int totalPages = (filteredOffers.length + itemsPerPage - 1) ~/ itemsPerPage;
-    pages = List.generate(totalPages, (index) => index + 1);
-
-    emit(PageNumber());
   }
 
 
 
-  init() {
-    filteredOffers = companyOffersModel;
-    filteredOffers
-        .sort((a, b) => b.newPrice.compareTo(a.newPrice)); // initial full list
-    int totalPages = (filteredOffers.length + itemsPerPage - 1) ~/ itemsPerPage;
-    pages = List.generate(totalPages, (index) => index + 1);
-  }
 
   @override
   Future<void> close() {
@@ -87,24 +78,24 @@ class CompanyOffersCubit extends Cubit<CompanyOffersState> {
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
-    emit(CurrentPageScroll());
+    emit(state.copyWith(scrolledToPage: true));
   }
 
-  leftButton() {
-    currentPage--;
-    scrollToCurrentPage();
-    emit(LeftButton());
-  }
+  // leftButton() {
+  //   currentPage--;
+  //   scrollToCurrentPage();
+  //   emit(LeftButton());
+  // }
 
-  numClicked({required int page}) {
-    currentPage = page;
-    scrollToCurrentPage();
-    emit(NumberClicked());
-  }
+  // numClicked({required int page}) {
+  //   currentPage = page;
+  //   scrollToCurrentPage();
+  //   emit(NumberClicked());
+  // }
 
-  rightButton() {
-    currentPage++;
-    scrollToCurrentPage();
-    emit(RightClicked());
-  }
+  // rightButton() {
+  //   currentPage++;
+  //   scrollToCurrentPage();
+  //   emit(RightClicked());
+  // }
 }

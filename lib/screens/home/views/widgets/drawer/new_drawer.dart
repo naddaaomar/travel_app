@@ -6,6 +6,7 @@ import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/views/settings.dart';
 import '../../../../../models/drawer_model.dart';
+import '../../../../all_travels/presentation/pages/all_travels.dart';
 
 class NewDrawer extends StatefulWidget {
   NewDrawer({super.key, required this.controller});
@@ -59,11 +60,13 @@ class _NewDrawerState extends State<NewDrawer> {
                       widget.controller.hideDrawer();
                       Future.delayed(
                         Duration(milliseconds: 200),
-                            () {
+                        () {
                           Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (context) => HomeViewBody()),
-                                (route) => false, // This removes all previous routes
+                            MaterialPageRoute(
+                                builder: (context) => HomeViewBody()),
+                            (route) =>
+                                false, // This removes all previous routes
                           );
                         },
                       );
@@ -74,7 +77,7 @@ class _NewDrawerState extends State<NewDrawer> {
                       if (ModalRoute.of(context)?.settings.name == "Settings") {
                         Future.delayed(
                           Duration(milliseconds: 200),
-                              () => widget.controller.hideDrawer(),
+                          () => widget.controller.hideDrawer(),
                         );
                       } else {
                         widget.controller.hideDrawer();
@@ -88,7 +91,19 @@ class _NewDrawerState extends State<NewDrawer> {
                           );
                         });
                       }
-                    } else {
+                    } else if (drawer[index].widget().runtimeType == AllTravels) {
+                      widget.controller.hideDrawer();
+                      Future.delayed(Duration(milliseconds: 200), () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AllTravels(),
+                            settings: RouteSettings(name: 'AllTravels'), // 👈 Set route name here
+                          ),
+                        );
+                      });
+                    }
+                    else {
                       widget.controller.hideDrawer();
                       Future.delayed(Duration(milliseconds: 200), () {
                         Navigator.push(
@@ -99,8 +114,7 @@ class _NewDrawerState extends State<NewDrawer> {
                         );
                       });
                     }
-                  }
-,
+                  },
                   child: FadeInRight(
                     child: Row(
                       children: [

@@ -82,6 +82,10 @@ dependencies:
   animated_radial_menu: ^0.0.1
   clickable_list_wheel_view: ^0.2.0
   choice: ^2.3.2
+  fluttertoast: ^8.2.12
+  internet_connection_checker: ^3.0.1
+  connectivity_plus: ^6.1.4
+  cached_network_image: ^3.4.1
 
 
 

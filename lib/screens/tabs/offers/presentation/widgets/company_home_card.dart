@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:p/screens/all_companies/models/AllCompanies.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../../../../all_companies/data/models/AllCompaniesModel.dart';
 
 class CompanyHomeCard extends StatelessWidget {
   Items allCompanies;
@@ -32,13 +35,37 @@ class CompanyHomeCard extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      allCompanies.profileImageUrl ?? "",
+                    child: allCompanies.profileImageUrl != null &&
+                        allCompanies.profileImageUrl!.isNotEmpty
+                        ? CachedNetworkImage(
+                      imageUrl: allCompanies.profileImageUrl!,
+                      height: 120,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: const Color(0xffD8D1CA),
+                        highlightColor: const Color(0xffCBC0B6),
+                        child: Container(
+                          height: 120,
+                          width: double.infinity,
+                          color: Colors.white,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/images/no_image.png',
+                        height: 120,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                        : Image.asset(
+                      'assets/images/no_image.png',
                       height: 120,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
-                  ),
+                  )
+,
                   Positioned(
                     top: 6,
                     right: 5,

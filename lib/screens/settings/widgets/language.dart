@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/tabs/home/home_tab.dart';
 
 import '../../../helpers/themes/colors.dart';
 

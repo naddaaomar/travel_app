@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/main.dart';
-import 'package:p/screens/tabs/offers/presentation/widgets/dont_miss_model.dart';
-import 'dont_miss_card.dart';
+import 'package:p/screens/tabs/offers/presentation/manager/offers_cubit.dart';
+import 'package:p/screens/tabs/offers/presentation/widgets/dont_miss_card.dart';
+import '../../../../../main.dart';
 
 class DontMiss extends StatefulWidget {
   const DontMiss({super.key});
@@ -14,19 +14,14 @@ class DontMiss extends StatefulWidget {
   State<DontMiss> createState() => _DontMissState();
 }
 
-class _DontMissState extends State<DontMiss>
-    with WidgetsBindingObserver, RouteAware {
+class _DontMissState extends State<DontMiss> with WidgetsBindingObserver, RouteAware {
   final CardSwiperController controller = CardSwiperController();
-  final List<Widget> cards =
-      dontMissList.map((model) => DontMissCard(dontMissModel: model)).toList();
-
-  Timer? _autoPlayTimer;
-  bool _swipeRight = true;
+  Timer? autoPlayTimer;
+  bool swipeRight = true;
 
   @override
   void initState() {
     super.initState();
-    _startAutoPlay();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -34,23 +29,19 @@ class _DontMissState extends State<DontMiss>
   void dispose() {
     routeObserver.unsubscribe(this);
     WidgetsBinding.instance.removeObserver(this);
-    _autoPlayTimer?.cancel();
+    autoPlayTimer?.cancel();
     controller.dispose();
     super.dispose();
   }
 
   @override
   void didPushNext() {
-
-    print(" Navigated away - Stopping auto-play");
-    _autoPlayTimer?.cancel();
+    autoPlayTimer?.cancel();
   }
 
   @override
   void didPopNext() {
-
-    print(" Returned to home - Restarting auto-play");
-    _startAutoPlay();
+    startAutoPlay();
   }
 
   @override
@@ -59,113 +50,111 @@ class _DontMissState extends State<DontMiss>
     routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
   }
 
-  void _startAutoPlay() {
-    _autoPlayTimer?.cancel();
-    _autoPlayTimer = Timer.periodic(const Duration(seconds: 4), (timer) {
+  void startAutoPlay() {
+    final state = context.read<OffersCubit>().state;
+    final hasData = state.discounts?.items?.isNotEmpty ?? false;
+
+    if (!hasData) return;
+
+    autoPlayTimer?.cancel();
+    autoPlayTimer = Timer.periodic(const Duration(seconds: 4), (timer) {
       if (!mounted) {
-        _autoPlayTimer?.cancel();
+        autoPlayTimer?.cancel();
         return;
       }
-      print(" Auto-Swiping ${_swipeRight ? "Right" : "Left"}");
-      controller.swipe(
-          _swipeRight ? CardSwiperDirection.right : CardSwiperDirection.left);
-      _swipeRight = !_swipeRight;
+      controller.swipe(swipeRight ? CardSwiperDirection.right : CardSwiperDirection.left);
+      swipeRight = !swipeRight;
     });
   }
 
-  void _restartAutoPlay() {
-    _autoPlayTimer?.cancel();
-
-    if (mounted) {
-      print("Resuming auto-play after 4s...");
-      _startAutoPlay();
-    }
+  void restartAutoPlay() {
+    autoPlayTimer?.cancel();
+    if (mounted) startAutoPlay();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 10),
-        Row(
+    return BlocConsumer<OffersCubit, OffersState>(
+      listener: (context, state) {
+        if (state.discounts != null &&
+            state.discounts!.items != null &&
+            state.discounts!.items!.isNotEmpty) {
+          startAutoPlay();
+        }
+      },
+      builder: (context, state) {
+        final items = state.discounts?.items ?? [];
+
+        return Column(
           children: [
-            InkWell(
-              onTap: () {
-                print("Previous button tapped!");
-                controller.undo();
-                _restartAutoPlay();
-              },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: ColorApp.primaryColor.withOpacity(.8),
-                  borderRadius: BorderRadius.circular(20),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                _navButton(
+                  text: "previous",
+                  icon: Icons.arrow_back_ios_new,
+                  onTap: () {
+                    controller.undo();
+                    restartAutoPlay();
+                  },
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.arrow_back_ios_new,
-                        size: 12, color: Colors.white),
-                    const SizedBox(width: 5),
-                    Text("previous",
-                        style: const TextStyle(
-                            fontFamily: "pop",
-                            color: Colors.white,
-                            fontSize: 10)),
-                  ],
+                const Spacer(),
+                _navButton(
+                  text: "next",
+                  icon: Icons.arrow_forward_ios,
+                  isNext: true,
+                  onTap: () {
+                    controller.swipe(swipeRight ? CardSwiperDirection.right : CardSwiperDirection.left);
+                    swipeRight = !swipeRight;
+                    restartAutoPlay();
+                  },
+                ),
+              ],
+            ),
+          //  const SizedBox(height: 10),
+            RepaintBoundary(
+              child: SizedBox(
+                height: 275,
+                child: CardSwiper(
+                  controller: controller,
+                  isDisabled: items.isEmpty?true:false,
+                  cardsCount: items.isNotEmpty ? items.length : 3,
+                  numberOfCardsDisplayed: 3,
+                  duration: const Duration(milliseconds: 400),
+                  backCardOffset: const Offset(0, 21),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  cardBuilder: (context, index, _, __) => DontMissCard(
+                    itemsDiscount: items.isNotEmpty ? items[index] : null,
+                    showShimmer: items.isEmpty,
+                  ),
                 ),
               ),
             ),
-            const Spacer(),
-            InkWell(
-              onTap: () {
-                debugPrint("Next button tapped!");
-                controller.swipe(_swipeRight
-                    ? CardSwiperDirection.right
-                    : CardSwiperDirection.left);
-                _swipeRight = !_swipeRight;
-                _restartAutoPlay();
-              },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: ColorApp.primaryColor.withOpacity(.8),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  children: [
-                    Text("next",
-                        style: const TextStyle(
-                            fontFamily: "pop",
-                            color: Colors.white,
-                            fontSize: 10)),
-                    const SizedBox(width: 5),
-                    Icon(Icons.arrow_forward_ios,
-                        size: 12, color: Colors.white),
-                  ],
-                ),
-              ),
-            )
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _navButton({required String text, required IconData icon, required VoidCallback onTap, bool isNext = false}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: ColorApp.primaryColor.withOpacity(.8),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          children: [
+            if (!isNext) Icon(icon, size: 12, color: Colors.white),
+            const SizedBox(width: 5),
+            Text(text, style: const TextStyle(fontFamily: "pop", color: Colors.white, fontSize: 10)),
+            if (isNext) const SizedBox(width: 5),
+            if (isNext) Icon(icon, size: 12, color: Colors.white),
           ],
         ),
-        const SizedBox(height: 10),
-        RepaintBoundary(
-          child: SizedBox(
-            height: 255,
-            child: CardSwiper(
-              controller: controller,
-              isDisabled: true,
-              cardsCount: cards.length,
-              numberOfCardsDisplayed: 3,
-              duration: Duration(milliseconds: 400),
-              backCardOffset: const Offset(0, 21),
-              padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
-              cardBuilder: (context, index, _, __) => cards[index],
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

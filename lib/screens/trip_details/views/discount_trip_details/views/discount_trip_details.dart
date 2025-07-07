@@ -10,7 +10,6 @@ import 'package:p/models/inclusion_model.dart';
 import 'package:p/models/photo_gallery_model.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/company_profile/views/company_profile.dart';
 import 'package:p/screens/trip_details/views/widgets/activities_bottom_sheet.dart';
 import 'package:p/screens/trip_details/views/widgets/trip_on_map.dart';
 import 'package:shimmer/shimmer.dart';

@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-import 'package:p/screens/all_companies/models/AllCompanies.dart';
 import 'package:p/screens/payment/data/models/PaymentModel.dart';
 import 'package:p/screens/payment/domain/use_cases/payment_use_case.dart';
 

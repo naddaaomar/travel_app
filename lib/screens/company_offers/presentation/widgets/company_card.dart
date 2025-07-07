@@ -1,7 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:p/helpers/themes/colors.dart';
-import 'package:p/screens/company_profile/views/company_profile.dart';
+import 'package:p/screens/company_profile/presentation/pages/company_profile.dart';
 
 class CompanyCard extends StatelessWidget {
   CompanyCard({super.key, required this.companyName, required this.img,required this.id});
@@ -12,7 +11,7 @@ class CompanyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 35,
+      top: 20,
       left: (MediaQuery.of(context).size.width - 270) / 2,
       child: FadeInUp(
         duration: Duration(milliseconds: 1000),

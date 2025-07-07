@@ -2,14 +2,15 @@ import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/screens/all_travels/data/models/AllTravelsModel.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/company_offers/data/models/company_offers_model.dart';
 
 class OfferCard extends StatelessWidget {
-  OfferCard({Key? key, required this.companyOffersModel}) : super(key: key);
-  CompanyOffersModel companyOffersModel;
+   OfferCard({Key? key, required this.companyOffersModel}) : super(key: key);
+  final Items? companyOffersModel;
+  //bool isLoading;
+
 // setState
   @override
   Widget build(BuildContext context) {
@@ -30,11 +31,19 @@ class OfferCard extends StatelessWidget {
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(15),
                         topLeft: Radius.circular(15)),
-                    child: Image.asset(
-                      "assets/images/onboard3.png",
+                    child: Image.network(
+                      companyOffersModel?.coverImageUrl ?? "",
                       width: 150.w,
                       height: 130,
                       fit: BoxFit.fill,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          "assets/images/no_image.png",
+                          width: 150.w,
+                          height: 130,
+                          fit: BoxFit.fill,
+                        );
+                      },
                     ),
                   ),
                   Container(
@@ -47,7 +56,7 @@ class OfferCard extends StatelessWidget {
                           bottomRight: Radius.circular(60),
                         )),
                     child: Text(
-                      "-${companyOffersModel.discountPercentage.toStringAsFixed(0)}%",
+                      "-${((companyOffersModel?.saleDiscount)! * 100).toStringAsFixed(0)}%",
                       style: TextStyle(
                           fontFamily: "pop",
                           fontSize: 10,
@@ -68,14 +77,14 @@ class OfferCard extends StatelessWidget {
                     children: [
                       SizedBox(height: 10),
                       Text(
-                        companyOffersModel.place,
+                        companyOffersModel?.title ?? "",
                         style: TextStyle(
                             fontSize: 13.sp,
                             fontWeight: FontWeight.normal,
                             fontFamily: "pop"),
                       ),
                       Text(
-                        companyOffersModel.category,
+                        companyOffersModel?.categoryName ?? "",
                         style: TextStyle(fontFamily: "pop", fontSize: 10),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -90,7 +99,7 @@ class OfferCard extends StatelessWidget {
                           ),
                           Expanded(
                             child: Text(
-                              companyOffersModel.location,
+                              companyOffersModel?.destinationCity ?? "",
                               style: TextStyle(fontSize: 10, fontFamily: "pop"),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -112,21 +121,17 @@ class OfferCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Flexible(
-                       flex:10,
-                        child: IconButton(
-                          iconSize: 18.w,
-                          onPressed: () {},
-                          icon: FavoriteButton(valueChanged: (_isFavorite) {
-                            print('Is Favorite : $_isFavorite');
-                          }),
-                        ),
+                        flex: 10,
+                        child: FavoriteButton(valueChanged: (_isFavorite) {
+                          print('Is Favorite : $_isFavorite');
+                        }),
                       ),
                       Spacer(),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "EGP ${companyOffersModel.oldPrice}",
+                            "EGP ${companyOffersModel?.price}",
                             style: TextStyle(
                                 fontSize: 12.sp,
                                 fontFamily: "pop",
@@ -149,7 +154,7 @@ class OfferCard extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              "EGP ${companyOffersModel.newPrice}",
+                              "EGP ${companyOffersModel?.baseCost}",
                               style: TextStyle(
                                 fontFamily: "pop",
                                 fontWeight: FontWeight.w500,

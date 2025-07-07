@@ -1,14 +1,30 @@
 part of 'company_offers_cubit.dart';
 
 @immutable
-sealed class CompanyOffersState {}
+class CompanyOffersState {
+  final bool isLoading;
+  final bool hasError;
+  final AllTravelsModel? allTravelsModel;
+  final bool scrolledToPage;
 
-final class CompanyOffersInitial extends CompanyOffersState {}
-final class CategoryFilter extends CompanyOffersState {}
-final class PriceDescending extends CompanyOffersState {}
-final class PriceAscending extends CompanyOffersState {}
-final class PageNumber extends CompanyOffersState {}
-final class CurrentPageScroll extends CompanyOffersState {}
-final class LeftButton extends CompanyOffersState {}
-final class NumberClicked extends CompanyOffersState {}
-final class RightClicked extends CompanyOffersState {}
+  const CompanyOffersState({
+    this.isLoading = false,
+    this.hasError = false,
+    this.allTravelsModel,
+    this.scrolledToPage = false,
+  });
+
+  CompanyOffersState copyWith({
+    bool? isLoading,
+    bool? hasError,
+    AllTravelsModel? allTravelsModel,
+    bool? scrolledToPage,
+  }) {
+    return CompanyOffersState(
+      isLoading: isLoading ?? this.isLoading,
+      hasError: hasError ?? this.hasError,
+      allTravelsModel: allTravelsModel ?? this.allTravelsModel,
+      scrolledToPage: scrolledToPage ?? this.scrolledToPage,
+    );
+  }
+}

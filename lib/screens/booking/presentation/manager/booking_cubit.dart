@@ -7,6 +7,7 @@ import 'package:p/screens/booking/data/models/BookingModel.dart';
 import 'package:p/screens/booking/domain/use_cases/booking_use_case.dart';
 
 part 'booking_state.dart';
+
 @injectable
 class BookingCubit extends Cubit<BookingState> {
   BookingCubit({required this.bookingUseCase}) : super(BookingInitial()) {
@@ -35,21 +36,20 @@ class BookingCubit extends Cubit<BookingState> {
 
   BookingUseCase bookingUseCase;
 
-  bookingCall({
-    //  required String buyerEmail,
+  bookingPut({
     required num travelId,
     required num quantity,
-  }) async {
+    required int bookingId
+}) async{
     try {
-
-      emit(BookingLoading());
-      var booking = await bookingUseCase
-          .call(
-        //  buyerEmail: buyerEmail,
-          travelId: travelId, quantity: quantity);
+      emit(BookingPutLoading());
+      var booking = await bookingUseCase.callPut(
+        bookingId: bookingId,
+          travelId: travelId,
+          quantity: quantity);
       booking.fold(
             (l) {
-          emit(BookingError());
+          emit(BookingPutError());
           print(l);
           print(l);
           print(l);
@@ -64,6 +64,57 @@ class BookingCubit extends Cubit<BookingState> {
           print(l);
         },
             (r) {
+          emit(BookingPutSuccess(bookingModel: r));
+          print(r.buyerEmail);
+          print(r.buyerEmail);
+          print(r.buyerEmail);
+          print(r.buyerEmail);
+          print(r.buyerEmail);
+          print(r.buyerEmail);
+        },
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+  bookingDelete({required int bookingId}) async {
+    try {
+      emit(BookingDeleteLoading());
+      await bookingUseCase.callDelete(bookingId: bookingId);
+      emit(BookingDeleteSuccess());
+    } catch (e) {
+      emit(BookingDeleteError());
+      print(e.toString());
+    }
+  }
+
+  bookingCall({
+    required num travelId,
+    required num quantity,
+  }) async {
+    try {
+      emit(BookingLoading());
+      var booking = await bookingUseCase.call(
+          //  buyerEmail: buyerEmail,
+          travelId: travelId,
+          quantity: quantity);
+      booking.fold(
+        (l) {
+          emit(BookingError());
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+          print(l);
+        },
+        (r) {
           emit(BookingSuccess(bookingModel: r));
           print(r.buyerEmail);
           print(r.buyerEmail);
