@@ -1,93 +1,152 @@
 import 'package:flutter/material.dart';
+import 'api.dart';
 import 'check_email.dart';
 
-class ForgetPassword extends StatelessWidget {
+class ForgetPassword extends StatefulWidget {
   const ForgetPassword({super.key});
+
+  @override
+  State<ForgetPassword> createState() => _ForgetPasswordState();
+}
+
+class _ForgetPasswordState extends State<ForgetPassword> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitResetRequest() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      await ApiService.forgotPassword(_emailController.text.trim());
+
+      if (!mounted) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CheckEmail(
+            email: _emailController.text.trim(),
+            token: 'reset-token-from-email',
+          ),
+        ),
+      );
+    } catch (e) {
+      print('Error in UI: $e');
+      setState(() {
+        _errorMessage = e.toString().replaceAll('Exception: ', '');
+      });
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          leading: BackButton(
-              color: Colors.black
-          ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
         ),
-      body: Padding(
-        padding: EdgeInsets.only(top: 90,left:12,right:12,),
-        child: Column(
-          children: [
-            Center(
-              child: Text('Reset Password',
-                style: TextStyle(
-                  fontFamily: "pop",
-                  color: Colors.black,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            SizedBox(height: 18,),
-            Center(
-              child: Text('Enter the Email address or Phone number \n'
-                  '         associated with your account',
-                style: TextStyle(
-                  fontFamily: "pop",
-                  color: Colors.black,
-                ),),
-            ),
-            SizedBox(height: 32,),
-            Container(
-              height: 53,
-              width: 500,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                    color: Colors.white,
-                    width: 3),
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(left: 18),
-                child: TextField(
-                  decoration: InputDecoration(
-                      hintText: "Your Email",
-                      hintStyle: TextStyle(
-                        fontFamily: "pop",
-                          fontSize: 16,
-                          color: Colors.grey),
-                      border: InputBorder.none
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 40),
+                const Text(
+                  'Reset Password',
+                  style: TextStyle(
+                    fontFamily: 'vol',
+                    color: Colors.black,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-              ),
-            ),
-            SizedBox(height: 64,),
-            GestureDetector(
-              onTap: (){
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const CheckEmail()));
-              },
-              child: Container(
-                height: 50,
-                width: 300,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFB43E26),
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.white),
+                const SizedBox(height: 16),
+                const Text(
+                  'Enter the email associated with your account',
+                  style: TextStyle(
+                    fontFamily: 'vol',
+                    color: Colors.black54,
+                  ),
                 ),
-                child: Center(
-                  child:TextButton(
-                      onPressed: (){
-                        Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => CheckEmail ()),);
-                        },
-                      child: Text('Send Email',
+                const SizedBox(height: 40),
+                TextFormField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
+                ),
+                if (_errorMessage != null) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 40),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _submitResetRequest,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFB43E26),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                      'Send Email',
                       style: TextStyle(
-                        fontFamily: "pop",
-                        color: Colors.white
-                      ),))),
-              ),
+                        fontFamily: 'vol',
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -8,6 +8,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/fav_tab_widgets/favorites.dart';
 import 'event_on_map.dart';
 import 'view_all_recommended_events.dart';
 
@@ -23,6 +24,18 @@ class EventDetailsViewBody extends StatefulWidget {
 }
 
 class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
+  bool _isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFavoriteStatus();
+  }
+  Future<void> _checkFavoriteStatus() async {
+    final favorites = FavoriteManager().favoritesNotifier.value;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
@@ -40,7 +53,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius:
-                          BorderRadius.vertical(bottom: Radius.circular(20.r)),
+                      BorderRadius.vertical(bottom: Radius.circular(20.r)),
                       image: DecorationImage(
                         image: AssetImage(widget.image),
                         fit: BoxFit.cover,
@@ -74,7 +87,19 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                             ),
                             IconButton(
                               iconSize: 18.w,
-                              onPressed: () {},
+                              onPressed: () {
+                                ValueListenableBuilder<List<String>>(
+                                  valueListenable: FavoriteManager().favoritesNotifier,
+                                  builder: (context, favorites, _) {
+                                    return FavoriteButton(
+                                      iconSize: 30,
+                                      valueChanged: (isFavorite) {
+                                        FavoriteManager().toggleFavorite('',context);
+                                      },
+                                    );
+                                  },
+                                );
+                              },
                               icon: FavoriteButton(valueChanged:(_isFavorite) {
                                 print('Is Favorite : $_isFavorite');
                               },),
@@ -105,37 +130,33 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                     children: [
                       FadeInUp(
                         duration: Duration(milliseconds: 1150),
-                        child: Row(children: [
-                          Text('Event'.tr(),
-                              style: TextStyle(
-                                  fontFamily: "vol",
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20.sp,
-                                  color:
+                        child: Row(
+                            children: [
+                              Text('Event'.tr(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.sp,
+                                      color:
                                       isLight ? Colors.black : Colors.white)),
-                          Spacer(),
-                          Row(
-                            children: const [
-                              Text(
-                                "Date  ",
-                                style: TextStyle(
-                                  fontFamily: "pop",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                              Spacer(),
+                              Row(
+                                children: const [
+                                  Text(
+                                    "Date  ",
+                                    style: TextStyle(fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "7/7/2025",
+                                    style: TextStyle(fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "7/7/2025",
-                                style: TextStyle(
-                                  fontFamily: "pop",
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ]),
-                      ),
+                            ]),),
+
                       SizedBox(
                         height: 20,
                       ),
@@ -156,7 +177,6 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                             Text(
                               'description'.tr(),
                               style: TextStyle(
-                                  fontFamily: "pop",
                                   fontSize: 15.sp,
                                   fontWeight: FontWeight.w500,
                                   color: isLight ? Colors.black : Colors.white),
@@ -171,16 +191,15 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                         duration: Duration(milliseconds: 1600),
                         child: Text(
                           "egypt’s Hidden Gem ,Dahab is a dream come true for thrill-seekers and nature"
-                          " enthusiasts alike. The town is world-renowned for its diving spots, "
-                          "particularly the Blue Hole, a bucket-list destination for divers"
-                          " drawn to its underwater caves and vibrant marine life.",
+                              " enthusiasts alike. The town is world-renowned for its diving spots, "
+                              "particularly the Blue Hole, a bucket-list destination for divers"
+                              " drawn to its underwater caves and vibrant marine life.",
                           style: TextStyle(
-                              fontFamily: "pop",
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.normal,
+                              fontSize: 13.sp,
                               color: isLight ? Colors.black : Colors.white),
                         ),
                       ),
+
                       SizedBox(
                         height: 15.h,
                       ),
@@ -204,11 +223,10 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                               Text(
                                 'show on map'.tr(),
                                 style: TextStyle(
-                                    fontFamily: "pop",
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w500,
                                     color:
-                                        isLight ? Colors.black : Colors.white),
+                                    isLight ? Colors.black : Colors.white),
                               ),
                             ],
                           ),
@@ -225,6 +243,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                             width: double.infinity,
                             hight: 200.h),
                       ),
+
                       SizedBox(
                         height: 30.h,
                       ),
@@ -239,7 +258,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
 
                               Future.delayed(
                                 Duration(milliseconds: 200),
-                                () {
+                                    () {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -260,9 +279,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                             child: Text(
                               "Interested".tr(),
                               style: TextStyle(
-                                  fontFamily: "pop",
-                                  color: Colors.white,
-                                  fontSize: 15.sp),
+                                  color: Colors.white, fontSize: 17.sp),
                             ),
                           ),
                         ),
@@ -274,23 +291,19 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                         duration: Duration(milliseconds: 2950),
                         child: Center(
                             child: Text(
-                          "what are you waiting for ?".tr(),
-                          style: TextStyle(
-                              fontFamily: "pop",
-                              fontSize: 12,
-                              color: isLight ? Colors.black : Colors.white),
-                        )),
+                              "what are you waiting for ?".tr(),
+                              style: TextStyle(
+                                  color: isLight ? Colors.black : Colors.white),
+                            )),
                       ),
                       FadeInUp(
                         duration: Duration(milliseconds: 3100),
                         child: Center(
                             child: Text(
-                          "discover more.".tr(),
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: "pop",
-                              color: isLight ? Colors.black : Colors.white),
-                        )),
+                              "discover more.".tr(),
+                              style: TextStyle(
+                                  color: isLight ? Colors.black : Colors.white),
+                            )),
                       ),
                       SizedBox(
                         height: 10.h,

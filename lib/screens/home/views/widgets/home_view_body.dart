@@ -15,6 +15,8 @@ import 'package:p/screens/tabs/map/views/map_view.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
 import '../../../tabs/home/presentation/pages/home_tab.dart';
 import '../../../tabs/profile/views/widgets/tab_bar.dart';
+import 'package:p/screens/tabs/profile/views/widgets/person_tab.dart';
+import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
 
 class HomeViewBody extends StatefulWidget {
   HomeViewBody({
@@ -31,9 +33,16 @@ class _HomeViewBodyState extends State<HomeViewBody>
   List<Widget> tabs = [
     HomeTab(),
     OffersScreen(),
-    TabBarPage(),
+    BlocProvider(
+      create: (context) => AuthCubit(),
+      child: const PersonTab(),),
     MapView(),
   ];
+
+  final ValueNotifier<bool> isFieldFocused = ValueNotifier(false);
+  FocusNode focusNode = FocusNode();
+  final _advancedDrawerController = AdvancedDrawerController();
+  bool _isKeyboardVisible = false;
 
   @override
   void initState() {
@@ -68,11 +77,12 @@ class _HomeViewBodyState extends State<HomeViewBody>
     });
   }
 
-  final ValueNotifier<bool> isFieldFocused = ValueNotifier(false);
-  FocusNode focusNode = FocusNode();
-
-  final _advancedDrawerController = AdvancedDrawerController();
-  bool _isKeyboardVisible = false;
+  @override
+  void dispose() {
+    focusNode.dispose();
+    _advancedDrawerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +161,11 @@ class _HomeViewBodyState extends State<HomeViewBody>
                         constraints.maxHeight, // Ensure it takes full height
                     child: Stack(
                       children: [
-                        tabs[HomeViewBody.currentIndex],
+                        IndexedStack(
+                          index: HomeViewBody.currentIndex,
+                          children: tabs,
+                        ),
+
                         ValueListenableBuilder<bool>(
                           valueListenable: isFieldFocused,
                           builder: (context, isFocused, child) {
@@ -170,6 +184,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
                                 : SizedBox.shrink();
                           },
                         ),
+
                       ],
                     ),
                   );
@@ -224,4 +239,5 @@ class _HomeViewBodyState extends State<HomeViewBody>
       ),
     );
   }
+
 }

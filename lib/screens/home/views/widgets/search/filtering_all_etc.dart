@@ -10,7 +10,6 @@ import 'package:p/screens/home/views/widgets/search/event_card.dart';
 import 'package:p/screens/home/views/widgets/search/search_model.dart';
 import 'package:p/screens/home/views/widgets/search/trip_card.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-
 import '../../../../tabs/offers/presentation/pages/offers_screen.dart';
 
 class FilteringAllEtc extends StatefulWidget {
@@ -32,7 +31,7 @@ class _FilteringAllEtcState extends State<FilteringAllEtc> {
   final ValueNotifier<bool> showMessage = ValueNotifier<bool>(false);
   final ValueNotifier<String> selectedCategory = ValueNotifier<String>('All');
   final ValueNotifier<List<Search>> filteredResults =
-      ValueNotifier<List<Search>>([]);
+  ValueNotifier<List<Search>>([]);
   final FocusNode focusNode = FocusNode();
   final ValueNotifier<bool> isFieldFocused = ValueNotifier<bool>(false);
 
@@ -84,10 +83,10 @@ class _FilteringAllEtcState extends State<FilteringAllEtc> {
               ),
               Card(
                 color:
-                    isLight ? const Color(0xFFD7D1D1) : const Color(0xFF8C8282),
+                isLight ? const Color(0xFFD7D1D1) : const Color(0xFF8C8282),
                 elevation: 3,
                 shadowColor:
-                    isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
+                isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.r)),
                 child: TextField(
@@ -127,14 +126,14 @@ class _FilteringAllEtcState extends State<FilteringAllEtc> {
                               borderRadius: BorderRadius.circular(10.r),
                               onTap: () {},
                               child:
-                                  const Icon(Icons.search, color: Colors.white),
+                              const Icon(Icons.search, color: Colors.white),
                             ),
                           ),
                         );
                       },
                     ),
                     contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
+                    const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
                     border: const OutlineInputBorder(),
                     hintText: "Start typing to search...",
                     label: Text(
@@ -148,12 +147,12 @@ class _FilteringAllEtcState extends State<FilteringAllEtc> {
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     hintStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color:
-                              isLight ? const Color(0xFF787474) : Colors.white,
-                          fontSize: 13.sp,
-                          fontFamily: "pop",
-                          fontWeight: FontWeight.w400,
-                        ),
+                      color:
+                      isLight ? const Color(0xFF787474) : Colors.white,
+                      fontSize: 13.sp,
+                      fontFamily: "pop",
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
               ),
@@ -189,7 +188,7 @@ class _FilteringAllEtcState extends State<FilteringAllEtc> {
                   labelPadding: EdgeInsets.symmetric(horizontal: 18),
                   splashBorderRadius: BorderRadius.circular(100),
                   overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
+                        (Set<MaterialState> states) {
                       if (states.contains(MaterialState.pressed) ||
                           states.contains(MaterialState.hovered) ||
                           states.contains(MaterialState.focused)) {
@@ -238,41 +237,41 @@ class _FilteringAllEtcState extends State<FilteringAllEtc> {
                     if (widget.controller.text.isEmpty) {
                       return Center(
                           child: Text(
-                        "Field is empty",
-                        style: TextStyle(
-                            fontFamily: "pop",
-                            fontSize: 12,
-                            color: Colors.black54),
-                      ));
+                            "Field is empty",
+                            style: TextStyle(
+                                fontFamily: "pop",
+                                fontSize: 12,
+                                color: Colors.black54),
+                          ));
                     }
 
                     if (results.isEmpty) {
                       return Center(
                           child: Text(
-                        "No results found",
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 12,
-                            fontFamily: "pop"),
-                      ));
+                            "No results found",
+                            style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 12,
+                                fontFamily: "pop"),
+                          ));
                     }
 
                     return LiveList(
-                      separatorBuilder: (context, index) => FadeInUp(
-                        child: Divider(
-                          color: Colors.black54,
-                          height: 2,
-                          endIndent: 20,
-                          indent: 20,
+                        separatorBuilder: (context, index) => FadeInUp(
+                          child: Divider(
+                            color: Colors.black54,
+                            height: 2,
+                            endIndent: 20,
+                            indent: 20,
+                          ),
                         ),
-                      ),
                         showItemInterval: Duration(milliseconds: 150),
                         showItemDuration: Duration(milliseconds: 350),
                         reAnimateOnVisibility: false,
                         scrollDirection: Axis.vertical,
                         itemCount: results.length,
                         itemBuilder: animationItemBuilder(
-                          (index) {
+                              (index) {
                             final item = results[index];
                             switch (item.category) {
                               case 'Travel':

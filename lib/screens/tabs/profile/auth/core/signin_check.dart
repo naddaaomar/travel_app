@@ -1,3 +1,6 @@
+// To control access to 'Add to fav' after SignIn
+//Not used
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,7 +48,7 @@ class SignInController {
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text(style: TextStyle(fontFamily: "pop"),'Item added to favorites!'),
+        content: Text('Item added to favorites!'),
         duration: Duration(seconds: 2),
       ),
     );
@@ -54,7 +57,7 @@ class SignInController {
   static void _showSignInFailedMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text(style: TextStyle(fontFamily: "pop"),'Sign in failed.  Please try again.'),
+        content: Text('Sign in failed.  Please try again.'),
         duration: Duration(seconds: 2),
       ),
     );
@@ -117,7 +120,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Scaffold(
       body: Center(
         child: _isFirstTime
-            ? const NoFavorites()
+            ?  NoFavorites(onAddFavorite: () {},)
             : _buildFavoritesList(), //
       ),
       floatingActionButton: FloatingActionButton(
@@ -134,7 +137,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   Widget _buildFavoritesList() {
     if (_favoriteItems.isEmpty) {
-      return const Center(child: Text(style: TextStyle(fontFamily: "pop"),"No favorites yet."));
+      return const Center(child: Text("No favorites yet."));
     }
     return ListView.builder(
       itemCount: _favoriteItems.length,
@@ -142,7 +145,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
         return Card(
           margin: const EdgeInsets.all(8.0),
           child: ListTile(
-            title: Text(style: TextStyle(fontFamily: "pop"),_favoriteItems[index]),
+            title: Text(_favoriteItems[index]),
           ),
         );
       },
@@ -154,7 +157,7 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(style: TextStyle(fontFamily: "pop"),'Sign In')),
+      appBar: AppBar(title: const Text('Sign In')),
       body: Center(
         child: ElevatedButton(
           onPressed: () async {
@@ -163,7 +166,7 @@ class SignInPage extends StatelessWidget {
                 true);
             Navigator.of(context).pop(); //  Go back to the previous page.
           },
-          child: const Text(style: TextStyle(fontFamily: "pop"),'Sign In'),
+          child: const Text('Sign In'),
         ),
       ),
     );
@@ -171,9 +174,9 @@ class SignInPage extends StatelessWidget {
 }
 
 class NoFavorites extends StatelessWidget{
-  const NoFavorites({super.key});
+  const NoFavorites({super.key, required Null Function() onAddFavorite});
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text(style: TextStyle(fontFamily: "pop"),"No Favorites"));
+    return const Center(child: Text("No Favorites"));
   }
 }

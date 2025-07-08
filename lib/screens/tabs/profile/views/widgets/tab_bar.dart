@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'company_tab.dart';
@@ -50,3 +51,4 @@ class _TabBarPageState extends State<TabBarPage>
     );
   }
 }
+*/

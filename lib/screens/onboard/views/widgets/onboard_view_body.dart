@@ -97,7 +97,7 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                             MaterialPageRoute(
                               builder: (_) => const HomeView(),
                             ),
-                            (route) => false);
+                                (route) => false);
                       },
                       child: Visibility(
                         visible: onboarding.length - 1 != currentIndex
@@ -118,7 +118,8 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                         Text(
                           currentIndex < onboarding.length ? onboarding[currentIndex].name : "",
                           style: TextStyle(
-                            fontSize: 40.sp,
+                            fontFamily: 'vol',
+                            fontSize: 36.sp,
                             color: Colors.white,
                             fontWeight: FontWeight.w400,
                             height: 1,
@@ -126,8 +127,9 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                         ),
                         SizedBox(height: 20.h),
                         Text(
-                            currentIndex < onboarding.length?"no matter".tr():"",
+                          currentIndex < onboarding.length?"no matter".tr():"",
                           style: TextStyle(
+                            fontFamily: 'vol',
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
@@ -161,30 +163,30 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                       children: [
                         currentIndex == onboarding.length - 1
                             ? GestureDetector(
-                                onTap: () async {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                  await prefs.setBool('onboarding_seen', true);
+                          onTap: () async {
+                            SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                            await prefs.setBool('onboarding_seen', true);
 
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const HomeView(),
-                                      ),
-                                      (route) => false);
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.double_arrow_rounded,
-                                      color: Colors.white,
-                                      size: 44.w,
-                                    )
-                                  ],
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const HomeView(),
                                 ),
+                                    (route) => false);
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.double_arrow_rounded,
+                                color: Colors.white,
+                                size: 44.w,
                               )
+                            ],
+                          ),
+                        )
                             : SizedBox(),
                       ],
                     ),

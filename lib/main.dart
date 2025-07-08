@@ -9,10 +9,15 @@ import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:p/screens/onboard/views/widgets/onboard_view_body.dart';
+import 'package:p/screens/settings/bloc/notification_bloc/notification_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
+import 'screens/settings/bloc/permission_bloc/permissions_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'screens/splash_screen/view/splash.dart';
+import 'screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
+
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
 
@@ -35,10 +40,16 @@ void main() async {
       saveLocale: true,
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<AuthCubit>(
+            create: (context) => AuthCubit(),
+          ),
           BlocProvider(
             create: (context) => ThemeBloc(),
           ),
           BlocProvider(create: (context) => LocaleBloc()),
+          BlocProvider(create: (context) => NotificationBloc()),
+          BlocProvider(create: (context) => PermissionsBloc()),
+
         ],
         child: MyApp(isFirstTime: isFirstTime),
       )));
@@ -74,10 +85,7 @@ class MyApp extends StatelessWidget {
                   darkTheme: MyThemeData.darkTheme,
                   themeMode: themeMode,
                   debugShowCheckedModeBanner: false,
-                  home:
-                 // isFirstTime ?
-                  SplashScreen()
-                     // : OnBoardViewBody(),
+                  home: isFirstTime ? SplashScreen() : OnBoardViewBody(),
                 ),
               ),
             );

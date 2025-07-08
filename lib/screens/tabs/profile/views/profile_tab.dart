@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:p/screens/tabs/profile/views/widgets/person_tab.dart';
-import 'package:p/screens/tabs/profile/views/widgets/tab_bar.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({Key? key}) : super(key: key);
@@ -15,10 +14,6 @@ class ProfileTab extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
 
             children: const [
-              TabBarPage(),
-              SizedBox(
-                height: 40,
-              ),
               PersonTab(),
               Spacer(),
               Center(

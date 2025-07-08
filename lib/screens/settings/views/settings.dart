@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
@@ -8,9 +9,14 @@ import 'package:p/helpers/app_bar/app_bar_widget.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/drawer/new_drawer.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/settings/widgets/help_support.dart';
 import 'package:p/screens/settings/widgets/language_drop_down.dart';
+import 'package:p/screens/settings/widgets/notification.dart';
+import 'package:p/screens/settings/widgets/permission.dart';
+import 'package:p/screens/settings/widgets/privacy_security.dart';
 import 'package:p/screens/settings/widgets/settings_widget.dart';
 import 'package:p/screens/settings/widgets/theme_drop_down.dart';
+
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -23,6 +29,10 @@ class _SettingsState extends State<Settings> {
   final _advancedDrawerController = AdvancedDrawerController();
   bool isThemeDown = false;
   bool isLangDown = false;
+  bool isNotifDown = false;
+  bool isPermDown = false;
+  bool isPrivacyDown = false;
+  bool isHelpDown = false;
 
   @override
   Widget build(BuildContext context) {
@@ -152,40 +162,60 @@ class _SettingsState extends State<Settings> {
                                 SettingsWidget(
                                     duration: 1300,
                                     title: "Notifications",
-                                    onPressed: () {},
-                                    isDown: false),
+                                    onPressed: () {
+                                      setState(() {
+                                        isNotifDown = !isNotifDown;
+                                      });
+                                    },
+                                    isDown: isNotifDown),
+                                isNotifDown ? NotificationToggle() : SizedBox(),
                                 SizedBox(
                                   height: 20,
                                 ),
                                 SettingsWidget(
                                     duration: 1400,
                                     title: "Permissions",
-                                    onPressed: () {},
-                                    isDown: false),
+                                    onPressed: () {
+                                      setState(() {
+                                        isPermDown = !isPermDown;
+                                      });
+                                    },
+                                    isDown: isPermDown),
+                                if (isPermDown) PermissionsContainer(),
                                 SizedBox(
                                   height: 20,
                                 ),
                                 SettingsWidget(
                                     duration: 1500,
                                     title: "Privacy & Security",
-                                    onPressed: () {},
-                                    isDown: false),
+                                    onPressed: () {
+                                      setState(() {
+                                        isPrivacyDown = !isPrivacyDown;
+                                      });
+                                    },
+                                    isDown: isPrivacyDown),
+                                if (isPrivacyDown)
+                                  FadeInUp(
+                                    duration: Duration(milliseconds: 900),
+                                    child: PrivacySecurityWidget(),
+                                  ),
                                 SizedBox(
                                   height: 20,
                                 ),
                                 SettingsWidget(
                                     duration: 1600,
                                     title: "Help & Support",
-                                    onPressed: () {},
-                                    isDown: false),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                SettingsWidget(
-                                    duration: 1700,
-                                    title: "Legal",
-                                    onPressed: () {},
-                                    isDown: false),
+                                    onPressed: () {
+                                      setState(() {
+                                        isHelpDown = !isHelpDown;
+                                      });
+                                    },
+                                    isDown: isHelpDown),
+                                if (isHelpDown)
+                                  FadeInUp(
+                                    duration: Duration(milliseconds: 900),
+                                    child: HelpSupportWidget(),
+                                  ),
                                 SizedBox(
                                   height: 20,
                                 ),

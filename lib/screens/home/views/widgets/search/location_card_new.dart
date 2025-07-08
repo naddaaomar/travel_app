@@ -25,7 +25,7 @@ class _LocationCardNewState extends State<LocationCardNew> {
   final ValueNotifier<List<Search>> currentSuggestions = ValueNotifier([]);
   final ValueNotifier<bool> showMessage = ValueNotifier<bool>(false);
   final SuggestionsController<Search> suggestions =
-      SuggestionsController<Search>();
+  SuggestionsController<Search>();
 
   final FocusNode focusNode = FocusNode();
   final ValueNotifier<bool> isFieldFocused = ValueNotifier<bool>(false);
@@ -69,9 +69,9 @@ class _LocationCardNewState extends State<LocationCardNew> {
         color: isLight ? const Color(0xFFD7D1D1) : const Color(0xFF8C8282),
         elevation: 3,
         shadowColor:
-            isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
+        isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.r)),
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.r)),
         child: TypeAheadField<Search>(
           hideKeyboardOnDrag: true,
           direction: VerticalDirection.down,
@@ -90,10 +90,10 @@ class _LocationCardNewState extends State<LocationCardNew> {
             focusNode: focusNode,
             autofocus: false,
             style:
-                TextStyle(fontFamily: "pop", color: Colors.black, fontSize: 12),
+            TextStyle(fontFamily: "pop", color: Colors.black, fontSize: 12),
             decoration: InputDecoration(
               fillColor:
-                  isLight ? const Color(0xFFD7D1D1) : const Color(0xFF8C8282),
+              isLight ? const Color(0xFFD7D1D1) : const Color(0xFF8C8282),
               filled: true,
               focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.transparent)),
@@ -104,57 +104,57 @@ class _LocationCardNewState extends State<LocationCardNew> {
                 builder: (context, isFocused, child) {
                   return isFocused
                       ? InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FilteringAllEtc(
-                                    initialText: controller.text,
-                                  ),
-                                ));
-                          },
-                          child: Material(
-                            type: MaterialType.transparency,
-                            child: Ink(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                color: isLight
-                                    ? ColorApp.primaryColor
-                                    : ColorApp.primaryColorDark,
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.tune_sharp,
-                                      color: Colors.white, size: 24)
-                                ],
-                              ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FilteringAllEtc(
+                              initialText: controller.text,
                             ),
-                          ),
-                        )
+                          ));
+                    },
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: Ink(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: isLight
+                              ? ColorApp.primaryColor
+                              : ColorApp.primaryColorDark,
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.tune_sharp,
+                                color: Colors.white, size: 24)
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
                       : Material(
-                          type: MaterialType.transparency,
-                          child: Ink(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: isLight
-                                  ? ColorApp.primaryColor
-                                  : ColorApp.primaryColorDark,
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(10.r),
-                              onTap: () {},
-                              child:
-                                  const Icon(Icons.search, color: Colors.white),
-                            ),
-                          ),
-                        );
+                    type: MaterialType.transparency,
+                    child: Ink(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: isLight
+                            ? ColorApp.primaryColor
+                            : ColorApp.primaryColorDark,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(10.r),
+                        onTap: () {},
+                        child:
+                        const Icon(Icons.search, color: Colors.white),
+                      ),
+                    ),
+                  );
                 },
               ),
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
+              const EdgeInsets.symmetric(horizontal: 9, vertical: 0),
               border: const OutlineInputBorder(),
               hintText: "Start typing to search...",
               label: Text(
@@ -168,11 +168,11 @@ class _LocationCardNewState extends State<LocationCardNew> {
               ),
               floatingLabelBehavior: FloatingLabelBehavior.never,
               hintStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: isLight ? const Color(0xFF787474) : Colors.white,
-                    fontSize: 13.sp,
-                    fontFamily: "pop",
-                    fontWeight: FontWeight.w400,
-                  ),
+                color: isLight ? const Color(0xFF787474) : Colors.white,
+                fontSize: 13.sp,
+                fontFamily: "pop",
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
           itemSeparatorBuilder: (context, index) => Divider(
@@ -222,21 +222,21 @@ class _LocationCardNewState extends State<LocationCardNew> {
 
                 return (focusNode.hasFocus && controller.text.isNotEmpty)
                     ? Container(
-                        padding: EdgeInsets.only(top: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black54.withOpacity(.2),
-                              spreadRadius: 500,
-                              blurRadius: 10,
-                              offset: Offset(0, 500),
-                            ),
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: child,
-                      )
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black54.withOpacity(.2),
+                        spreadRadius: 500,
+                        blurRadius: 10,
+                        offset: Offset(0, 500),
+                      ),
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: child,
+                )
                     : SizedBox.shrink();
               },
             );
@@ -272,7 +272,7 @@ class _LocationCardNewState extends State<LocationCardNew> {
                 if (controller.text.isNotEmpty && suggestions.isEmpty) {
                   return Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
                     child: Text(
                       "No search result is found",
                       style: const TextStyle(fontSize: 12, fontFamily: "pop"),
@@ -295,7 +295,7 @@ class _LocationCardNewState extends State<LocationCardNew> {
       products.value
         ..update(
           product,
-          (value) => value + 1,
+              (value) => value + 1,
           ifAbsent: () => 1,
         ),
     );

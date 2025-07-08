@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>We need your location to show maps and navigation</string>
+<key>NSCameraUsageDescription</key>
+<string>We need camera access for taking photos</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need photo library access for selecting images</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>We need microphone access for audio features</string>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>NSLocationWhenInUseUsageDescription</key>
@@ -54,3 +64,33 @@
 	<true/>
 </dict>
 </plist>
+
+<array>
+ <dict>
+  <key>CFBundleTypeRole</key>
+  <string>Editor</string>
+  <key>CFBundleURLSchemes</key>
+  <array>
+   <string>***IF YOU HAVE FACEBOOK SIGN IN CLIENT ID, TYPE HERE***</string>
+   <string>com.googleusercontent.apps.***907414361778-tf8r5jq9pv9va13qv6tj5bqufsvglfc2.apps.googleusercontent.com***</string>
+  </array>
+ </dict>
+</array>
+
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleTypeRole</key>
+    <string>Editor</string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>com.googleusercontent.apps.<907414361778-tf8r5jq9pv9va13qv6tj5bqufsvglfc2.apps.googleusercontent.com></string>
+    </array>
+  </dict>
+</array>
+
+<key>UIBackgroundModes</key>
+<array>
+    <string>fetch</string>
+    <string>remote-notification</string>
+</array>
