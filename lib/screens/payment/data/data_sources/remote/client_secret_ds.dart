@@ -8,9 +8,3 @@ abstract class ClientSecretDs {
     required String currency,
   });
 }
-// {
-// "bookingId": 0,
-// "paymentMethod": "string",
-// "amount": 0,
-// "currency": "string"
-// }

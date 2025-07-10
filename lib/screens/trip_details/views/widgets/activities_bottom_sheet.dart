@@ -4,7 +4,7 @@ import 'package:p/screens/trip_details/models/TravelDetailsModel.dart';
 
 class ActivitiesBottomSheet extends StatelessWidget {
   ActivitiesBottomSheet({super.key, required this.itenraries});
-  List<Itenraries> itenraries;
+  List<Itineraries> itenraries;
 
   @override
   Widget build(BuildContext context) {

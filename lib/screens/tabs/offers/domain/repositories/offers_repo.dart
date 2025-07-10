@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:p/helpers/exceptions/failuers.dart';
-import 'package:p/screens/tabs/offers/data/models/DiscountTravelsModel.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 
 import '../../../../all_companies/data/models/AllCompaniesModel.dart';
 
@@ -11,7 +11,7 @@ abstract class OffersRepo {
     String? sort,
     int? rate
   });
-  Future<Either<ErrorFailures, DiscountTravelsModel>> getDiscounts({
+  Future<Either<ErrorFailures, DiscountItemsModel>> getDiscounts({
     required int PageIndex,
     required int PageSize,
   });

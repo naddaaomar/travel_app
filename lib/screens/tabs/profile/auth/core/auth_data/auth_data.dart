@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:p/screens/tabs/profile/auth/core/auth_data/AuthDataModel.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class AuthData {
   AuthData._();
@@ -31,11 +32,14 @@ class AuthData {
   }
 
   static Future<String?> getToken() => _storage.read(key: 'token');
-  static Future<String?> getRefreshToken() => _storage.read(key: 'refreshToken');
+  static Future<String?> getRefreshToken() =>
+      _storage.read(key: 'refreshToken');
+  static Future<String?> getUsrId() => _storage.read(key: 'user_id');
 
   static Future<void> clearTokens() async {
     await _storage.delete(key: 'token');
     await _storage.delete(key: 'refreshToken');
+    await _storage.delete(key: 'user_id');
   }
 
   static Future<AuthDataModel?> signUp({
@@ -83,25 +87,28 @@ class AuthData {
         compact: true,
       ));
       throw _handleError(e);
-
     }
   }
-
 
   static Future<void> _saveUserData(AuthDataModel authData) async {
     if (authData.token != null) {
       await _storage.write(key: 'token', value: authData.token);
     }
     if (authData.email != null) {
-      await _storage.write(key: 'user_email',  value: authData.email,);
+      await _storage.write(
+        key: 'user_email',
+        value: authData.email,
+      );
     }
     if (authData.userName != null) {
-      await _storage.write(key: 'user_name', value: authData.email,);
+      await _storage.write(
+        key: 'user_name',
+        value: authData.email,
+      );
     }
-    await _storage.write(key: 'user_id', value: authData.email?? 'default_user');
+    await _storage.write(
+        key: 'user_id', value: authData.email ?? 'default_user');
   }
-
-
 
   static Future<AuthDataModel?> signIn({
     required String username,
@@ -169,14 +176,30 @@ class AuthData {
   static Future<void> _saveTokens(AuthDataModel authData) async {
     if (authData.token != null) {
       await _storage.write(key: 'token', value: authData.token);
+
+      // Decode token and extract userId
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(authData.token!);
+      final userId = decodedToken[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+
+      if (userId != null) {
+        await _storage.write(key: 'user_id', value: userId);
+      }
     }
-    // if (authData.refreshToken != null) {
-    //   await _storage.write(key: 'refreshToken', value: authData.refreshToken);
-    // }
+
+    if (authData.email != null) {
+      await _storage.write(key: 'user_email', value: authData.email);
+    }
+
+    if (authData.userName != null) {
+      await _storage.write(key: 'user_name', value: authData.userName);
+    }
   }
 
   static String _handleError(DioException e) {
-    if (e.response != null && e.response?.data is Map && e.response?.data['message'] != null) {
+    if (e.response != null &&
+        e.response?.data is Map &&
+        e.response?.data['message'] != null) {
       print(e.error);
       return e.response?.data['message'];
     }

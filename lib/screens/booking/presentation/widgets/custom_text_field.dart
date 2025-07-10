@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  CustomTextField({
-    super.key,
-    required this.controller,
-    required this.focusNode,
-    required this.hintText,
-    required this.hasInput,
-    required this.isFocused,
-    required this.validate
-  });
+  CustomTextField(
+      {super.key,
+      required this.controller,
+      required this.focusNode,
+      required this.hintText,
+      required this.hasInput,
+      required this.isFocused,
+      required this.validate});
 
   TextEditingController controller;
   FocusNode? focusNode;
@@ -24,6 +23,7 @@ class CustomTextField extends StatelessWidget {
         controller: controller,
         keyboardType: TextInputType.number,
         focusNode: focusNode,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(
@@ -32,17 +32,14 @@ class CustomTextField extends StatelessWidget {
               fontWeight: FontWeight.w400,
               color: Colors.black54),
           border: OutlineInputBorder(
-
             borderRadius: BorderRadius.circular(15),
           ),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xffA56666), width: 2),
               borderRadius: BorderRadius.circular(15)),
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.red,
-            width: 2)
-          ),
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: Colors.red, width: 2)),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
               borderSide: BorderSide(

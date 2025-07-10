@@ -691,7 +691,7 @@ class _CompanyProfileState extends State<CompanyProfile>
                                               TabFive(
                                                 companyId: widget.id,
                                               ),
-                                              TabSix(),
+                                              TabSix(ratings: state.companyDetailsModel?.ratings??[],),
                                             ],
                                           ),
                                         ),

@@ -123,35 +123,44 @@ class CompanyDetailsDsImpl implements CompanyDetailsDs {
   }
 
   @override
-  Future<NewestModel> getNewest(
-      {required int PageSize,
-      required int PageIndex,
-      required String companyId,
-      String? Sort,
-      double? MinPrice,
-      double? MaxPrice,
-      int? CategorieyId}) async {
+  Future<NewestModel> getNewest({
+    required int PageSize,
+    required int PageIndex,
+    required String companyId,
+    String? Sort,
+    double? MinPrice,
+    double? MaxPrice,
+    int? CategorieyId,
+  }) async {
     try {
       var response = await apiManager.getData(
-          endPoint: "${Constants.newestCompanyEndPoint}/$companyId",
-          query: {
-            "PageSize": "$PageSize",
-            "PageIndex": "$PageIndex",
-            "Sort": Sort == null
-                ? "priceDec"
-                : Sort == "Ascending"
-                    ? "priceAsc"
-                    : "priceDec",
-            if (MinPrice != null) "MinPrice": MinPrice,
-            if (MaxPrice != null) "MaxPrice": MaxPrice,
-            if (CategorieyId != null) "CategorieyId": CategorieyId,
-          });
+        endPoint: "${Constants.newestCompanyEndPoint}/$companyId",
+        query: {
+          "PageSize": "$PageSize",
+          "PageIndex": "$PageIndex",
+          "Sort": Sort == null
+              ? "priceDec"
+              : Sort == "Ascending"
+                  ? "priceAsc"
+                  : "priceDec",
+          if (MinPrice != null) "MinPrice": MinPrice,
+          if (MaxPrice != null) "MaxPrice": MaxPrice,
+          if (CategorieyId != null) "CategorieyId": CategorieyId,
+        },
+      );
 
-      NewestModel newestTravelsModelResponse =
-          NewestModel.fromJson(response.data);
+      if (response.statusCode == 204 ||
+          response.data == null ||
+          response.data.toString().isEmpty) {
+        return NewestModel(items: [], totalPages: 0);
+      }
 
-      return newestTravelsModelResponse;
+      return NewestModel.fromJson(response.data);
     } on DioException catch (e) {
+      if (e.response?.statusCode == 204) {
+        return NewestModel(items: [], totalPages: 0);
+      }
+
       print('DioException caught!');
       print('Type: ${e.type}');
       print('Message: ${e.message}');

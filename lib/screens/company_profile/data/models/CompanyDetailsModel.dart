@@ -1,20 +1,4 @@
-/// id : 2
-/// companyName : "Nile Explorers"
-/// address : "Siwa, Market"
-/// email : "contact@nileexplorers.eg"
-/// phoneNumber : "+20 100 222 2222"
-/// description : "Discover the hidden gems of Egypt with us."
-/// website : "https://www.company2.eg"
-/// slogan : "Sail Beyond Dreams."
-/// profileImageUrl : "https://journeymate.runasp.net//CompanyImages/1.jpg"
-/// coverImageUrl : "https://journeymate.runasp.net//CompanyImages/1.jpg"
-/// establishedDate : "2018-10-18"
-/// rating : 4
-/// socialMediaLinks : []
-/// paymentMethods : []
-/// ratings : []
-/// travels : [{"id":2,"title":"Alpine Adventure","description":"5-day hiking tour through the Alps","price":950,"baseCost":800,"saleDiscount":0.05,"startDate":"2025-06-07T00:00:00","endDate":"2025-06-12T00:00:00","creationDate":"2025-04-23T00:00:00","availableSeats":20,"departurePoint":"Munich Central Station","departurePointLat":48.1351,"departurePointLng":11.582,"destinationCity":"Chamonix","destinationCityLat":45.9237,"destinationCityLng":6.8694,"transportationType":"Bus","amenities":["Guided tours","Equipment rental","Meals included"],"coverImageUrl":"https://i.pinimg.com/736x/14/7f/ea/147fea20f16d94e7960d2bd3b507fd2e.jpg","profileImageUrl":null,"companyProfileImageUrl":"https://journeymate.runasp.net//CompanyImages/1.jpg","included":[],"notIncluded":[],"specialOffer":null,"companyId":2,"companyName":"Nile Explorers","categoryId":2,"categoryName":null,"imageUrls":["https://journeymate.runasp.net/TravelImages/2/1.jpeg","https://journeymate.runasp.net/TravelImages/2/2.jpeg","https://journeymate.runasp.net/TravelImages/2/3.jpeg"],"itenraries":[]}]
-/// workingHours : [{"dayOfWeek":"Monday","workingTime":"9:00 AM - 6:00 PM"},{"dayOfWeek":"Tuesday","workingTime":"9:00 AM - 6:00 PM"},{"dayOfWeek":"Wednesday","workingTime":"9:00 AM - 6:00 PM"},{"dayOfWeek":"Thursday","workingTime":"9:00 AM - 6:00 PM"},{"dayOfWeek":"Friday","workingTime":"9:00 AM - 6:00 PM"},{"dayOfWeek":"Saturday","workingTime":"Closed"},{"dayOfWeek":"Sunday","workingTime":"Closed"}]
+
 
 class CompanyDetailsModel {
   CompanyDetailsModel({
@@ -30,9 +14,9 @@ class CompanyDetailsModel {
       String? coverImageUrl, 
       String? establishedDate, 
       num? rating, 
-      List<dynamic>? socialMediaLinks, 
-      List<dynamic>? paymentMethods, 
-      List<dynamic>? ratings, 
+      List<SocialMediaLinks>? socialMediaLinks, 
+      List<PaymentMethods>? paymentMethods, 
+      List<Ratings>? ratings, 
       List<Travels>? travels, 
       List<WorkingHours>? workingHours,}){
     _id = id;
@@ -70,19 +54,19 @@ class CompanyDetailsModel {
     if (json['socialMediaLinks'] != null) {
       _socialMediaLinks = [];
       json['socialMediaLinks'].forEach((v) {
-        _socialMediaLinks?.add(v);
+        _socialMediaLinks?.add(SocialMediaLinks.fromJson(v));
       });
     }
     if (json['paymentMethods'] != null) {
       _paymentMethods = [];
       json['paymentMethods'].forEach((v) {
-        _paymentMethods?.add(v);
+        _paymentMethods?.add(PaymentMethods.fromJson(v));
       });
     }
     if (json['ratings'] != null) {
       _ratings = [];
       json['ratings'].forEach((v) {
-        _ratings?.add(v);
+        _ratings?.add(Ratings.fromJson(v));
       });
     }
     if (json['travels'] != null) {
@@ -110,9 +94,9 @@ class CompanyDetailsModel {
   String? _coverImageUrl;
   String? _establishedDate;
   num? _rating;
-  List<dynamic>? _socialMediaLinks;
-  List<dynamic>? _paymentMethods;
-  List<dynamic>? _ratings;
+  List<SocialMediaLinks>? _socialMediaLinks;
+  List<PaymentMethods>? _paymentMethods;
+  List<Ratings>? _ratings;
   List<Travels>? _travels;
   List<WorkingHours>? _workingHours;
 CompanyDetailsModel copyWith({  num? id,
@@ -127,9 +111,9 @@ CompanyDetailsModel copyWith({  num? id,
   String? coverImageUrl,
   String? establishedDate,
   num? rating,
-  List<dynamic>? socialMediaLinks,
-  List<dynamic>? paymentMethods,
-  List<dynamic>? ratings,
+  List<SocialMediaLinks>? socialMediaLinks,
+  List<PaymentMethods>? paymentMethods,
+  List<Ratings>? ratings,
   List<Travels>? travels,
   List<WorkingHours>? workingHours,
 }) => CompanyDetailsModel(  id: id ?? _id,
@@ -162,9 +146,9 @@ CompanyDetailsModel copyWith({  num? id,
   String? get coverImageUrl => _coverImageUrl;
   String? get establishedDate => _establishedDate;
   num? get rating => _rating;
-  List<dynamic>? get socialMediaLinks => _socialMediaLinks;
-  List<dynamic>? get paymentMethods => _paymentMethods;
-  List<dynamic>? get ratings => _ratings;
+  List<SocialMediaLinks>? get socialMediaLinks => _socialMediaLinks;
+  List<PaymentMethods>? get paymentMethods => _paymentMethods;
+  List<Ratings>? get ratings => _ratings;
   List<Travels>? get travels => _travels;
   List<WorkingHours>? get workingHours => _workingHours;
 
@@ -202,8 +186,8 @@ CompanyDetailsModel copyWith({  num? id,
 
 }
 
-/// dayOfWeek : "Monday"
-/// workingTime : "9:00 AM - 6:00 PM"
+/// dayOfWeek : "string"
+/// workingTime : "string"
 
 class WorkingHours {
   WorkingHours({
@@ -236,36 +220,36 @@ WorkingHours copyWith({  String? dayOfWeek,
 
 }
 
-/// id : 2
-/// title : "Alpine Adventure"
-/// description : "5-day hiking tour through the Alps"
-/// price : 950
-/// baseCost : 800
-/// saleDiscount : 0.05
-/// startDate : "2025-06-07T00:00:00"
-/// endDate : "2025-06-12T00:00:00"
-/// creationDate : "2025-04-23T00:00:00"
-/// availableSeats : 20
-/// departurePoint : "Munich Central Station"
-/// departurePointLat : 48.1351
-/// departurePointLng : 11.582
-/// destinationCity : "Chamonix"
-/// destinationCityLat : 45.9237
-/// destinationCityLng : 6.8694
-/// transportationType : "Bus"
-/// amenities : ["Guided tours","Equipment rental","Meals included"]
-/// coverImageUrl : "https://i.pinimg.com/736x/14/7f/ea/147fea20f16d94e7960d2bd3b507fd2e.jpg"
-/// profileImageUrl : null
-/// companyProfileImageUrl : "https://journeymate.runasp.net//CompanyImages/1.jpg"
-/// included : []
-/// notIncluded : []
-/// specialOffer : null
-/// companyId : 2
-/// companyName : "Nile Explorers"
-/// categoryId : 2
-/// categoryName : null
-/// imageUrls : ["https://journeymate.runasp.net/TravelImages/2/1.jpeg","https://journeymate.runasp.net/TravelImages/2/2.jpeg","https://journeymate.runasp.net/TravelImages/2/3.jpeg"]
-/// itenraries : []
+/// id : 0
+/// title : "string"
+/// description : "string"
+/// price : 0
+/// baseCost : 0
+/// saleDiscount : 0
+/// startDate : "2025-07-09T08:39:50.109Z"
+/// endDate : "2025-07-09T08:39:50.109Z"
+/// creationDate : "2025-07-09T08:39:50.109Z"
+/// availableSeats : 0
+/// departurePoint : "string"
+/// departurePointLat : 0
+/// departurePointLng : 0
+/// destinationCity : "string"
+/// destinationCityLat : 0
+/// destinationCityLng : 0
+/// transportationType : "string"
+/// amenities : ["string"]
+/// coverImageUrl : "string"
+/// profileImageUrl : "string"
+/// companyProfileImageUrl : "string"
+/// included : ["string"]
+/// notIncluded : ["string"]
+/// specialOffer : "string"
+/// companyId : 0
+/// companyName : "string"
+/// categoryId : 0
+/// categoryName : "string"
+/// imageUrls : ["string"]
+/// itineraries : [{"title":"string","dayNumber":0,"description":"string","startTime":"string","endTime":"string","location":"string","activities":["string"],"includesBreakfast":true,"includesLunch":true,"includesDinner":true,"notes":"string"}]
 
 class Travels {
   Travels({
@@ -288,17 +272,17 @@ class Travels {
       String? transportationType, 
       List<String>? amenities, 
       String? coverImageUrl, 
-      dynamic profileImageUrl, 
+      String? profileImageUrl, 
       String? companyProfileImageUrl, 
-      List<dynamic>? included, 
-      List<dynamic>? notIncluded, 
-      dynamic specialOffer, 
+      List<String>? included, 
+      List<String>? notIncluded, 
+      String? specialOffer, 
       num? companyId, 
       String? companyName, 
       num? categoryId, 
-      dynamic categoryName, 
+      String? categoryName, 
       List<String>? imageUrls, 
-      List<dynamic>? itenraries,}){
+      List<Itineraries>? itineraries,}){
     _id = id;
     _title = title;
     _description = description;
@@ -328,7 +312,7 @@ class Travels {
     _categoryId = categoryId;
     _categoryName = categoryName;
     _imageUrls = imageUrls;
-    _itenraries = itenraries;
+    _itineraries = itineraries;
 }
 
   Travels.fromJson(dynamic json) {
@@ -353,28 +337,18 @@ class Travels {
     _coverImageUrl = json['coverImageUrl'];
     _profileImageUrl = json['profileImageUrl'];
     _companyProfileImageUrl = json['companyProfileImageUrl'];
-    if (json['included'] != null) {
-      _included = [];
-      json['included'].forEach((v) {
-        _included?.add(v);
-      });
-    }
-    if (json['notIncluded'] != null) {
-      _notIncluded = [];
-      json['notIncluded'].forEach((v) {
-        _notIncluded?.add(v);
-      });
-    }
+    _included = json['included'] != null ? json['included'].cast<String>() : [];
+    _notIncluded = json['notIncluded'] != null ? json['notIncluded'].cast<String>() : [];
     _specialOffer = json['specialOffer'];
     _companyId = json['companyId'];
     _companyName = json['companyName'];
     _categoryId = json['categoryId'];
     _categoryName = json['categoryName'];
     _imageUrls = json['imageUrls'] != null ? json['imageUrls'].cast<String>() : [];
-    if (json['itenraries'] != null) {
-      _itenraries = [];
-      json['itenraries'].forEach((v) {
-        _itenraries?.add(v);
+    if (json['itineraries'] != null) {
+      _itineraries = [];
+      json['itineraries'].forEach((v) {
+        _itineraries?.add(Itineraries.fromJson(v));
       });
     }
   }
@@ -397,17 +371,17 @@ class Travels {
   String? _transportationType;
   List<String>? _amenities;
   String? _coverImageUrl;
-  dynamic _profileImageUrl;
+  String? _profileImageUrl;
   String? _companyProfileImageUrl;
-  List<dynamic>? _included;
-  List<dynamic>? _notIncluded;
-  dynamic _specialOffer;
+  List<String>? _included;
+  List<String>? _notIncluded;
+  String? _specialOffer;
   num? _companyId;
   String? _companyName;
   num? _categoryId;
-  dynamic _categoryName;
+  String? _categoryName;
   List<String>? _imageUrls;
-  List<dynamic>? _itenraries;
+  List<Itineraries>? _itineraries;
 Travels copyWith({  num? id,
   String? title,
   String? description,
@@ -427,17 +401,17 @@ Travels copyWith({  num? id,
   String? transportationType,
   List<String>? amenities,
   String? coverImageUrl,
-  dynamic profileImageUrl,
+  String? profileImageUrl,
   String? companyProfileImageUrl,
-  List<dynamic>? included,
-  List<dynamic>? notIncluded,
-  dynamic specialOffer,
+  List<String>? included,
+  List<String>? notIncluded,
+  String? specialOffer,
   num? companyId,
   String? companyName,
   num? categoryId,
-  dynamic categoryName,
+  String? categoryName,
   List<String>? imageUrls,
-  List<dynamic>? itenraries,
+  List<Itineraries>? itineraries,
 }) => Travels(  id: id ?? _id,
   title: title ?? _title,
   description: description ?? _description,
@@ -467,7 +441,7 @@ Travels copyWith({  num? id,
   categoryId: categoryId ?? _categoryId,
   categoryName: categoryName ?? _categoryName,
   imageUrls: imageUrls ?? _imageUrls,
-  itenraries: itenraries ?? _itenraries,
+  itineraries: itineraries ?? _itineraries,
 );
   num? get id => _id;
   String? get title => _title;
@@ -488,17 +462,17 @@ Travels copyWith({  num? id,
   String? get transportationType => _transportationType;
   List<String>? get amenities => _amenities;
   String? get coverImageUrl => _coverImageUrl;
-  dynamic get profileImageUrl => _profileImageUrl;
+  String? get profileImageUrl => _profileImageUrl;
   String? get companyProfileImageUrl => _companyProfileImageUrl;
-  List<dynamic>? get included => _included;
-  List<dynamic>? get notIncluded => _notIncluded;
-  dynamic get specialOffer => _specialOffer;
+  List<String>? get included => _included;
+  List<String>? get notIncluded => _notIncluded;
+  String? get specialOffer => _specialOffer;
   num? get companyId => _companyId;
   String? get companyName => _companyName;
   num? get categoryId => _categoryId;
-  dynamic get categoryName => _categoryName;
+  String? get categoryName => _categoryName;
   List<String>? get imageUrls => _imageUrls;
-  List<dynamic>? get itenraries => _itenraries;
+  List<Itineraries>? get itineraries => _itineraries;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -523,21 +497,255 @@ Travels copyWith({  num? id,
     map['coverImageUrl'] = _coverImageUrl;
     map['profileImageUrl'] = _profileImageUrl;
     map['companyProfileImageUrl'] = _companyProfileImageUrl;
-    if (_included != null) {
-      map['included'] = _included?.map((v) => v.toJson()).toList();
-    }
-    if (_notIncluded != null) {
-      map['notIncluded'] = _notIncluded?.map((v) => v.toJson()).toList();
-    }
+    map['included'] = _included;
+    map['notIncluded'] = _notIncluded;
     map['specialOffer'] = _specialOffer;
     map['companyId'] = _companyId;
     map['companyName'] = _companyName;
     map['categoryId'] = _categoryId;
     map['categoryName'] = _categoryName;
     map['imageUrls'] = _imageUrls;
-    if (_itenraries != null) {
-      map['itenraries'] = _itenraries?.map((v) => v.toJson()).toList();
+    if (_itineraries != null) {
+      map['itineraries'] = _itineraries?.map((v) => v.toJson()).toList();
     }
+    return map;
+  }
+
+}
+
+/// title : "string"
+/// dayNumber : 0
+/// description : "string"
+/// startTime : "string"
+/// endTime : "string"
+/// location : "string"
+/// activities : ["string"]
+/// includesBreakfast : true
+/// includesLunch : true
+/// includesDinner : true
+/// notes : "string"
+
+class Itineraries {
+  Itineraries({
+      String? title, 
+      num? dayNumber, 
+      String? description, 
+      String? startTime, 
+      String? endTime, 
+      String? location, 
+      List<String>? activities, 
+      bool? includesBreakfast, 
+      bool? includesLunch, 
+      bool? includesDinner, 
+      String? notes,}){
+    _title = title;
+    _dayNumber = dayNumber;
+    _description = description;
+    _startTime = startTime;
+    _endTime = endTime;
+    _location = location;
+    _activities = activities;
+    _includesBreakfast = includesBreakfast;
+    _includesLunch = includesLunch;
+    _includesDinner = includesDinner;
+    _notes = notes;
+}
+
+  Itineraries.fromJson(dynamic json) {
+    _title = json['title'];
+    _dayNumber = json['dayNumber'];
+    _description = json['description'];
+    _startTime = json['startTime'];
+    _endTime = json['endTime'];
+    _location = json['location'];
+    _activities = json['activities'] != null ? json['activities'].cast<String>() : [];
+    _includesBreakfast = json['includesBreakfast'];
+    _includesLunch = json['includesLunch'];
+    _includesDinner = json['includesDinner'];
+    _notes = json['notes'];
+  }
+  String? _title;
+  num? _dayNumber;
+  String? _description;
+  String? _startTime;
+  String? _endTime;
+  String? _location;
+  List<String>? _activities;
+  bool? _includesBreakfast;
+  bool? _includesLunch;
+  bool? _includesDinner;
+  String? _notes;
+Itineraries copyWith({  String? title,
+  num? dayNumber,
+  String? description,
+  String? startTime,
+  String? endTime,
+  String? location,
+  List<String>? activities,
+  bool? includesBreakfast,
+  bool? includesLunch,
+  bool? includesDinner,
+  String? notes,
+}) => Itineraries(  title: title ?? _title,
+  dayNumber: dayNumber ?? _dayNumber,
+  description: description ?? _description,
+  startTime: startTime ?? _startTime,
+  endTime: endTime ?? _endTime,
+  location: location ?? _location,
+  activities: activities ?? _activities,
+  includesBreakfast: includesBreakfast ?? _includesBreakfast,
+  includesLunch: includesLunch ?? _includesLunch,
+  includesDinner: includesDinner ?? _includesDinner,
+  notes: notes ?? _notes,
+);
+  String? get title => _title;
+  num? get dayNumber => _dayNumber;
+  String? get description => _description;
+  String? get startTime => _startTime;
+  String? get endTime => _endTime;
+  String? get location => _location;
+  List<String>? get activities => _activities;
+  bool? get includesBreakfast => _includesBreakfast;
+  bool? get includesLunch => _includesLunch;
+  bool? get includesDinner => _includesDinner;
+  String? get notes => _notes;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['title'] = _title;
+    map['dayNumber'] = _dayNumber;
+    map['description'] = _description;
+    map['startTime'] = _startTime;
+    map['endTime'] = _endTime;
+    map['location'] = _location;
+    map['activities'] = _activities;
+    map['includesBreakfast'] = _includesBreakfast;
+    map['includesLunch'] = _includesLunch;
+    map['includesDinner'] = _includesDinner;
+    map['notes'] = _notes;
+    return map;
+  }
+
+}
+
+
+
+class Ratings {
+  Ratings({
+      String? userId, 
+      String? name, 
+      num? companyId, 
+      num? rating, 
+      String? message,}){
+    _userId = userId;
+    _name = name;
+    _companyId = companyId;
+    _rating = rating;
+    _message = message;
+}
+
+  Ratings.fromJson(dynamic json) {
+    _userId = json['userId'];
+    _name = json['name'];
+    _companyId = json['companyId'];
+    _rating = json['rating'];
+    _message = json['message'];
+  }
+  String? _userId;
+  String? _name;
+  num? _companyId;
+  num? _rating;
+  String? _message;
+Ratings copyWith({  String? userId,
+  String? name,
+  num? companyId,
+  num? rating,
+  String? message,
+}) => Ratings(  userId: userId ?? _userId,
+  name: name ?? _name,
+  companyId: companyId ?? _companyId,
+  rating: rating ?? _rating,
+  message: message ?? _message,
+);
+  String? get userId => _userId;
+  String? get name => _name;
+  num? get companyId => _companyId;
+  num? get rating => _rating;
+  String? get message => _message;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['userId'] = _userId;
+    map['name'] = _name;
+    map['companyId'] = _companyId;
+    map['rating'] = _rating;
+    map['message'] = _message;
+    return map;
+  }
+
+}
+
+
+class PaymentMethods {
+  PaymentMethods({
+      String? type, 
+      String? provider,}){
+    _type = type;
+    _provider = provider;
+}
+
+  PaymentMethods.fromJson(dynamic json) {
+    _type = json['type'];
+    _provider = json['provider'];
+  }
+  String? _type;
+  String? _provider;
+PaymentMethods copyWith({  String? type,
+  String? provider,
+}) => PaymentMethods(  type: type ?? _type,
+  provider: provider ?? _provider,
+);
+  String? get type => _type;
+  String? get provider => _provider;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['type'] = _type;
+    map['provider'] = _provider;
+    return map;
+  }
+
+}
+
+/// platform : "string"
+/// url : "string"
+
+class SocialMediaLinks {
+  SocialMediaLinks({
+      String? platform, 
+      String? url,}){
+    _platform = platform;
+    _url = url;
+}
+
+  SocialMediaLinks.fromJson(dynamic json) {
+    _platform = json['platform'];
+    _url = json['url'];
+  }
+  String? _platform;
+  String? _url;
+SocialMediaLinks copyWith({  String? platform,
+  String? url,
+}) => SocialMediaLinks(  platform: platform ?? _platform,
+  url: url ?? _url,
+);
+  String? get platform => _platform;
+  String? get url => _url;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['platform'] = _platform;
+    map['url'] = _url;
     return map;
   }
 

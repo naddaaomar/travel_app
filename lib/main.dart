@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:p/di.dart';
 import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:p/screens/onboard/views/widgets/onboard_view_body.dart';
 import 'package:p/screens/settings/bloc/notification_bloc/notification_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'screens/ai/models/event_interaction.dart';
 import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'screens/settings/bloc/permission_bloc/permissions_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
@@ -26,7 +27,9 @@ void main() async {
   ApiManager.init();
   final appDocDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocDir.path);
-
+  await Hive.initFlutter(appDocDir.path);
+  Hive.registerAdapter(EventInteractionAdapter());
+  await Hive.openBox<EventInteraction>('interactions');
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   bool isFirstTime = prefs.getBool('onboarding_seen') ?? false;
@@ -85,7 +88,10 @@ class MyApp extends StatelessWidget {
                   darkTheme: MyThemeData.darkTheme,
                   themeMode: themeMode,
                   debugShowCheckedModeBanner: false,
-                  home: isFirstTime ? SplashScreen() : OnBoardViewBody(),
+                  home:
+                  //isFirstTime ?
+                  SplashScreen()
+                      //: OnBoardViewBody(),
                 ),
               ),
             );

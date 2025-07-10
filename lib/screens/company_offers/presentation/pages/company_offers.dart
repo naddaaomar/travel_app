@@ -12,6 +12,7 @@ import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
 import 'package:p/screens/company_offers/presentation/widgets/company_card.dart';
 import 'package:p/screens/company_offers/presentation/widgets/offer_card.dart';
 import 'package:p/screens/travel_filtration/presentation/pages/travel_filtration.dart';
+import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../all_companies/data/models/AllCompaniesModel.dart';
 import '../../../travel_filtration/presentation/manger/travel_filter_cubit.dart';
@@ -232,7 +233,7 @@ class _CompanyOffersState extends State<CompanyOffers> {
                                           }
                                           return InkWell(
                                             onTap: () {
-                                              // You can navigate to details page here if needed
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>TripDetailsViewBody(id: items[index].id.toString()) ,));
                                             },
                                             child: OfferCard(companyOffersModel: items[index]),
                                           );

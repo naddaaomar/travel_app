@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-import 'package:p/screens/tabs/offers/data/models/DiscountTravelsModel.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 
 import '../../../../all_companies/data/models/AllCompaniesModel.dart';
 import '../../domain/use_cases/offers_use_case.dart';
@@ -43,7 +43,7 @@ class OffersCubit extends Cubit<OffersState> {
     await getDiscount(PageIndex: PageIndexdis, PageSize: PageSizedis);
   }
 
-  Future<void> getDiscount({
+  getDiscount({
     required int PageIndex,
     required int PageSize,
   }) async {
@@ -58,6 +58,7 @@ class OffersCubit extends Cubit<OffersState> {
           emit(state.copyWith(isLoadingDiscounts: false, error: l.message));
         },
         (r) {
+          print("cubiiit");
           emit(state.copyWith(
             isLoadingDiscounts: false,
             discounts: r,

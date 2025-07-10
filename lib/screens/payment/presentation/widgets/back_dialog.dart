@@ -18,7 +18,7 @@ Future<bool> backDialog({
         create: (context) => getIt<BookingCubit>(),
         child: BlocConsumer<BookingCubit, BookingState>(
           listener: (context, state) {
-            if (state is BookingDeleteSuccess) {
+            if ((state.isDeleteLoading==false) && (state.error==null)) {
               Navigator.of(dialogContext).pop(true);
 
               Future.microtask(() {
@@ -78,8 +78,7 @@ Future<bool> backDialog({
                             borderRadius: BorderRadius.circular(15)),
                       ),
                       onPressed: () async {
-                        await BookingCubit.get(context)
-                            .bookingDelete(bookingId: bookingId);
+                        await BookingCubit.get(context).bookingDelete(bookingId: bookingId);
                       },
                       child: Text(
                         "Cancel Booking",

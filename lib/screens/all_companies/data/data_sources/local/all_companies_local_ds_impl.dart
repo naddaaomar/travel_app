@@ -24,8 +24,12 @@ class AllCompaniesLocalDsImpl implements AllCompaniesLocalDs {
 
   @override
   Future<void> cacheCompanies(AllCompaniesModel companies) async {
-    final box = await _openBox();
-    await box.put(_boxKey, companies.toJson());
+    try{
+      final box = await _openBox();
+      await box.put(_boxKey, companies.toJson());
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   @override

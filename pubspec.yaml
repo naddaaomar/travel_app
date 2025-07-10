@@ -53,7 +53,6 @@ dependencies:
   animate_do: ^3.3.4
   animated_toggle_switch: ^0.8.4
   easy_localization: ^3.0.7+1
-  shared_preferences: ^2.3.1
   chat_bubbles: ^1.6.0
   auto_animated: ^3.2.0
   equatable: ^2.0.7
@@ -74,19 +73,37 @@ dependencies:
   hive_flutter: ^1.1.0
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
-  android_alarm_manager_plus: ^4.0.7
+  #android_alarm_manager_plus: ^4.0.7
   lottie: ^3.2.0
   url_launcher: ^6.3.1
-  google_sign_in: ^6.2.2
-  favorite_button: ^0.0.4
   animated_radial_menu: ^0.0.1
   clickable_list_wheel_view: ^0.2.0
   choice: ^2.3.2
-  fluttertoast: ^8.2.12
   internet_connection_checker: ^3.0.1
   connectivity_plus: ^6.1.4
-  cached_network_image: ^3.4.1
+  cached_network_image: ^3.3.1
+  google_sign_in: ^6.2.2
+  favorite_button: ^0.0.4
+  firebase_auth: ^5.6.2
+  firebase_core: ^3.15.1
+  flutter_secure_storage: ^9.2.4
+  cloud_firestore: ^5.6.11
+  sign_in_with_apple: ^7.0.1
+  timezone: ^0.9.1
+  awesome_notifications: ^0.10.0
+  mockito: ^5.4.4
+  flutter_rating_bar: ^4.0.1
+#  flutter_native_timezone: ^2.0.0
+  flutter_local_notifications: ^12.0.4
+  shared_preferences: ^2.5.3
+  loading_indicator: ^3.1.1
+  wheel_slider: ^1.2.2
+  signalr_netcore: ^1.4.3
+  jwt_decoder: ^2.0.1
 
+
+dependency_overrides:
+  flutter_plugin_android_lifecycle: 2.0.11
 
 
 

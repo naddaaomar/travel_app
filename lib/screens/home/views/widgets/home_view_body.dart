@@ -148,7 +148,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
               key: ValueKey(context.locale),
               extendBody: true,
               appBar: AppBar(
-                backgroundColor: Colors.transparent,
+                backgroundColor:HomeViewBody.currentIndex==2?ColorApp.primaryColor: Colors.transparent,
                 leading: MainRow(
                   controller: _advancedDrawerController,
                 ),
@@ -157,39 +157,38 @@ class _HomeViewBodyState extends State<HomeViewBody>
               body: LayoutBuilder(
                 builder: (context, constraints) {
                   return SizedBox(
-                    height:
-                        constraints.maxHeight, // Ensure it takes full height
+                    height: constraints.maxHeight,
                     child: Stack(
                       children: [
-                        IndexedStack(
-                          index: HomeViewBody.currentIndex,
-                          children: tabs,
-                        ),
+                        // Tabs: only build the visible one
+                        ...List.generate(tabs.length, (i) {
+                          return Offstage(
+                            offstage: HomeViewBody.currentIndex != i,
+                            child: tabs[i],
+                          );
+                        }),
 
-                        ValueListenableBuilder<bool>(
-                          valueListenable: isFieldFocused,
-                          builder: (context, isFocused, child) {
-                            return isFocused
-                                ? Positioned.fill(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        FocusScope.of(context)
-                                            .unfocus(); // Close keyboard when tapping the background
-                                      },
-                                      child: Container(
-                                        color: Colors.white.withOpacity(0.6),
-                                      ),
-                                    ),
-                                  )
-                                : SizedBox.shrink();
-                          },
+                        // Keyboard Dismiss Overlay (no rebuilds unless focus changes)
+                        Positioned.fill(
+                          child: ValueListenableBuilder<bool>(
+                            valueListenable: isFieldFocused,
+                            builder: (context, isFocused, _) {
+                              if (!isFocused) return const SizedBox.shrink();
+                              return GestureDetector(
+                                onTap: () => FocusScope.of(context).unfocus(),
+                                child: Container(
+                                  color: Colors.white.withOpacity(0.6),
+                                ),
+                              );
+                            },
+                          ),
                         ),
-
                       ],
                     ),
                   );
                 },
               ),
+
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
                   Navigator.push(

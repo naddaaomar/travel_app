@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:p/screens/all_companies/data/models/AllCompaniesModel.dart';
-import 'package:p/screens/tabs/offers/data/models/DiscountTravelsModel.dart';
 
 import 'offers_local_ds.dart';
 
@@ -39,16 +39,16 @@ class OffersLocalDsImpl implements OffersLocalDs {
   }
 
   @override
-  Future<void> cacheDiscounts(DiscountTravelsModel discounts) async {
+  Future<void> cacheDiscounts(DiscountItemsModel discounts) async {
     final box = await _openBox();
     await box.put(_discountsKey, discounts.toJson());
   }
 
   @override
-  Future<DiscountTravelsModel?> getCachedDiscounts() async {
+  Future<DiscountItemsModel?> getCachedDiscounts() async {
     final box = await _openBox();
     final data = await box.get(_discountsKey);
     if (data == null) return null;
-    return DiscountTravelsModel.fromJson(data);
+    return DiscountItemsModel.fromJson(data);
   }
 }

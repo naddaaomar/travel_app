@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../data/remote/models/AllDiscountModel.dart';
 
 class AllDiscountCard extends StatelessWidget {
   AllDiscountCard({super.key, required this.items});
 
-  Items items;
+  DiscountItems items;
 
   @override
   Widget build(BuildContext context) {

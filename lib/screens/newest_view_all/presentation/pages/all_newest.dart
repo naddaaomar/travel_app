@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/screens/ai/Ai_requests.dart';
 import 'package:p/screens/home/views/widgets/drawer/new_drawer.dart';
 import 'package:p/screens/newest_view_all/presentation/manager/all_newest_cubit.dart';
 import 'package:p/screens/newest_view_all/presentation/widgets/newest_card.dart';
@@ -252,7 +253,18 @@ class AllNewest extends StatelessWidget {
                                                 .shrink(); // أو أي ويدجت بديلة
                                           }
                                           return InkWell(
-                                            onTap: () {
+                                            onTap: () async{
+                                              final aiRequests = AiRequests();
+
+                                              await aiRequests.trackInteractionClick(
+                                                contentId: state
+                                                    .allTravelsModel!
+                                                    .items![index]
+                                                    .id
+                                                    .toString(),
+                                                type: 'travel',
+                                              );
+
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(

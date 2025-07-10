@@ -4,7 +4,7 @@ part of 'all_discounts_cubit.dart';
 class AllDiscountsState {
   final bool isLoading;
   final bool hasError;
-  final AllDiscountModel? allTravelsModel;
+  final DiscountItemsModel? allTravelsModel;
   final bool scrolledToPage;
 
   const AllDiscountsState({
@@ -17,7 +17,7 @@ class AllDiscountsState {
   AllDiscountsState copyWith({
     bool? isLoading,
     bool? hasError,
-    AllDiscountModel? allTravelsModel,
+    DiscountItemsModel? allTravelsModel,
     bool? scrolledToPage,
   }) {
     return AllDiscountsState(

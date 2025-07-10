@@ -3,8 +3,8 @@ import 'package:injectable/injectable.dart';
 import 'package:p/helpers/exceptions/failuers.dart';
 import 'package:p/helpers/internet_checker/internet_checker.dart';
 import 'package:p/screens/all_companies/data/models/AllCompaniesModel.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 import 'package:p/screens/tabs/offers/data/data_sources/local/offers_local_ds.dart';
-import 'package:p/screens/tabs/offers/data/models/DiscountTravelsModel.dart';
 import '../../domain/repositories/offers_repo.dart';
 import '../data_sources/remote/offers_ds.dart';
 
@@ -16,11 +16,10 @@ class OffersRepoImpl implements OffersRepo {
   final NetworkInfo networkInfo;
 
   OffersRepoImpl(
-      this.offersDs,
-      this.offersLocalDs,
-
-      this.networkInfo,
-      );
+    this.offersDs,
+    this.offersLocalDs,
+    this.networkInfo,
+  );
 
   @override
   Future<Either<ErrorFailures, AllCompaniesModel>> getCompanies({
@@ -53,15 +52,19 @@ class OffersRepoImpl implements OffersRepo {
   }
 
   @override
-  Future<Either<ErrorFailures, DiscountTravelsModel>> getDiscounts({
+  Future<Either<ErrorFailures, DiscountItemsModel>> getDiscounts({
     required int PageIndex,
     required int PageSize,
   }) async {
     try {
       if (await networkInfo.isConnected) {
-        final data =
-        await offersDs.getDiscount(PageSize: PageSize, PageIndex: PageIndex);
-        await offersLocalDs.cacheDiscounts(data);
+        final data = await offersDs.getDiscount(
+            PageSize: PageSize, PageIndex: PageIndex);
+        print("before CAche//////////////////////////////////");
+
+      //  await offersLocalDs.cacheDiscounts(data);
+        print("after CAche /////////////////////////////////////////");
+
         return Right(data);
       } else {
         final cached = await offersLocalDs.getCachedDiscounts();

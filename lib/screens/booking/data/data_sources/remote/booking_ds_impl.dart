@@ -5,6 +5,8 @@ import 'package:p/helpers/constants/constants.dart';
 import 'package:p/helpers/exceptions/exceptions.dart';
 import 'package:p/screens/booking/data/data_sources/remote/booking_ds.dart';
 import 'package:p/screens/booking/data/models/BookingModel.dart';
+import 'package:p/screens/booking/data/models/GetBookingModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @Injectable(as: BookingDs)
 class BookingDsImpl implements BookingDs {
@@ -12,16 +14,27 @@ class BookingDsImpl implements BookingDs {
 
   BookingDsImpl(this.apiManager);
   @override
-  Future<BookingModel> booking(
-      {required num travelId, required num quantity}) async {
+  Future<BookingModel> bookingPost({
+    required num travelId,
+    required num totalQuantity,
+    required num childrenUnderFiveNum,
+    required String nationalId,
+    required String phoneNumber,
+  }) async
+  {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = await prefs.getString('token');
+      final userId = await prefs.getString('user_id');
       var response = await apiManager
           .postDate(endPoint: Constants.bookingEndpoint, headers: {
-        "Authorization":
-            'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJBLlIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhckBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzUwODYwNzM0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MTI2IiwiYXVkIjoiTXlTZWN1cmVkQVBJVXNlcnMifQ.hPsUJl68tWwqjafZDWBByjwQu_ZVLZk2vohJlBkYAwE'
+        "Authorization": 'Bearer $token'
       }, data: {
         "travelId": travelId,
-        "quantity": quantity
+        "totalQuantity": totalQuantity,
+        "childrenUnderFiveNum": childrenUnderFiveNum,
+        "nationalId": nationalId,
+        "phoneNumber": phoneNumber
       });
 
       BookingModel bookingModel = BookingModel.fromJson(response.data);
@@ -39,12 +52,12 @@ class BookingDsImpl implements BookingDs {
   @override
   Future bookingDelete({required int bookingId}) async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = await prefs.getString('token');
       await apiManager.deleteData(
-          endPoint: "${Constants.bookingDeleteEndpoint}/$bookingId",
-          headers: {
-            "Authorization":
-                'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJBLlIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhckBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzUwODYwNzM0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MTI2IiwiYXVkIjoiTXlTZWN1cmVkQVBJVXNlcnMifQ.hPsUJl68tWwqjafZDWBByjwQu_ZVLZk2vohJlBkYAwE'
-          });
+        endPoint: "${Constants.bookingDeleteEndpoint}/$bookingId",
+        headers: {"Authorization": 'Bearer $token'},
+      );
     } on DioException catch (e) {
       if (e.response == null) {
         print("null");
@@ -55,20 +68,29 @@ class BookingDsImpl implements BookingDs {
   }
 
   @override
-  Future<BookingModel> bookingPut(
-      {required int bookingId,
-      required num travelId,
-      required num quantity}) async {
+  Future<BookingModel> bookingPut({
+    required int bookingId,
+    required num travelId,
+    required num totalQuantity,
+    required num childrenUnderFiveNum,
+    required String nationalId,
+    required String phoneNumber,
+  }) async
+  {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = await prefs.getString('token');
     try {
-      var response = await apiManager.postDate(
+      var response = await apiManager.putData(
           endPoint: "${Constants.bookingPutEndpoint}/$bookingId",
           headers: {
-            "Authorization":
-                'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJBLlIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhckBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzUwODYwNzM0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MTI2IiwiYXVkIjoiTXlTZWN1cmVkQVBJVXNlcnMifQ.hPsUJl68tWwqjafZDWBByjwQu_ZVLZk2vohJlBkYAwE'
+            "Authorization": 'Bearer $token'
           },
           data: {
             "travelId": travelId,
-            "quantity": quantity
+            "totalQuantity": totalQuantity,
+            "childrenUnderFiveNum": childrenUnderFiveNum,
+            "nationalId": nationalId,
+            "phoneNumber": phoneNumber
           });
 
       BookingModel bookingModel = BookingModel.fromJson(response.data);
@@ -82,4 +104,35 @@ class BookingDsImpl implements BookingDs {
       throw ErrorRemoteException(e.toString());
     }
   }
+
+  @override
+  Future<List<GetBookingModel>> bookingGet() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = await prefs.getString('token');
+
+      var response = await apiManager.getData(
+        endPoint: Constants.bookingEndpoint,
+        headers: {"Authorization": 'Bearer $token'},
+      );
+
+      // Assuming response.data is a List of booking JSON objects
+      List<GetBookingModel> bookings = (response.data as List)
+          .map((item) => GetBookingModel.fromJson(item))
+          .toList();
+
+      return bookings;
+    } on DioException catch (e) {
+      print('DioException caught!');
+      print('Type: ${e.type}');
+      print('Message: ${e.message}');
+      print('Response: ${e.response}');
+      print('Status Code: ${e.response?.statusCode}');
+      print('Data: ${e.response?.data}');
+      print('Request Path: ${e.requestOptions.path}');
+
+      throw ErrorRemoteException(e.toString());
+    }
+  }
+
 }

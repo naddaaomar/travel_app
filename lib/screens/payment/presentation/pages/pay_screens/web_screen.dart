@@ -94,6 +94,28 @@ class WebScreen extends StatelessWidget {
                               (WebViewController webViewController) {
                             _controller.complete(webViewController);
                           },
+                          // After WebView loads, you can manually assume success
+                          onPageFinished: (String url) {
+                            if (url.contains("paymentgateway.com/start")) {
+                              // Wait 5 seconds then auto close and show success
+                              Future.delayed(Duration(seconds: 5), () {
+                                Navigator.of(context).pop(); // Close WebView
+                                // Show success
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                    backgroundColor: Colors.transparent,
+                                    content: SizedBox(
+                                      height: 200,
+                                      width: 200,
+                                      child: Lottie.asset("assets/lottie/payment_success.json"),
+                                    ),
+                                  ),
+                                );
+                              });
+                            }
+                          },
+
                           navigationDelegate: (NavigationRequest request) {
                             final url = request.url;
                             print('Navigating to: $url');
@@ -160,9 +182,9 @@ class WebScreen extends StatelessWidget {
                           onPageStarted: (String url) {
                             print('Page started loading: $url');
                           },
-                          onPageFinished: (String url) {
-                            print('Page finished loading: $url');
-                          },
+                          // onPageFinished: (String url) {
+                          //   print('Page finished loading: $url');
+                          // },
                           backgroundColor: ColorApp.secondaryColor,
                         )),
                       ),

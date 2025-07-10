@@ -1,177 +1,189 @@
 import 'package:flutter/material.dart';
-import '../model.dart';
+import 'package:p/screens/booking/data/models/GetBookingModel.dart';
+import 'package:p/screens/booking/presentation/manager/booking_cubit.dart';
+import 'package:p/screens/edit_booking/presention/pages/edit_booking.dart';
+import 'package:p/screens/trip_details/manager/travel_details_cubit.dart';
 
 class TransactionCard extends StatelessWidget {
-  final Transaction transaction;
+  final GetBookingModel transaction;
 
   const TransactionCard({
     Key? key,
-    required this.transaction}) : super(key: key);
+    required this.transaction,
+  }) : super(key: key);
+
+  bool get isCompleted =>
+      transaction.status?.trim().toLowerCase() == 'payment successed' ||
+      transaction.status?.trim().toLowerCase() == 'success';
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: () {
-          _showTransactionDetails(context, transaction);
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    transaction.recipient,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                        fontFamily: 'vols',
-                    ),
-                  ),
-                  Icon(
-                    transaction.status == 'Success'
-                        ? Icons.check_circle
-                        : Icons.pending,
-                    color: transaction.status == 'Success'
-                        ? Colors.green
-                        : Colors.orange,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${transaction.date.day}/${transaction.date.month}/${transaction.date.year}',
-                    style: const TextStyle(
-                      color: Colors.grey,
-                        fontFamily: 'vols',
-                    ),
-                  ),
-                  Text(
-                    '${transaction.amount.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      fontFamily: 'vols',
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+    DateTime? date;
+    try {
+      date = DateTime.parse(transaction.bookingDate ?? '');
+    } catch (_) {}
 
-  void _showTransactionDetails(BuildContext context, Transaction transaction) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20)),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: isCompleted ? Colors.green : Colors.orange,
+          width: 1.5,
+        ),
+        borderRadius: BorderRadius.circular(16),
       ),
-      builder: (context) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// Travel Image
+          Align(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                transaction.bookingItem?.travelProfileUrl ?? "",
+                height: 100,
+                width: 130,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => const Icon(Icons.broken_image),
+              ),
+            ),
+          ),
+
+          const SizedBox(width: 12),
+
+          /// Info Column
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: Container(
-                    width: 60,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(5),
-                    ),
+                /// Title & Email
+                Text(
+                  transaction.bookingItem?.title ?? "",
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'vol',
                   ),
                 ),
-                const SizedBox(height: 20),
-                Center(
-                  child: Icon(
-                    transaction.status == 'Success'
-                        ? Icons.check_circle
-                        : Icons.pending,
-                    size: 50,
-                    color: transaction.status == 'Success'
-                        ? Colors.green
-                        : Colors.orange,
+                Text(
+                  transaction.buyerEmail ?? "",
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontFamily: 'pop',
+                    fontSize: 11,
                   ),
                 ),
-                const SizedBox(height: 10),
-                Center(
-                  child: Text(
-                    transaction.status == 'Success'
-                        ? 'Transaction Successful'
-                        : 'Transaction Pending',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                        fontFamily: 'vols',
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 30),
 
-                _buildDetailRow('Transaction ID:', transaction.id),
-                _buildDetailRow('Amount:',
-                    '${transaction.amount.toStringAsFixed(2)}'),
-                _buildDetailRow('Recipient:', transaction.recipient),
-                _buildDetailRow('Date:',
-                    '${transaction.date.day}/${transaction.date.month}/${transaction.date.year}'),
-                _buildDetailRow('Time:',
-                    '${transaction.date.hour}:${transaction.date.minute.toString().padLeft(2, '0')}'),
-                _buildDetailRow('Status:', transaction.status,
-                    valueColor: transaction.status == 'Success'
-                        ? Colors.green
-                        : Colors.orange),
-                const SizedBox(height: 30),
+                const SizedBox(height: 4),
+
+                /// Booking Date & Cost
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      date != null
+                          ? "${date.day}/${date.month}/${date.year}"
+                          : "Date: Unknown",
+                      style: const TextStyle(fontSize: 11, fontFamily: 'pop'),
+                    ),
+                    Text(
+                      "${transaction.totalCost?.toStringAsFixed(0)} EGP",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontFamily: 'pop',
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 8),
+
+                /// Status or Actions
+                if (isCompleted)
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade500,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text(
+                        'Succeed',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          fontFamily: 'vols',
+                        ),
+                      ),
+                    ),
+                  )
+                else
+                  Row(
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          var travelDetails =
+                              await TravelDetailsCubit.get(context)
+                                  .getTravelDetails(
+                                      id: transaction.bookingItem?.travelId
+                                              ?.toString() ??
+                                          "");
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditBookingScreen(
+                                    model: transaction,
+                                    travelDetailsModel: travelDetails),
+                              ));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange,
+                          minimumSize: const Size(30, 32),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        icon: const Icon(Icons.edit,
+                            size: 14, color: Colors.white),
+                        label: const Text("Edit",
+                            style:
+                                TextStyle(fontSize: 12, color: Colors.white)),
+                      ),
+                      const SizedBox(width: 8),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          await BookingCubit.get(context).bookingDelete(
+                            bookingId: transaction.id?.toInt() ?? 0,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xff8A2626).withOpacity(.8),
+                          minimumSize: const Size(30, 32),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        icon: const Icon(Icons.delete,
+                            size: 14, color: Colors.white),
+                        label: const Text("Delete",
+                            style:
+                                TextStyle(fontSize: 12, color: Colors.white)),
+                      ),
+                    ],
+                  ),
               ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value, {Color? valueColor}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.grey,
-                  fontFamily: 'vols',
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              value,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: valueColor ?? Colors.black,
-                  fontFamily: 'vols',
-              ),
-              textAlign: TextAlign.end,
             ),
           ),
         ],

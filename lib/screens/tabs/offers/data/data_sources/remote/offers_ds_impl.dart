@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/constants/constants.dart';
 import 'package:p/helpers/exceptions/exceptions.dart';
-import 'package:p/screens/tabs/offers/data/models/DiscountTravelsModel.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 
 import '../../../../../all_companies/data/models/AllCompaniesModel.dart';
 import 'offers_ds.dart';
@@ -44,7 +44,7 @@ class OffersDsImpl implements OffersDs {
   }
 
   @override
-  Future<DiscountTravelsModel> getDiscount(
+  Future<DiscountItemsModel> getDiscount(
       {required int PageSize, required int PageIndex})async {
     try {
       var response = await apiManager.getData(
@@ -55,9 +55,10 @@ class OffersDsImpl implements OffersDs {
           }
       );
 
-      DiscountTravelsModel discountTravelsModel =
-      DiscountTravelsModel.fromJson(response.data);
+      DiscountItemsModel discountTravelsModel =
+      DiscountItemsModel.fromJson(response.data);
 
+      print("remoteeeeee");
       return discountTravelsModel;
     } on DioException catch (e) {
       print('DioException caught!');

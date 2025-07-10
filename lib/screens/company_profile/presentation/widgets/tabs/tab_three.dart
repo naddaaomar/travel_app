@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:p/screens/ai/Ai_requests.dart';
 import 'package:p/screens/company_profile/presentation/manager/company_details_cubit.dart';
 import 'package:p/screens/company_profile/presentation/widgets/travel_tabs.dart';
 import 'package:p/screens/company_profile/presentation/widgets/tabs/cards/discount_card.dart';
+import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
 
 class TabThree extends StatefulWidget {
   const TabThree({super.key, required this.companyId});
@@ -41,7 +43,18 @@ class _TabThreeState extends State<TabThree> {
           errorMessage: state.hasErrorDiscount
               ? "No travels found for this company."
               : null,
-          itemBuilder: (item, index) => DiscountCard(items: item),
+          itemBuilder: (item, index) => GestureDetector(
+
+              onTap: ()async {
+                final aiRequests = AiRequests();
+
+                await aiRequests.trackInteractionClick(
+                  contentId:item.id.toString(),
+                  type: 'travel',
+                );
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>TripDetailsViewBody(id: item.id.toString()) ,));
+              },
+              child: DiscountCard(items: item)),
           onNext: () => cubit.paginate(
             tabType: tabType,
             companyId: widget.companyId,

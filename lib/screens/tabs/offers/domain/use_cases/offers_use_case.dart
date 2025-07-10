@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:p/helpers/exceptions/failuers.dart';
-import 'package:p/screens/tabs/offers/data/models/DiscountTravelsModel.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 import 'package:p/screens/tabs/offers/domain/repositories/offers_repo.dart';
 
 import '../../../../all_companies/data/models/AllCompaniesModel.dart';
@@ -21,7 +21,7 @@ class OffersUseCase {
   }) =>
       offersRepo.getCompanies(PageIndex: PageIndex, PageSize: PageSize,sort: sort,rate: rate);
 
-  Future<Either<ErrorFailures, DiscountTravelsModel>> callDiscount({
+  Future<Either<ErrorFailures, DiscountItemsModel>> callDiscount({
     required int PageIndex,
     required int PageSize,
   }) =>

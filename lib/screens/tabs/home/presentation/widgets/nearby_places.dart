@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/screens/ai/Ai_requests.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/home/presentation/manager/home_cubit.dart';
+import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NearbyPlaces extends StatelessWidget {
@@ -19,7 +21,7 @@ class NearbyPlaces extends StatelessWidget {
         // TODO: implement listener
       },
       builder: (context, state) {
-        if (state is NewestLoading) {
+        if (state.isLoading) {
           return ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -39,37 +41,47 @@ class NearbyPlaces extends StatelessWidget {
             ),
           );
         }
-        if (state is NewestSuccess) {
-          var info = state.newestModel.items!;
-          return MaterialButton(
-            onPressed: () {},
+        if (state.newestModel != null) {
+          var info = state.newestModel?.items!;
+          return FadeInUp(
+            duration: Duration(milliseconds: 900),
             child: Column(
-              children: List.generate(state.newestModel.items!.length, (index) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 6.h),
-                  child: SizedBox(
-                    height: 130.h,
-                    width: double.maxFinite,
-                    child: Card(
-                      color: isLight ? Colors.white : ColorApp.cardColorDark,
-                      elevation: 10,
-                      shadowColor: isLight
-                          ? ColorApp.primaryColor
-                          : ColorApp.primaryColorDark,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(10.r),
-                        onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => TripDetailsViewBody(
-                          //         image: nearbyPlaces[index].image,
-                          //       ),
-                          //     ));
-                        },
+              children:
+                  List.generate(state.newestModel?.items!.length ?? 0, (index) {
+                return GestureDetector(
+                  onTap: () async{
+                    final aiRequests = AiRequests();
+
+                    await aiRequests.trackInteractionClick(
+                      contentId: state.newestModel?.items![index].id
+                          .toString() ??
+                          '',
+                      type: 'travel',
+                    );
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TripDetailsViewBody(
+                              id: state.newestModel?.items![index].id
+                                      .toString() ??
+                                  ''),
+                        ));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 6.h),
+                    child: SizedBox(
+                      height: 130.h,
+                      width: double.maxFinite,
+                      child: Card(
+                        color: isLight ? Colors.white : ColorApp.cardColorDark,
+                        elevation: 10,
+                        shadowColor: isLight
+                            ? ColorApp.primaryColor
+                            : ColorApp.primaryColorDark,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
                         child: Padding(
                           padding: EdgeInsets.all(8.0.h),
                           child: Row(
@@ -77,11 +89,12 @@ class NearbyPlaces extends StatelessWidget {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12.r),
                                 child: CachedNetworkImage(
-                                  imageUrl: info[index].coverImageUrl ?? "",
+                                  imageUrl: info?[index].coverImageUrl ?? "",
                                   height: double.maxFinite,
                                   width: 130.w,
                                   fit: BoxFit.cover,
-                                  placeholder: (context, url) => Shimmer.fromColors(
+                                  placeholder: (context, url) =>
+                                      Shimmer.fromColors(
                                     baseColor: const Color(0xffD8D1CA),
                                     highlightColor: const Color(0xffCBC0B6),
                                     child: Container(
@@ -90,7 +103,8 @@ class NearbyPlaces extends StatelessWidget {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  errorWidget: (context, url, error) => Image.asset(
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
                                     "assets/images/no_image.png",
                                     height: double.maxFinite,
                                     width: 130.w,
@@ -101,10 +115,12 @@ class NearbyPlaces extends StatelessWidget {
                               SizedBox(width: 10.w),
                               Expanded(
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      state.newestModel.items![index].title ??
+                                      state.newestModel?.items![index]
+                                              .title ??
                                           "",
                                       style: TextStyle(
                                           fontFamily: "pop",
@@ -116,7 +132,7 @@ class NearbyPlaces extends StatelessWidget {
                                     ),
                                     SizedBox(height: 2.h),
                                     Text(
-                                      info[index].companyName ?? "",
+                                      info?[index].companyName ?? "",
                                       style: TextStyle(
                                           fontFamily: "pop",
                                           fontSize: 11,
@@ -138,7 +154,7 @@ class NearbyPlaces extends StatelessWidget {
                                                     ? ColorApp.primaryColor
                                                     : Colors.white,
                                               ),
-                                              text: info[index]
+                                              text: info?[index]
                                                       .price
                                                       .toString() ??
                                                   "",
@@ -174,13 +190,14 @@ class NearbyPlaces extends StatelessWidget {
           duration: Duration(milliseconds: 700),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 50),
-            child: Text("Ops something went wrong",
-            style: TextStyle(
-              fontFamily: "pop",
-              color: Colors.black54,
-              fontSize: 13,
-              fontWeight: FontWeight.w500
-            ),),
+            child: Text(
+              "Ops something went wrong",
+              style: TextStyle(
+                  fontFamily: "pop",
+                  color: Colors.black54,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500),
+            ),
           ),
         );
       },

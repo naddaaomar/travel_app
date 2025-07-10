@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-import 'package:p/screens/all_discount_travels/data/remote/models/AllDiscountModel.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 import 'package:p/screens/all_discount_travels/domain/use_cases/all_discunts_use_case.dart';
 part 'all_discounts_state.dart';
 

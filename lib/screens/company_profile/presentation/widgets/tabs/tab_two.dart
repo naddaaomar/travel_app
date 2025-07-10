@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:p/screens/company_profile/data/models/NewestModel.dart';
+import 'package:p/screens/ai/Ai_requests.dart';
 import 'package:p/screens/company_profile/presentation/manager/company_details_cubit.dart';
 import 'package:p/screens/company_profile/presentation/widgets/tabs/cards/newest_card.dart';
 import 'package:p/screens/company_profile/presentation/widgets/travel_tabs.dart';
+import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
 
 class TabTwo extends StatefulWidget {
   TabTwo({super.key, required this.companyId});
@@ -44,7 +45,18 @@ class _TabTwoState extends State<TabTwo> {
           isLoading: state.isLoadingNewest,
           items: items,
           errorMessage: state.hasErrorNewest ? "No travels found for this company." : null,
-          itemBuilder: (item, index) => NewestCard(newest: item),
+          itemBuilder: (item, index) => GestureDetector(
+              onTap: () async{
+                final aiRequests = AiRequests();
+
+                await aiRequests.trackInteractionClick(
+                  contentId:item.id.toString(),
+                  type: 'travel',
+                );
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>TripDetailsViewBody(id: item.id.toString()) ,));
+              },
+              child: NewestCard(newest: item)),
           onNext: () => cubit.paginate(
             tabType: tabType,
             companyId: widget.companyId,

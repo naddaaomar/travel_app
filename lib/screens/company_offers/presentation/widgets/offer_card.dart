@@ -7,7 +7,7 @@ import 'package:p/screens/all_travels/data/models/AllTravelsModel.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 
 class OfferCard extends StatelessWidget {
-   OfferCard({Key? key, required this.companyOffersModel}) : super(key: key);
+  OfferCard({Key? key, required this.companyOffersModel}) : super(key: key);
   final Items? companyOffersModel;
   //bool isLoading;
 
@@ -56,7 +56,7 @@ class OfferCard extends StatelessWidget {
                           bottomRight: Radius.circular(60),
                         )),
                     child: Text(
-                      "-${((companyOffersModel?.saleDiscount)! * 100).toStringAsFixed(0)}%",
+                      "-${((companyOffersModel?.saleDiscount)!).toStringAsFixed(0)}%",
                       style: TextStyle(
                           fontFamily: "pop",
                           fontSize: 10,

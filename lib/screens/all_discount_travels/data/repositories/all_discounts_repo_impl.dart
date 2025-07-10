@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:p/helpers/exceptions/failuers.dart';
 import 'package:p/screens/all_discount_travels/data/remote/data_sources/all_discounts_ds.dart';
-import 'package:p/screens/all_discount_travels/data/remote/models/AllDiscountModel.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 import 'package:p/screens/all_discount_travels/domain/repositories/all_discounts_repo.dart';
 import '../../../../helpers/internet_checker/internet_checker.dart';
 import '../local/data_sources/all_discounts_local_ds.dart';
@@ -16,7 +16,7 @@ class AllDiscountsRepoImpl implements AllDiscountsRepo {
   AllDiscountsRepoImpl(this.remoteDs, this.localDs, this.networkInfo);
 
   @override
-  Future<Either<ErrorFailures, AllDiscountModel>> getDiscounts({
+  Future<Either<ErrorFailures, DiscountItemsModel>> getDiscounts({
     required int PageIndex,
     required int PageSize,
     String? Sort,
@@ -35,7 +35,7 @@ class AllDiscountsRepoImpl implements AllDiscountsRepo {
           CategorieyId: CategorieyId,
         );
 
-        await localDs.cacheDiscounts(data);
+       // await localDs.cacheDiscounts(data);
         print("✅ Discounts cached");
         return Right(data);
       } else {

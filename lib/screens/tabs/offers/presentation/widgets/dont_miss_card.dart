@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:p/helpers/themes/colors.dart';
-import 'package:p/screens/tabs/offers/data/models/DiscountTravelsModel.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DontMissCard extends StatelessWidget {
-  final ItemsDiscount? itemsDiscount;
+  final DiscountItems? itemsDiscount;
   final bool showShimmer;
 
   const DontMissCard({
@@ -35,38 +35,38 @@ class DontMissCard extends StatelessWidget {
         children: [
           showShimmer || itemsDiscount == null
               ? Shimmer.fromColors(
-                  baseColor: const Color(0xffD8D1CA),
-                  highlightColor: const Color(0xffCBC0B6),
-                  child: Container(
-                    height: 170,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                )
+            baseColor: const Color(0xffD8D1CA),
+            highlightColor: const Color(0xffCBC0B6),
+            child: Container(
+              height: 170,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          )
               : CachedNetworkImage(
-                  imageUrl: itemsDiscount?.coverImageUrl ?? "",
-                  height: 170,
-                  width: double.infinity,
-                  fit: BoxFit.fill,
-                  placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: const Color(0xffD8D1CA),
-                    highlightColor: const Color(0xffCBC0B6),
-                    child: Container(
-                      height: 170,
-                      width: double.infinity,
-                      color: Colors.white,
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Image.asset(
-                    "assets/images/no_image.png",
-                    height: 170,
-                    width: double.infinity,
-                    fit: BoxFit.fill,
-                  ),
-                ),
+            imageUrl: itemsDiscount?.coverImageUrl ?? "",
+            height: 170,
+            width: double.infinity,
+            fit: BoxFit.fill,
+            placeholder: (context, url) => Shimmer.fromColors(
+              baseColor: const Color(0xffD8D1CA),
+              highlightColor: const Color(0xffCBC0B6),
+              child: Container(
+                height: 170,
+                width: double.infinity,
+                color: Colors.white,
+              ),
+            ),
+            errorWidget: (context, url, error) => Image.asset(
+              "assets/images/no_image.png",
+              height: 170,
+              width: double.infinity,
+              fit: BoxFit.fill,
+            ),
+          ),
           const SizedBox(height: 5),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -84,20 +84,20 @@ class DontMissCard extends StatelessWidget {
                         showShimmer || itemsDiscount == null
                             ? shimmerLine(width: 100)
                             : SizedBox(
-                                width:
-                                    //230
-                                    200,
-                                child: Text(
-                                  itemsDiscount!.title ?? "",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontFamily: "pop",
-                                    color: Colors.black,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ),
+                          width:
+                          //230
+                          200,
+                          child: Text(
+                            itemsDiscount!.title ?? "",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontFamily: "pop",
+                              color: Colors.black,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     Row(
@@ -105,13 +105,13 @@ class DontMissCard extends StatelessWidget {
                         showShimmer || itemsDiscount == null
                             ? shimmerLine(width: 24)
                             : Text(
-                                "${(itemsDiscount!.saleDiscount! * 100).toInt()}%",
-                                style: TextStyle(
-                                  fontFamily: "pop",
-                                  color: ColorApp.primaryColor,
-                                  fontSize: 13,
-                                ),
-                              ),
+                          "${(itemsDiscount!.saleDiscount! * 100).toInt()}%",
+                          style: TextStyle(
+                            fontFamily: "pop",
+                            color: ColorApp.primaryColor,
+                            fontSize: 13,
+                          ),
+                        ),
                         const SizedBox(width: 4),
                         const Text("🔥", style: TextStyle(fontSize: 12)),
                       ],
@@ -124,13 +124,13 @@ class DontMissCard extends StatelessWidget {
                   child: showShimmer || itemsDiscount == null
                       ? shimmerLine(width: 100)
                       : Text(
-                          itemsDiscount!.companyName ?? "",
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(.6),
-                            fontFamily: "pop",
-                            fontSize: 13,
-                          ),
-                        ),
+                    itemsDiscount!.companyName ?? "",
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(.6),
+                      fontFamily: "pop",
+                      fontSize: 13,
+                    ),
+                  ),
                 ),
               ],
             ),

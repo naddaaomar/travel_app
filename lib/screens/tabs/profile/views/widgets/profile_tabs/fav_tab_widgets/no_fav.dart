@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import '../../../../../../all_travels/view/all_travels.dart';
+import 'package:p/screens/all_travels/presentation/pages/all_travels.dart';
 
 class NoFavorites extends StatefulWidget {
   const NoFavorites({super.key, required Null Function() onAddFavorite});

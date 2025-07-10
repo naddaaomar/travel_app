@@ -1,6 +1,8 @@
-import 'package:p/screens/all_discount_travels/data/remote/models/AllDiscountModel.dart';
+
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
+
 
 abstract class AllDiscountsLocalDs {
-  Future<void> cacheDiscounts(AllDiscountModel discounts);
-  Future<AllDiscountModel?> getCachedDiscounts();
+  Future<void> cacheDiscounts(DiscountItemsModel discounts);
+  Future<DiscountItemsModel?> getCachedDiscounts();
 }

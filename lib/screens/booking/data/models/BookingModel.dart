@@ -1,10 +1,10 @@
-/// id : 1
-/// buyerEmail : "a@gmail.com"
-/// bookingDate : "2025-05-17T15:35:01.0219846+00:00"
-/// status : "Pending"
-/// bookingItem : {"travelId":2,"title":"Alpine Adventure","travelProfileUrl":"https://i.pinimg.com/736x/14/7f/ea/147fea20f16d94e7960d2bd3b507fd2e.jpg","price":950.00,"quantity":1}
-/// totalCost : 950.00
-/// paymentIntentId : " "
+/// id : 0
+/// buyerEmail : "string"
+/// bookingDate : "2025-07-09T23:48:52.853Z"
+/// status : "string"
+/// bookingItem : {"travelId":0,"title":"string","travelProfileUrl":"string","price":0,"quantity":0}
+/// totalCost : 0
+/// paymentIntentId : "string"
 
 class BookingModel {
   BookingModel({
@@ -79,11 +79,11 @@ BookingModel copyWith({  num? id,
 
 }
 
-/// travelId : 2
-/// title : "Alpine Adventure"
-/// travelProfileUrl : "https://i.pinimg.com/736x/14/7f/ea/147fea20f16d94e7960d2bd3b507fd2e.jpg"
-/// price : 950.00
-/// quantity : 1
+/// travelId : 0
+/// title : "string"
+/// travelProfileUrl : "string"
+/// price : 0
+/// quantity : 0
 
 class BookingItem {
   BookingItem({

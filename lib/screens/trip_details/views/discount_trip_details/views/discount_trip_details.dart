@@ -11,6 +11,7 @@ import 'package:p/models/inclusion_model.dart';
 import 'package:p/models/photo_gallery_model.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/trip_details/manager/travel_details_cubit.dart';
 import 'package:p/screens/trip_details/views/widgets/activities_bottom_sheet.dart';
 import 'package:p/screens/trip_details/views/widgets/trip_on_map.dart';
 import 'package:shimmer/shimmer.dart';
@@ -18,17 +19,10 @@ import 'package:shimmer/shimmer.dart';
 class DiscountTripDetails extends StatefulWidget {
   const DiscountTripDetails(
       {Key? key,
-        required this.image,
-        required this.newPrice,
-        required this.oldPrice,
-        required this.place,
-        required this.discountAmount})
+        required this.id})
       : super(key: key);
-  final String image;
-  final String place;
-  final double oldPrice;
-  final double newPrice;
-  final double discountAmount;
+  final String id;
+
 
   @override
   State<DiscountTripDetails> createState() => _DiscountTripDetailsState();
@@ -39,6 +33,24 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     final size = MediaQuery.of(context).size;
+    return BlocProvider(
+      create: (context) =>
+      TravelDetailsCubit()..getTravelDetails(id: widget.id),
+  child: BlocConsumer<TravelDetailsCubit, TravelDetailsState>(
+  listener: (context, state) {
+    // TODO: implement listener
+  },
+  builder: (context, state) {
+    if (state is TravelDetailsLoading) {
+      return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(
+              color: ColorApp.primaryColor,
+            ),
+          ));
+    }
+    if (state is TravelDetailsSuccess) {
+    var info = state.travelDetailsModel;
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -54,7 +66,7 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                       borderRadius:
                       BorderRadius.vertical(bottom: Radius.circular(20.r)),
                       image: DecorationImage(
-                        image: AssetImage(widget.image),
+                        image: NetworkImage(info.profileImageUrl??""),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -120,7 +132,7 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(widget.place.tr(),
+                            Text(info.title??"",
                                 style: TextStyle(
                                     fontFamily: "vol",
                                     fontWeight: FontWeight.w500,
@@ -138,7 +150,7 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                                       decoration:
                                       BoxDecoration(color: Color(0xff811500),
                                           borderRadius: BorderRadius.circular(5)),
-                                      child: Text("-${widget.discountAmount.toStringAsFixed(0)}",
+                                      child: Text("-${info.saleDiscount?.toStringAsFixed(0)}",
                                         style: TextStyle(color: Colors.white,
                                             fontFamily: "pop",
                                             fontSize: 10),),
@@ -150,7 +162,7 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                                       period: Duration(milliseconds: 2100),
 
                                       child: Text(
-                                        "EGP ${widget.newPrice.toStringAsFixed(0)}",
+                                        "EGP ${info.price?.toStringAsFixed(0)}",
                                         style: TextStyle(
                                           fontFamily: "pop",
                                           fontWeight: FontWeight.w500,
@@ -163,7 +175,7 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                                 ),
 
                                 Text(
-                                  "EGP ${widget.oldPrice.toStringAsFixed(0)}",
+                                  "EGP ${info.baseCost?.toStringAsFixed(0)}",
                                   style: TextStyle(
                                     fontFamily: "pop",
                                     fontSize: 12,
@@ -599,5 +611,12 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
         ),
       ),
     );
+    }
+    return Scaffold(
+      body: Text("Something went wrong"),
+    );
+  },
+),
+);
   }
 }
