@@ -92,12 +92,14 @@ class _NoFavoritesState extends State<NoFavorites> with SingleTickerProviderStat
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 44),
                   _ExploreButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) =>  AllTravels()),
+                      Navigator.of(context, rootNavigator: true).push(
+                        MaterialPageRoute(
+                          builder: (context) =>  AllTravels(),
+                          fullscreenDialog: true,
+                        ),
                       );
                     },
                   ),

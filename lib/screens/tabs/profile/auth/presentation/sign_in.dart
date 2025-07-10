@@ -19,6 +19,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   String? errorMessage = '';
   bool isLogin = true;
+  bool _passwordVisible = false;
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -234,7 +235,7 @@ class _SignInPageState extends State<SignInPage> {
                                                         validator: (value) {
                                                           if (value == null ||
                                                               value.isEmpty) {
-                                                            return 'Please enter your email';
+                                                            return 'Please enter your username';
                                                           }
                                                           return null;
                                                         },
@@ -247,9 +248,9 @@ class _SignInPageState extends State<SignInPage> {
                                                       child: TextFormField(
                                                         controller:
                                                         _passwordController,
-                                                        obscureText: true,
+                                                        obscureText: !_passwordVisible,
                                                         decoration:
-                                                        const InputDecoration(
+                                                         InputDecoration(
                                                           hintText: "Password",
                                                           hintStyle: TextStyle(
                                                               fontFamily: 'vol',
@@ -257,6 +258,21 @@ class _SignInPageState extends State<SignInPage> {
                                                               Colors.grey),
                                                           border:
                                                           InputBorder.none,
+                                                          suffixIcon: IconButton(
+                                                            icon: Icon(
+                                                              _passwordVisible
+                                                                  ? Icons.visibility
+                                                                  : Icons
+                                                                  .visibility_off,
+                                                              color: Colors.grey,
+                                                            ),
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                _passwordVisible =
+                                                                !_passwordVisible;
+                                                              });
+                                                            },
+                                                          ),
                                                         ),
                                                         validator: (value) {
                                                           if (value == null ||

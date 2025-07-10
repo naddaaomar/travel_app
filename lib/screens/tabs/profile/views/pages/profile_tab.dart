@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_state.dart';
 import 'package:p/screens/tabs/profile/auth/core/google_auth/google_auth_service.dart';
@@ -7,22 +8,26 @@ import 'package:p/screens/tabs/profile/auth/presentation/sign_in.dart';
 import 'package:p/screens/tabs/profile/auth/presentation/sign_up.dart';
 import 'package:p/screens/tabs/profile/views/widgets/main_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../settings/bloc/theme_bloc/theme_bloc.dart';
 
 class PersonTab extends StatefulWidget {
-  const PersonTab({Key? key}) : super(key: key);
+  final ValueNotifier<AppBarState> appBarStateNotifier;
+
+  const PersonTab({Key? key, required this.appBarStateNotifier})
+      : super(key: key);
 
   @override
   State<PersonTab> createState() => _PersonTabState();
 }
 
 class _PersonTabState extends State<PersonTab> {
-  final GlobalKey<NavigatorState> _profileTabNavigatorKey = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> _profileTabNavigatorKey =
+  GlobalKey<NavigatorState>();
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    widget.appBarStateNotifier.value = AppBarState.transparent;
     _checkAuthStatus();
   }
 
@@ -35,7 +40,8 @@ class _PersonTabState extends State<PersonTab> {
       if (isSignedIn && token != null && mounted) {
         final isValid = await _verifyToken(token);
         if (isValid) {
-          _profileTabNavigatorKey.currentState?.pushReplacementNamed('/mainProfile');
+          _profileTabNavigatorKey.currentState
+              ?.pushReplacementNamed('/mainProfile');
         } else {
           await prefs.clear();
         }
@@ -48,37 +54,35 @@ class _PersonTabState extends State<PersonTab> {
       }
     }
   }
+
   Future<bool> _verifyToken(String token) async {
     return true;
   }
 
-
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Center(
-          child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          _profileTabNavigatorKey.currentState?.pushReplacementNamed('/mainProfile');
+          _profileTabNavigatorKey.currentState
+              ?.pushReplacementNamed('/mainProfile');
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Authentication Error: ${state.errorMessage}')),
+            SnackBar(
+                content: Text('Authentication Error: ${state.errorMessage}')),
           );
         }
       },
       child: Navigator(
         key: _profileTabNavigatorKey,
         initialRoute: '/',
+        observers: [ProfileTabNavigatorObserver(widget.appBarStateNotifier)],
         onGenerateRoute: (RouteSettings settings) {
           WidgetBuilder builder;
           final authState = context.read<AuthCubit>().state;
-          String? authToken;
-          if (authState is AuthSuccess) {
-            authToken = authState.user?.token;
-          }
 
           switch (settings.name) {
             case '/':
@@ -107,13 +111,53 @@ class _PersonTabState extends State<PersonTab> {
   }
 }
 
+class ProfileTabNavigatorObserver extends NavigatorObserver {
+  final ValueNotifier<AppBarState> appBarStateNotifier;
+
+  ProfileTabNavigatorObserver(this.appBarStateNotifier);
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _updateAppBarState(route.settings.name);
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    if (previousRoute != null) {
+      _updateAppBarState(previousRoute.settings.name);
+    }
+  }
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    if (newRoute != null) {
+      _updateAppBarState(newRoute.settings.name);
+    }
+  }
+
+  void _updateAppBarState(String? routeName) {
+    switch (routeName) {
+      case '/':
+        appBarStateNotifier.value = AppBarState.transparent;
+        break;
+      case '/signIn':
+      case '/signUp':
+        appBarStateNotifier.value = AppBarState.hidden;
+        break;
+      case '/mainProfile':
+        appBarStateNotifier.value = AppBarState.color;
+        break;
+      default:
+        appBarStateNotifier.value = AppBarState.transparent;
+    }
+  }
+}
+
 class _AuthOptionsScreen extends StatelessWidget {
   const _AuthOptionsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 80),
@@ -128,10 +172,9 @@ class _AuthOptionsScreen extends StatelessWidget {
                   fontFamily: "vol",
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
-                  color: isLight ? Colors.black : Colors.white,
                 ),
               ),
-              const SizedBox(height: 100), // Spacing below "Get Started"
+              const SizedBox(height: 100),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed('/signIn');
@@ -191,7 +234,6 @@ class _AuthOptionsScreen extends StatelessWidget {
                     fontFamily: "vol",
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
-                    color: isLight ? Colors.black : Colors.white,
                   ),
                 ),
               ),
@@ -199,21 +241,18 @@ class _AuthOptionsScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () async {
                   final user = await GoogleSignInService.signIn();
-                  if (user != null) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainProfile(),
-                      ),
-                    );
-                  } else {
+                  if (user != null && context.mounted) {
+                    // Navigate to main profile on successful Google sign-in
+                    Navigator.of(context).pushReplacementNamed('/mainProfile');
+                  } else if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('signin_failed')),
                     );
                   }
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 12.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15.0),

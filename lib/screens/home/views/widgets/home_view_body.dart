@@ -15,7 +15,8 @@ import 'package:p/screens/tabs/map/views/map_view.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
 import 'package:p/screens/tabs/profile/views/pages/profile_tab.dart';
-import 'package:p/screens/tabs/profile/views/widgets/main_profile.dart';
+
+enum AppBarState { transparent, color, hidden }
 
 class HomeViewBody extends StatefulWidget {
   HomeViewBody({
@@ -29,17 +30,28 @@ class HomeViewBody extends StatefulWidget {
 
 class _HomeViewBodyState extends State<HomeViewBody>
     with TickerProviderStateMixin {
-  List<Widget> tabs = [
+  final ValueNotifier<AppBarState> _appBarStateNotifier =
+  ValueNotifier(AppBarState.transparent);
+
+  List<Widget> get tabs => [
     HomeTab(),
     OffersScreen(),
     BlocProvider(
       create: (context) => AuthCubit(),
-      child: const PersonTab(),),
+      child: PersonTab(
+          appBarStateNotifier: _appBarStateNotifier),
+    ),
     MapView(),
   ];
+
   @override
   void initState() {
     super.initState();
+    _appBarStateNotifier.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
 
     focusNode.addListener(() {
       setState(() {
@@ -75,6 +87,39 @@ class _HomeViewBodyState extends State<HomeViewBody>
 
   final _advancedDrawerController = AdvancedDrawerController();
   bool _isKeyboardVisible = false;
+
+  @override
+  void dispose() {
+    _appBarStateNotifier.dispose();
+    super.dispose();
+  }
+
+  PreferredSizeWidget? _buildAppBar() {
+    if (HomeViewBody.currentIndex != 2) {
+      return AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: MainRow(
+          controller: _advancedDrawerController,
+        ),
+        leadingWidth: double.infinity,
+      );
+    }
+
+    if (_appBarStateNotifier.value == AppBarState.hidden) {
+      return null;
+    }
+
+    return AppBar(
+      backgroundColor:
+      _appBarStateNotifier.value == AppBarState.color ? Color(0xFFDF6951) : Colors.transparent,
+      elevation: 0,
+      leading: MainRow(
+        controller: _advancedDrawerController,
+      ),
+      leadingWidth: double.infinity,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,16 +184,8 @@ class _HomeViewBodyState extends State<HomeViewBody>
               resizeToAvoidBottomInset: false,
               key: ValueKey(context.locale),
               extendBody: true,
-              appBar: AppBar(
-                backgroundColor: _isInProfileFlow(context)
-                    ? ColorApp.primaryColor
-                    : Colors.transparent,
 
-                leading: MainRow(
-                  controller: _advancedDrawerController,
-                ),
-                leadingWidth: double.infinity,
-              ),
+              appBar: _buildAppBar(),
               body: LayoutBuilder(
                 builder: (context, constraints) {
                   return SizedBox(
@@ -162,7 +199,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
                           builder: (context, isFocused, child) {
                             return isFocused
                                 ? Positioned.fill(
-                                child: GestureDetector(
+                              child: GestureDetector(
                                 onTap: () {
                                   FocusScope.of(context)
                                       .unfocus(); // Close keyboard when tapping the background
@@ -228,29 +265,5 @@ class _HomeViewBodyState extends State<HomeViewBody>
         ),
       ),
     );
-  }
-}
-
-bool _isInProfileFlow(BuildContext context) {
-  final route = ModalRoute.of(context);
-  if (route == null) return false;
-
-  // Check if we're in profile tab (index 2) or inside sign_in/main_profile
-  return
-      route.settings.name == '/sign_in' ||
-      route.settings.name == 'main_profile';
-}
-
-class AppRouteObserver extends NavigatorObserver {
-  static String? currentRouteName;
-
-  @override
-  void didPush(Route route, Route? previousRoute) {
-    currentRouteName = route.settings.name;
-  }
-
-  @override
-  void didPop(Route route, Route? previousRoute) {
-    currentRouteName = previousRoute?.settings.name;
   }
 }

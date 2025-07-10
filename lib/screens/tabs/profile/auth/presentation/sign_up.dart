@@ -173,7 +173,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(60),
-                                    topRight: Radius.circular(60))),
+                                    topRight: Radius.circular(60)),
+                            ),
                             width: double.infinity,
                             child: Padding(
                               padding: const EdgeInsets.all(30),
@@ -221,7 +222,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                     child: TextFormField(
                                                       controller: _nameController,
                                                       decoration: const InputDecoration(
-                                                          hintText: "Name",
+                                                          hintText: "Username",
                                                           hintStyle: TextStyle(
                                                               fontFamily: 'vol',
                                                               color: Colors.grey),
@@ -230,7 +231,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                       validator: (value) {
                                                         if (value == null ||
                                                             value.isEmpty) {
-                                                          return 'Please enter your name';
+                                                          return 'Please enter your username';
                                                         }
                                                         return null;
                                                       },

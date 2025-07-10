@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'screens/splash_screen/view/splash.dart';
-import 'screens/tabs/profile/views/widgets/app_bar_color/appbar_color_cubit.dart';
+
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
@@ -52,7 +52,6 @@ void main() async {
           BlocProvider(
               create: (context) => ProfileCubit()
           ),
-
         ],
         child: MyApp(isFirstTime: isFirstTime),
       )));
