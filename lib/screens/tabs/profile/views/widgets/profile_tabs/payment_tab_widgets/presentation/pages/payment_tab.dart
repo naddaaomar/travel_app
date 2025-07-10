@@ -4,12 +4,12 @@ import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/booking/data/models/BookingModel.dart';
 import 'package:p/screens/booking/data/models/GetBookingModel.dart';
 import 'package:p/screens/booking/presentation/manager/booking_cubit.dart';
-import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/payment_tab_widgets/all/all_transactions_list.dart';
-import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/payment_tab_widgets/comleted/comleted_transaction_card.dart';
-import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/payment_tab_widgets/pending/pending.dart';
+import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/payment_tab_widgets/presentation/widgets/all/all_transactions_list.dart';
+import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/payment_tab_widgets/presentation/widgets/comleted/comleted_transaction_card.dart';
+import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/payment_tab_widgets/presentation/widgets/pending/pending.dart';
 import 'package:p/screens/trip_details/manager/travel_details_cubit.dart';
-import '../../../../../../di.dart';
-import 'payment_tab_widgets/model.dart';
+
+import '../../../../../../../../../di.dart';
 
 class PaymentTab extends StatefulWidget {
   const PaymentTab({Key? key}) : super(key: key);

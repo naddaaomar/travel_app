@@ -14,7 +14,7 @@ List<OnboardModel> onboarding = [
     name: 'explore Egypt with us'.tr(),
   ),
   OnboardModel(
-    image: 'assets/images/onboard2.png',
+    image: 'assets/images/no_image.png',
     name: "natural Beauty of Egypt".tr(),
   ),
   OnboardModel(

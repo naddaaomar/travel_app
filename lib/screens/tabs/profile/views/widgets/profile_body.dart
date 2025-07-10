@@ -26,30 +26,30 @@ class ProfileBody extends StatefulWidget {
 
 class _ProfileBodyState extends State<ProfileBody>
     with SingleTickerProviderStateMixin {
-
   final DateFormat _dateFormat = DateFormat('MMM dd, yyyy');
   int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProfileCubit()..loadProfile(
-        widget.name,
-        widget.email,
-        '',
-      ),
+      create: (context) => ProfileCubit()
+        ..loadProfile(
+          widget.name,
+          widget.email,
+          '',
+        ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(
-                left: 40, right: 40, top:64),
+            padding: const EdgeInsets.only(left: 40, right: 40, top: 64),
             child: Container(
-              height: 100,
+              height: 80,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80)),
+                borderRadius:
+                    BorderRadius.only(bottomLeft: Radius.circular(80)),
               ),
               child: SizedBox(
-                height: 20,
+                height: 80,
                 child: Row(
                   children: ProfileData.asMap().entries.map((entry) {
                     final index = entry.key;
@@ -78,28 +78,33 @@ class _ProfileBodyState extends State<ProfileBody>
                                 children: [
                                   Icon(ProfileData[index].icon),
                                   const SizedBox(height: 3),
-                                  Builder(
-                                    builder: (context) {
-                                      final words = ProfileData[index].name.split(' ');
-                                      if (words.length > 1) {
-                                        return Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: words.map((word) =>
-                                              Text(
-                                                word,
-                                                style: const TextStyle(fontFamily: "vol"),
-                                                textAlign: TextAlign.center,
-                                              )
-                                          ).toList(),
-                                        );
-                                      }
-                                      return Text(
-                                        ProfileData[index].name,
-                                        style: const TextStyle(fontFamily: "vol"),
-                                        textAlign: TextAlign.center,
-                                      );
-                                    },
-                                  ),
+                                  // Builder(
+                                  //   builder: (context) {
+                                  //     final words =
+                                  //         ProfileData[index].name.split(' ');
+                                  //     if (words.length > 1) {
+                                  //       return Column(
+                                  //         mainAxisSize: MainAxisSize.min,
+                                  //         children: words
+                                  //             .map((word) => Flexible(
+                                  //               child: Text(
+                                  //                     word,
+                                  //                     style: const TextStyle(
+                                  //                         fontFamily: "vol"),
+                                  //                     textAlign: TextAlign.center,
+                                  //                   ),
+                                  //             ))
+                                  //             .toList(),
+                                  //       );
+                                  //     }
+                                  //     return Text(
+                                  //       ProfileData[index].name,
+                                  //       style:
+                                  //           const TextStyle(fontFamily: "vol"),
+                                  //       textAlign: TextAlign.center,
+                                  //     );
+                                  //   },
+                                  // ),
                                 ],
                               ),
                             ),
@@ -139,7 +144,8 @@ class _ProfileBodyState extends State<ProfileBody>
               );
             }
             return const Center(child: CircularProgressIndicator());
-          },);
+          },
+        );
 
       case 1:
         return const Center(child: FavoritesPage());

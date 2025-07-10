@@ -105,7 +105,7 @@ class DontMissCard extends StatelessWidget {
                         showShimmer || itemsDiscount == null
                             ? shimmerLine(width: 24)
                             : Text(
-                          "${(itemsDiscount!.saleDiscount! * 100).toInt()}%",
+                          "${(itemsDiscount!.saleDiscount! ).toInt()}%",
                           style: TextStyle(
                             fontFamily: "pop",
                             color: ColorApp.primaryColor,

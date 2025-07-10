@@ -15,6 +15,7 @@ import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/profile_tab_wi
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/ai/models/event_interaction.dart';
+import 'screens/onboard/views/widgets/onboard_view_body.dart';
 import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'screens/settings/bloc/permission_bloc/permissions_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';

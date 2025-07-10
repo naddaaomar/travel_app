@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:p/screens/tabs/profile/auth/core/auth_data/AuthDataModel.dart';
 import 'package:p/screens/tabs/profile/auth/core/auth_data/auth_data.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_state.dart';

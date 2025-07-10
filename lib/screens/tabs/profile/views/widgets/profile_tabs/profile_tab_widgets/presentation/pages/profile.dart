@@ -199,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildEditButton(VoidCallback onPressed) {
     return SizedBox(
-      width: 300,
+      width: 200,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 16),

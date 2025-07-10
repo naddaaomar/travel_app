@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:p/screens/booking/data/models/GetBookingModel.dart';
-import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/payment_tab_widgets/all/all_transactions_body.dart';
-import '../model.dart';
+import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/payment_tab_widgets/presentation/widgets/all/all_transactions_body.dart';
 
 class TransactionListScreen extends StatelessWidget {
   final List<GetBookingModel> transactions;

@@ -38,7 +38,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
   }
 
   Future<void> _checkFavoriteStatus() async {
-    final favorites = FavoriteManager().favoritesNotifier.value;
+  //  final favorites = FavoriteManager().favoritesNotifier.value;
     setState(() {});
   }
 

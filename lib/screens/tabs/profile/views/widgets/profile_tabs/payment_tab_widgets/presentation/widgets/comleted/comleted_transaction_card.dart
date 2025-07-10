@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:p/screens/booking/data/models/GetBookingModel.dart';
 import '../all/all_transactions_body.dart';
-import '../model.dart';
 class CompletedTransactionsScreen extends StatelessWidget {
   final List<GetBookingModel> transactions;
 
