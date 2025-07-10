@@ -39,13 +39,13 @@ class _HotDealsState extends State<HotDeals> {
           items: adsImages
               .map(
                 (item) => Container(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(30.r)),
-                    child: Image.asset(item,
-                        fit: BoxFit.fill, width: double.infinity),
-                  ),
-                ),
-              )
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                child: Image.asset(item,
+                    fit: BoxFit.fill, width: double.infinity),
+              ),
+            ),
+          )
               .toList(),
           carouselController: _controller,
           options: CarouselOptions(
@@ -74,11 +74,11 @@ class _HotDealsState extends State<HotDeals> {
                   shape: BoxShape.circle,
                   color: _current == entry.key
                       ? isLight
-                          ? ColorApp.primaryColor
-                          : ColorApp.primaryColorDark
+                      ? ColorApp.primaryColor
+                      : ColorApp.primaryColorDark
                       : isLight
-                          ? Colors.grey
-                          : Colors.white),
+                      ? Colors.grey
+                      : Colors.white),
             ),
           );
         }).toList(),

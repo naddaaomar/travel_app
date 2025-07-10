@@ -5,7 +5,7 @@ import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_state.dart';
 import 'package:p/screens/tabs/profile/auth/presentation/sign_up.dart';
 import 'package:p/screens/tabs/profile/auth/presentation/widgets/forget_password.dart';
-import 'package:p/screens/tabs/profile/views/main_profile.dart';
+import 'package:p/screens/tabs/profile/views/widgets/main_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../core/signin_controller.dart';
 
@@ -19,6 +19,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   String? errorMessage = '';
   bool isLogin = true;
+  bool _passwordVisible = false;
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -125,7 +126,7 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                           ),
                           const SizedBox(
-                            height: 80,
+                            height: 60,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(20),
@@ -159,7 +160,7 @@ class _SignInPageState extends State<SignInPage> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 16),
                           Expanded(
                             child: Container(
                               decoration: const BoxDecoration(
@@ -182,7 +183,7 @@ class _SignInPageState extends State<SignInPage> {
                                         child: Column(
                                           children: <Widget>[
                                             const SizedBox(
-                                              height: 60,
+                                              height: 40,
                                             ),
                                             FadeInUp(
                                               duration: const Duration(
@@ -234,7 +235,7 @@ class _SignInPageState extends State<SignInPage> {
                                                         validator: (value) {
                                                           if (value == null ||
                                                               value.isEmpty) {
-                                                            return 'Please enter your email';
+                                                            return 'Please enter your username';
                                                           }
                                                           return null;
                                                         },
@@ -247,9 +248,9 @@ class _SignInPageState extends State<SignInPage> {
                                                       child: TextFormField(
                                                         controller:
                                                         _passwordController,
-                                                        obscureText: true,
+                                                        obscureText: !_passwordVisible,
                                                         decoration:
-                                                        const InputDecoration(
+                                                         InputDecoration(
                                                           hintText: "Password",
                                                           hintStyle: TextStyle(
                                                               fontFamily: 'vol',
@@ -257,6 +258,21 @@ class _SignInPageState extends State<SignInPage> {
                                                               Colors.grey),
                                                           border:
                                                           InputBorder.none,
+                                                          suffixIcon: IconButton(
+                                                            icon: Icon(
+                                                              _passwordVisible
+                                                                  ? Icons.visibility
+                                                                  : Icons
+                                                                  .visibility_off,
+                                                              color: Colors.grey,
+                                                            ),
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                _passwordVisible =
+                                                                !_passwordVisible;
+                                                              });
+                                                            },
+                                                          ),
                                                         ),
                                                         validator: (value) {
                                                           if (value == null ||

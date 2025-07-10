@@ -11,6 +11,8 @@ import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:p/screens/settings/bloc/notification_bloc/notification_bloc.dart';
+import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/profile_tab_widgets/presentation/manager/profile_cubit.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/ai/models/event_interaction.dart';
 import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
@@ -34,7 +36,7 @@ void main() async {
 
   bool isFirstTime = prefs.getBool('onboarding_seen') ?? false;
   Bloc.observer = MyBlocObserver();
-   configureDependencies();
+  configureDependencies();
 
   runApp(EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],
@@ -49,10 +51,12 @@ void main() async {
           BlocProvider(
             create: (context) => ThemeBloc(),
           ),
-          BlocProvider(create: (context) => LocaleBloc()),
-          BlocProvider(create: (context) => NotificationBloc()),
-          BlocProvider(create: (context) => PermissionsBloc()),
-
+          BlocProvider(
+              create: (context) => LocaleBloc()
+          ),
+          BlocProvider(
+              create: (context) => ProfileCubit()
+          ),
         ],
         child: MyApp(isFirstTime: isFirstTime),
       )));
@@ -88,10 +92,7 @@ class MyApp extends StatelessWidget {
                   darkTheme: MyThemeData.darkTheme,
                   themeMode: themeMode,
                   debugShowCheckedModeBanner: false,
-                  home:
-                  //isFirstTime ?
-                  SplashScreen()
-                      //: OnBoardViewBody(),
+                  home: isFirstTime ? SplashScreen() : OnBoardViewBody(),
                 ),
               ),
             );

@@ -1,7 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -11,12 +10,16 @@ import 'package:p/screens/chatbot/views/chatbot.dart';
 import 'package:p/screens/home/views/widgets/drawer/new_drawer.dart';
 import 'package:p/screens/home/views/widgets/main_row.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
+import 'package:p/screens/tabs/home/home_tab.dart';
 import 'package:p/screens/tabs/map/views/map_view.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
 import '../../../tabs/home/presentation/pages/home_tab.dart';
 import '../../../tabs/profile/views/widgets/tab_bar.dart';
 import 'package:p/screens/tabs/profile/views/widgets/person_tab.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
+import 'package:p/screens/tabs/profile/views/pages/profile_tab.dart';
+
+enum AppBarState { transparent, color, hidden }
 
 class HomeViewBody extends StatefulWidget {
   HomeViewBody({
@@ -30,12 +33,17 @@ class HomeViewBody extends StatefulWidget {
 
 class _HomeViewBodyState extends State<HomeViewBody>
     with TickerProviderStateMixin {
-  List<Widget> tabs = [
+  final ValueNotifier<AppBarState> _appBarStateNotifier =
+  ValueNotifier(AppBarState.transparent);
+
+  List<Widget> get tabs => [
     HomeTab(),
     OffersScreen(),
     BlocProvider(
       create: (context) => AuthCubit(),
-      child: const PersonTab(),),
+      child: PersonTab(
+          appBarStateNotifier: _appBarStateNotifier),
+    ),
     MapView(),
   ];
 
@@ -47,6 +55,11 @@ class _HomeViewBodyState extends State<HomeViewBody>
   @override
   void initState() {
     super.initState();
+    _appBarStateNotifier.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
 
     focusNode.addListener(() {
       setState(() {
@@ -54,24 +67,32 @@ class _HomeViewBodyState extends State<HomeViewBody>
       });
     });
     // Listen to keyboard visibility changes
+    focusNode.addListener(() {
+      setState(() {
+        isFieldFocused.value = focusNode.hasFocus;
+      });
+    });
+
+    // Listener for global keyboard visibility changes
     KeyboardVisibilityController().onChange.listen((bool isVisible) {
       setState(() {
         _isKeyboardVisible = isVisible;
       });
     });
+
+    // Listener for Advanced Drawer state changes
     _advancedDrawerController.addListener(() {
       if (_advancedDrawerController.value.visible) {
         FocusScope.of(context)
             .unfocus(); // Close the keyboard when the drawer opens
       } else {
         Future.delayed(
-          Duration(milliseconds: 200),
-          () => setState(() {}),
+          const Duration(milliseconds: 200),
+              () => setState(() {}),
         );
       }
     });
 
-    // Close keyboard on hot restart
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).unfocus();
     });
@@ -82,6 +103,33 @@ class _HomeViewBodyState extends State<HomeViewBody>
     focusNode.dispose();
     _advancedDrawerController.dispose();
     super.dispose();
+  }
+
+  PreferredSizeWidget? _buildAppBar() {
+    if (HomeViewBody.currentIndex != 2) {
+      return AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: MainRow(
+          controller: _advancedDrawerController,
+        ),
+        leadingWidth: double.infinity,
+      );
+    }
+
+    if (_appBarStateNotifier.value == AppBarState.hidden) {
+      return null;
+    }
+
+    return AppBar(
+      backgroundColor:
+      _appBarStateNotifier.value == AppBarState.color ? Color(0xFFDF6951) : Colors.transparent,
+      elevation: 0,
+      leading: MainRow(
+        controller: _advancedDrawerController,
+      ),
+      leadingWidth: double.infinity,
+    );
   }
 
   @override
@@ -95,12 +143,11 @@ class _HomeViewBodyState extends State<HomeViewBody>
           _advancedDrawerController.hideDrawer();
           return false;
         }
-
         if (HomeViewBody.currentIndex != 0) {
           setState(() {
-            HomeViewBody.currentIndex = 0; // Switch to Home tab
+            HomeViewBody.currentIndex = 0;
           });
-          return false; // Prevent app from closing
+          return false;
         }
 
         if (_advancedDrawerController.value.visible) {
@@ -108,8 +155,6 @@ class _HomeViewBodyState extends State<HomeViewBody>
           return false;
         }
 
-        return true; // Exit the app
-      },
       child: SafeArea(
         child: AdvancedDrawer(
           backdrop: Container(
@@ -147,48 +192,38 @@ class _HomeViewBodyState extends State<HomeViewBody>
               resizeToAvoidBottomInset: false,
               key: ValueKey(context.locale),
               extendBody: true,
-              appBar: AppBar(
-                backgroundColor:HomeViewBody.currentIndex==2?ColorApp.primaryColor: Colors.transparent,
-                leading: MainRow(
-                  controller: _advancedDrawerController,
-                ),
-                leadingWidth: double.infinity,
-              ),
+
+              appBar: _buildAppBar(),
               body: LayoutBuilder(
                 builder: (context, constraints) {
                   return SizedBox(
                     height: constraints.maxHeight,
                     child: Stack(
                       children: [
-                        // Tabs: only build the visible one
-                        ...List.generate(tabs.length, (i) {
-                          return Offstage(
-                            offstage: HomeViewBody.currentIndex != i,
-                            child: tabs[i],
-                          );
-                        }),
-
-                        // Keyboard Dismiss Overlay (no rebuilds unless focus changes)
-                        Positioned.fill(
-                          child: ValueListenableBuilder<bool>(
-                            valueListenable: isFieldFocused,
-                            builder: (context, isFocused, _) {
-                              if (!isFocused) return const SizedBox.shrink();
-                              return GestureDetector(
-                                onTap: () => FocusScope.of(context).unfocus(),
+                        tabs[HomeViewBody.currentIndex],
+                        ValueListenableBuilder<bool>(
+                          valueListenable: isFieldFocused,
+                          builder: (context, isFocused, child) {
+                            return isFocused
+                                ? Positioned.fill(
+                              child: GestureDetector(
+                                onTap: () {
+                                  FocusScope.of(context)
+                                      .unfocus(); // Close keyboard when tapping the background
+                                },
                                 child: Container(
                                   color: Colors.white.withOpacity(0.6),
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            )
+                                : SizedBox.shrink();
+                          },
                         ),
                       ],
                     ),
                   );
                 },
               ),
-
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
@@ -200,43 +235,43 @@ class _HomeViewBodyState extends State<HomeViewBody>
                 backgroundColor: ColorApp.secondaryColor,
                 elevation: 10,
                 shape: CircleBorder(
-                    side: BorderSide(width: 3.w, color: ColorApp.primaryColor)),
+                    side: BorderSide(
+                        width: 3.w, color: ColorApp.primaryColor)),
                 child: Image.asset("assets/images/ai.png"),
               ),
               bottomNavigationBar: _isKeyboardVisible
-                  ? SizedBox
-                      .shrink() // Hide navigation bar when keyboard is visible
+                  ? const SizedBox
+                  .shrink()
                   : CurvedNavigationBar(
-                      index: HomeViewBody.currentIndex,
-                      color: isLight
-                          ? ColorApp.primaryColor
-                          : ColorApp.primaryColorDark,
-                      backgroundColor: Colors.transparent,
-                      animationDuration: const Duration(milliseconds: 400),
-                      items: [
-                        Icon(Icons.home,
-                            color: isLight ? Colors.black : Colors.white),
-                        Icon(Icons.local_offer_outlined,
-                            color: isLight ? Colors.black : Colors.white),
-                        Icon(Icons.person,
-                            color: isLight ? Colors.black : Colors.white),
-                        Image.asset(
-                          'assets/images/map.png',
-                          width: 35.w,
-                          color: isLight ? Colors.black : Colors.white,
-                        ),
-                      ],
-                      onTap: (index) {
-                        setState(() {
-                          HomeViewBody.currentIndex = index;
-                        });
-                      },
-                    ),
+                index: HomeViewBody.currentIndex,
+                color: isLight
+                    ? ColorApp.primaryColor
+                    : ColorApp.primaryColorDark,
+                backgroundColor: Colors.transparent,
+                animationDuration: const Duration(milliseconds: 400),
+                items: [
+                  Icon(Icons.home,
+                      color: isLight ? Colors.black : Colors.white),
+                  Icon(Icons.local_offer_outlined,
+                      color: isLight ? Colors.black : Colors.white),
+                  Icon(Icons.person,
+                      color: isLight ? Colors.black : Colors.white),
+                  Image.asset(
+                    'assets/images/map.png',
+                    width: 35.w,
+                    color: isLight ? Colors.black : Colors.white,
+                  ),
+                ],
+                onTap: (index) {
+                  setState(() {
+                    HomeViewBody.currentIndex = index;
+                  });
+                },
+              ),
             ),
           ),
         ),
       ),
     );
   }
-
 }

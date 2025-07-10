@@ -50,7 +50,7 @@ class CompanyCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                        // color: Color(0xffC4543D),
+                      // color: Color(0xffC4543D),
                         gradient: LinearGradient(
                           colors: [
                             Color(
@@ -75,7 +75,7 @@ class CompanyCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                        //  color: Color(0xffC4543D),
+                      //  color: Color(0xffC4543D),
                         gradient: LinearGradient(
                           colors: [
                             Color(

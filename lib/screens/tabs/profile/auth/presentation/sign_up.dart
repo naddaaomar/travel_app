@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_state.dart';
 import 'package:p/screens/tabs/profile/auth/core/signin_controller.dart';
-import 'package:p/screens/tabs/profile/views/main_profile.dart';
+import 'package:p/screens/tabs/profile/views/widgets/main_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -132,7 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                         const SizedBox(
-                          height: 80,
+                          height: 60,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(20),
@@ -166,14 +166,15 @@ class _SignUpPageState extends State<SignUpPage> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 16),
                         Expanded(
                           child: Container(
                             decoration: const BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(60),
-                                    topRight: Radius.circular(60))),
+                                    topRight: Radius.circular(60)),
+                            ),
                             width: double.infinity,
                             child: Padding(
                               padding: const EdgeInsets.all(30),
@@ -188,7 +189,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       child: Column(
                                         children: <Widget>[
                                           const SizedBox(
-                                            height: 60,
+                                            height: 40,
                                           ),
                                           FadeInUp(
                                             duration:
@@ -221,7 +222,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                     child: TextFormField(
                                                       controller: _nameController,
                                                       decoration: const InputDecoration(
-                                                          hintText: "Name",
+                                                          hintText: "Username",
                                                           hintStyle: TextStyle(
                                                               fontFamily: 'vol',
                                                               color: Colors.grey),
@@ -230,7 +231,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                       validator: (value) {
                                                         if (value == null ||
                                                             value.isEmpty) {
-                                                          return 'Please enter your name';
+                                                          return 'Please enter your username';
                                                         }
                                                         return null;
                                                       },

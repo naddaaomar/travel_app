@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:p/screens/all_travels/presentation/pages/all_travels.dart';
+import '../../../../../../all_travels/presentation/pages/all_travels.dart';
 
 class NoFavorites extends StatefulWidget {
   const NoFavorites({super.key, required Null Function() onAddFavorite});
@@ -92,12 +92,14 @@ class _NoFavoritesState extends State<NoFavorites> with SingleTickerProviderStat
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 44),
                   _ExploreButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) =>  AllTravels()),
+                      Navigator.of(context, rootNavigator: true).push(
+                        MaterialPageRoute(
+                          builder: (context) =>  AllTravels(),
+                          fullscreenDialog: true,
+                        ),
                       );
                     },
                   ),

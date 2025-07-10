@@ -33,9 +33,9 @@ class CustomTabBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
                           gradient: LinearGradient(colors: const [
-                        ColorApp.primaryColor,
-                        Color(0xffE2A093)
-                      ]))),
+                            ColorApp.primaryColor,
+                            Color(0xffE2A093)
+                          ]))),
                   child: Text("All")),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -43,9 +43,9 @@ class CustomTabBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
                           gradient: LinearGradient(colors: const [
-                        ColorApp.primaryColor,
-                        Color(0xffE2A093)
-                      ]))),
+                            ColorApp.primaryColor,
+                            Color(0xffE2A093)
+                          ]))),
                   child: Text("Beach")),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -53,9 +53,9 @@ class CustomTabBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
                           gradient: LinearGradient(colors: const [
-                        ColorApp.primaryColor,
-                        Color(0xffE2A093)
-                      ]))),
+                            ColorApp.primaryColor,
+                            Color(0xffE2A093)
+                          ]))),
                   child: Text("Religious")),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -63,9 +63,9 @@ class CustomTabBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
                           gradient: LinearGradient(colors: const [
-                        ColorApp.primaryColor,
-                        Color(0xffE2A093)
-                      ]))),
+                            ColorApp.primaryColor,
+                            Color(0xffE2A093)
+                          ]))),
                   child: Text("Safari")),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -73,9 +73,9 @@ class CustomTabBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
                           gradient: LinearGradient(colors: const [
-                        ColorApp.primaryColor,
-                        Color(0xffE2A093)
-                      ]))),
+                            ColorApp.primaryColor,
+                            Color(0xffE2A093)
+                          ]))),
                   child: Text("Urban")),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -83,9 +83,9 @@ class CustomTabBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
                           gradient: LinearGradient(colors: const [
-                        ColorApp.primaryColor,
-                        Color(0xffE2A093)
-                      ]))),
+                            ColorApp.primaryColor,
+                            Color(0xffE2A093)
+                          ]))),
                   child: Text("Cultural")),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -93,9 +93,9 @@ class CustomTabBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: GradientBoxBorder(
                           gradient: LinearGradient(colors: const [
-                        ColorApp.primaryColor,
-                        Color(0xffE2A093)
-                      ]))),
+                            ColorApp.primaryColor,
+                            Color(0xffE2A093)
+                          ]))),
                   child: Text("Nile Cruises")),
             ]));
   }
