@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:p/helpers/constants/constants.dart';
-import 'package:p/screens/all_travels/models/AllTravelsModel.dart';
 import 'package:p/screens/trip_details/models/TravelDetailsModel.dart';
 
 class TravelDetailsData {

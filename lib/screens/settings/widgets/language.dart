@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/tabs/home/home_tab.dart';
-
 import '../../../helpers/themes/colors.dart';
 
 class Language extends StatelessWidget {
@@ -48,9 +46,9 @@ class Language extends StatelessWidget {
           onChanged: (i) async {
             // Dispatch ChangeLocale event to the Bloc
             context.read<LocaleBloc>().add(
-                  ChangeLocale(
-                      i == 1 ? const Locale("en") : const Locale("ar")),
-                );
+              ChangeLocale(
+                  i == 1 ? const Locale("en") : const Locale("ar")),
+            );
 
             // Manually trigger locale change in EasyLocalization
             await EasyLocalization.of(context)?.setLocale(
@@ -64,7 +62,7 @@ class Language extends StatelessWidget {
             indicatorColor: ColorApp.secondaryColor,
             borderColor: Colors.transparent,
             backgroundColor:
-                isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
+            isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
           ),
           height: 40.h,
           spacing: 20.0.w,

@@ -12,28 +12,19 @@ class ClientSecretDsImpl implements ClientSecretDs {
   ClientSecretDsImpl(this.apiManager);
 
   @override
-  Future<PaymentModel> clientSecret(
-      {required int integrationId,
-      required String phone,
-      required String fName,
-      required String lName,
-      required double amount}) async {
+  Future<PaymentModel> clientSecret({
+    required num bookingId,
+    required String paymentMethod,
+    required num amount,
+    required String currency,
+  }) async {
     try {
-      var response = await apiManager
-          .postDate(endPoint: Constants.clientEndpoint, headers: {
-        "Authorization": Constants.Authorization
-      }, data: {
+      var response =
+      await apiManager.postDate(endPoint: Constants.paymentEndpoint, data: {
+        "bookingId": bookingId,
+        "paymentMethod": paymentMethod,
         "amount": amount,
-        "currency": "EGP",
-        "payment_methods": [integrationId],
-        "items": [
-          {"name": "Item name", "amount": amount}
-        ],
-        "billing_data": {
-          "first_name": fName,
-          "last_name": lName,
-          "phone_number": phone
-        }
+        "currency": currency
       });
 
       PaymentModel paymentModelResponse = PaymentModel.fromJson(response.data);

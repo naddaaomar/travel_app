@@ -31,7 +31,8 @@ class ViewAllEvents extends StatelessWidget {
             style: TextStyle(
                 color: ColorApp.thirdColor,
                 fontWeight: FontWeight.bold,
-                fontSize: 22
+                fontSize: 22,
+              fontFamily: "vols",
             ),),
         ),
       ),

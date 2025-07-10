@@ -11,7 +11,8 @@ class Trip {
 
   factory Trip.fromJson(Map<String, dynamic> json, {required String tripId}) {
     if (json['destination'] == null || json['endTime'] == null) {
-      throw const FormatException("Missing required fields (destination, endTime) in JSON");
+      throw const FormatException(
+          "Missing required fields (destination, endTime) in JSON");
     }
 
     return Trip(
@@ -20,6 +21,15 @@ class Trip {
       endTime: DateTime.parse(json['endTime'] as String),
     );
   }
+
+/*
+  static Trip createTestTrip() {
+    return Trip(
+      id: 'test_trip_123',
+      destination: 'Test Destination',
+      endTime: DateTime.now().add(const Duration(seconds: 30)),
+    );
+  }
+*/
+
 }
-
-

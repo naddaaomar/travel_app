@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +10,6 @@ import 'package:p/models/inclusion_model.dart';
 import 'package:p/models/photo_gallery_model.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/company_profile/views/company_profile.dart';
 import 'package:p/screens/trip_details/views/widgets/activities_bottom_sheet.dart';
 import 'package:p/screens/trip_details/views/widgets/trip_on_map.dart';
 import 'package:shimmer/shimmer.dart';
@@ -86,11 +84,12 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                               ),
                             ),
                             IconButton(
-                              iconSize: 18.w,
+                              iconSize: 20.w,
                               onPressed: () {},
-                              icon: FavoriteButton(valueChanged:(_isFavorite) {
-                                print('Is Favorite : $_isFavorite');
-                              },),
+                              icon: Icon(
+                                Ionicons.heart_outline,
+                                color: isLight ? Colors.brown : Colors.white,
+                              ),
                             ),
                           ],
                         ),
@@ -183,7 +182,7 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                         child: Row(
                           children: [
                             Column(
-                              children: const [
+                              children: [
                                 Text(
                                   "start date",
                                   style: TextStyle(
@@ -233,13 +232,13 @@ class _DiscountTripDetailsState extends State<DiscountTripDetails> {
                                       horizontal: 10, vertical: 2),
                                   decoration: BoxDecoration(
                                       border: GradientBoxBorder(
-                                          gradient: LinearGradient(colors: const [
+                                          gradient: LinearGradient(colors: [
                                             Color(0xffFF9884),
                                             ColorApp.thirdColor
                                           ]),
                                           width: 2)),
                                   child: Column(
-                                    children: const [
+                                    children: [
                                       Text(
                                         "Available",
                                         style: TextStyle(

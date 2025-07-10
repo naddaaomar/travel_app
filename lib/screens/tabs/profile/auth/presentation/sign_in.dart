@@ -5,7 +5,7 @@ import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_state.dart';
 import 'package:p/screens/tabs/profile/auth/presentation/sign_up.dart';
 import 'package:p/screens/tabs/profile/auth/presentation/widgets/forget_password.dart';
-import 'package:p/screens/tabs/profile/views/main_profile.dart';
+import 'package:p/screens/tabs/profile/views/widgets/main_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../core/signin_controller.dart';
 
@@ -125,7 +125,7 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                           ),
                           const SizedBox(
-                            height: 80,
+                            height: 60,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(20),
@@ -159,7 +159,7 @@ class _SignInPageState extends State<SignInPage> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 16),
                           Expanded(
                             child: Container(
                               decoration: const BoxDecoration(
@@ -182,7 +182,7 @@ class _SignInPageState extends State<SignInPage> {
                                         child: Column(
                                           children: <Widget>[
                                             const SizedBox(
-                                              height: 60,
+                                              height: 40,
                                             ),
                                             FadeInUp(
                                               duration: const Duration(

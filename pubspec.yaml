@@ -89,6 +89,9 @@ dependencies:
   mockito: ^5.4.5
   url_launcher: ^6.3.1
   flutter_rating_bar: ^4.0.1
+  clickable_list_wheel_view: ^0.2.0
+  connectivity_plus: ^6.1.4
+  cached_network_image: ^3.4.1
 
 
 

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_state.dart';
 import 'package:p/screens/tabs/profile/auth/core/signin_controller.dart';
-import 'package:p/screens/tabs/profile/views/main_profile.dart';
+import 'package:p/screens/tabs/profile/views/widgets/main_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -132,7 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                         const SizedBox(
-                          height: 80,
+                          height: 60,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(20),
@@ -166,7 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 16),
                         Expanded(
                           child: Container(
                             decoration: const BoxDecoration(
@@ -188,7 +188,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       child: Column(
                                         children: <Widget>[
                                           const SizedBox(
-                                            height: 60,
+                                            height: 40,
                                           ),
                                           FadeInUp(
                                             duration:

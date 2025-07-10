@@ -10,11 +10,12 @@ import 'package:p/screens/chatbot/views/chatbot.dart';
 import 'package:p/screens/home/views/widgets/drawer/new_drawer.dart';
 import 'package:p/screens/home/views/widgets/main_row.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/tabs/home/home_tab.dart';
+import 'package:p/screens/tabs/home/presentation/pages/home_tab.dart';
 import 'package:p/screens/tabs/map/views/map_view.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
-import 'package:p/screens/tabs/profile/views/widgets/person_tab.dart';
 import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
+import 'package:p/screens/tabs/profile/views/pages/profile_tab.dart';
+import 'package:p/screens/tabs/profile/views/widgets/main_profile.dart';
 
 class HomeViewBody extends StatefulWidget {
   HomeViewBody({
@@ -36,12 +37,6 @@ class _HomeViewBodyState extends State<HomeViewBody>
       child: const PersonTab(),),
     MapView(),
   ];
-
-  final ValueNotifier<bool> isFieldFocused = ValueNotifier(false);
-  FocusNode focusNode = FocusNode();
-  final _advancedDrawerController = AdvancedDrawerController();
-  bool _isKeyboardVisible = false;
-
   @override
   void initState() {
     super.initState();
@@ -52,42 +47,34 @@ class _HomeViewBodyState extends State<HomeViewBody>
       });
     });
     // Listen to keyboard visibility changes
-    focusNode.addListener(() {
-      setState(() {
-        isFieldFocused.value = focusNode.hasFocus;
-      });
-    });
-
-    // Listener for global keyboard visibility changes
     KeyboardVisibilityController().onChange.listen((bool isVisible) {
       setState(() {
         _isKeyboardVisible = isVisible;
       });
     });
-
-    // Listener for Advanced Drawer state changes
     _advancedDrawerController.addListener(() {
       if (_advancedDrawerController.value.visible) {
-        FocusScope.of(context).unfocus();
+        FocusScope.of(context)
+            .unfocus(); // Close the keyboard when the drawer opens
       } else {
         Future.delayed(
-          const Duration(milliseconds: 200),
+          Duration(milliseconds: 200),
               () => setState(() {}),
         );
       }
     });
 
+    // Close keyboard on hot restart
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).unfocus();
     });
   }
 
-  @override
-  void dispose() {
-    focusNode.dispose();
-    _advancedDrawerController.dispose();
-    super.dispose();
-  }
+  final ValueNotifier<bool> isFieldFocused = ValueNotifier(false);
+  FocusNode focusNode = FocusNode();
+
+  final _advancedDrawerController = AdvancedDrawerController();
+  bool _isKeyboardVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -95,19 +82,26 @@ class _HomeViewBodyState extends State<HomeViewBody>
 
     return WillPopScope(
       onWillPop: () async {
+        if (_advancedDrawerController.value.visible &&
+            HomeViewBody.currentIndex != 0) {
+          _advancedDrawerController.hideDrawer();
+          return false;
+        }
+
+        if (HomeViewBody.currentIndex != 0) {
+          setState(() {
+            HomeViewBody.currentIndex = 0; // Switch to Home tab
+          });
+          return false;
+        }
+
         if (_advancedDrawerController.value.visible) {
           _advancedDrawerController.hideDrawer();
           return false;
         }
-        if (HomeViewBody.currentIndex != 0) {
-          setState(() {
-            HomeViewBody.currentIndex = 0;
-          });
-          return false;
-        }
-        return true;
-      },
 
+        return true; // Exit the app
+      },
       child: SafeArea(
         child: AdvancedDrawer(
           backdrop: Container(
@@ -146,7 +140,10 @@ class _HomeViewBodyState extends State<HomeViewBody>
               key: ValueKey(context.locale),
               extendBody: true,
               appBar: AppBar(
-                backgroundColor: Colors.transparent,
+                backgroundColor: _isInProfileFlow(context)
+                    ? ColorApp.primaryColor
+                    : Colors.transparent,
+
                 leading: MainRow(
                   controller: _advancedDrawerController,
                 ),
@@ -155,29 +152,27 @@ class _HomeViewBodyState extends State<HomeViewBody>
               body: LayoutBuilder(
                 builder: (context, constraints) {
                   return SizedBox(
-                    height: constraints.maxHeight,
+                    height:
+                    constraints.maxHeight, // Ensure it takes full height
                     child: Stack(
                       children: [
-                        IndexedStack(
-                          index: HomeViewBody.currentIndex,
-                          children: tabs,
-                        ),
-
+                        tabs[HomeViewBody.currentIndex],
                         ValueListenableBuilder<bool>(
                           valueListenable: isFieldFocused,
                           builder: (context, isFocused, child) {
                             return isFocused
                                 ? Positioned.fill(
-                              child: GestureDetector(
+                                child: GestureDetector(
                                 onTap: () {
-                                  FocusScope.of(context).unfocus();
+                                  FocusScope.of(context)
+                                      .unfocus(); // Close keyboard when tapping the background
                                 },
                                 child: Container(
                                   color: Colors.white.withOpacity(0.6),
                                 ),
                               ),
                             )
-                                : const SizedBox.shrink();
+                                : SizedBox.shrink();
                           },
                         ),
                       ],
@@ -196,13 +191,12 @@ class _HomeViewBodyState extends State<HomeViewBody>
                 backgroundColor: ColorApp.secondaryColor,
                 elevation: 10,
                 shape: CircleBorder(
-                    side: BorderSide(
-                        width: 3.w, color: ColorApp.primaryColor)),
+                    side: BorderSide(width: 3.w, color: ColorApp.primaryColor)),
                 child: Image.asset("assets/images/ai.png"),
               ),
               bottomNavigationBar: _isKeyboardVisible
-                  ? const SizedBox
-                  .shrink()
+                  ? SizedBox
+                  .shrink() // Hide navigation bar when keyboard is visible
                   : CurvedNavigationBar(
                 index: HomeViewBody.currentIndex,
                 color: isLight
@@ -234,5 +228,29 @@ class _HomeViewBodyState extends State<HomeViewBody>
         ),
       ),
     );
+  }
+}
+
+bool _isInProfileFlow(BuildContext context) {
+  final route = ModalRoute.of(context);
+  if (route == null) return false;
+
+  // Check if we're in profile tab (index 2) or inside sign_in/main_profile
+  return
+      route.settings.name == '/sign_in' ||
+      route.settings.name == 'main_profile';
+}
+
+class AppRouteObserver extends NavigatorObserver {
+  static String? currentRouteName;
+
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    currentRouteName = route.settings.name;
+  }
+
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    currentRouteName = previousRoute?.settings.name;
   }
 }

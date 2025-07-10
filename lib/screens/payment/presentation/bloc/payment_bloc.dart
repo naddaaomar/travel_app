@@ -7,7 +7,7 @@ import 'package:p/screens/payment/domain/use_cases/payment_use_case.dart';
 part 'payment_event.dart';
 
 part 'payment_state.dart';
-
+/*
 @injectable
 class PaymentBloc extends Bloc<PaymentEvent, PaymentResponseState> {
   PaymentUseCase? paymentUseCase;
@@ -35,8 +35,11 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentResponseState> {
       }, (r) {
         emit(state.copyWith(
             clientSecretRequestState: RequestState.success, paymentModel: r));
-        print("${r.clientSecret}//////////////////////////////");
+        print("//////////////////////////////");
       });
     });
   }
 }
+
+
+ */

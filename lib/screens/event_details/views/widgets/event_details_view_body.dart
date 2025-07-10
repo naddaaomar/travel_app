@@ -8,7 +8,6 @@ import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/fav_tab_widgets/favorites.dart';
 import 'event_on_map.dart';
 import 'view_all_recommended_events.dart';
 
@@ -32,7 +31,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
     _checkFavoriteStatus();
   }
   Future<void> _checkFavoriteStatus() async {
-    final favorites = FavoriteManager().favoritesNotifier.value;
+  //  final favorites = FavoriteManager().favoritesNotifier.value;
     setState(() {});
   }
 
@@ -88,17 +87,19 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                             IconButton(
                               iconSize: 18.w,
                               onPressed: () {
-                                ValueListenableBuilder<List<String>>(
-                                  valueListenable: FavoriteManager().favoritesNotifier,
+                              /*  ValueListenableBuilder<List<String>>(
+                             //     valueListenable: FavoriteManager().favoritesNotifier,
                                   builder: (context, favorites, _) {
                                     return FavoriteButton(
                                       iconSize: 30,
                                       valueChanged: (isFavorite) {
-                                        FavoriteManager().toggleFavorite('',context);
+                               //         FavoriteManager().toggleFavorite('',context);
                                       },
                                     );
                                   },
                                 );
+
+                               */
                               },
                               icon: FavoriteButton(valueChanged:(_isFavorite) {
                                 print('Is Favorite : $_isFavorite');

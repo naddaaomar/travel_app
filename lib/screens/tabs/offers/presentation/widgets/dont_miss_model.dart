@@ -6,9 +6,9 @@ class DontMissModel {
 
   DontMissModel(
       {required this.comName,
-      required this.place,
-      required this.image,
-      required this.offer});
+        required this.place,
+        required this.image,
+        required this.offer});
 }
 
 

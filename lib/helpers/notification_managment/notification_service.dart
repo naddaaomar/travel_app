@@ -6,7 +6,6 @@ import 'package:p/helpers/themes/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
-import 'api_service.dart';
 
 class NotificationService {
   NotificationService._();
@@ -15,39 +14,52 @@ class NotificationService {
   static const String _channelName = 'Journey Mate Notifications';
   static const String _channelDescription = 'Notifications for trip updates and alerts.';
 
+  static bool _isInitialized = false;
+
   static Future<bool> _areNotificationsEnabled() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('notifications_enabled') ?? true;
   }
 
   static Future<void> initialize() async {
-    tz.initializeTimeZones();
-    final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(timeZoneName));
+    if (_isInitialized) return;
 
-    await AwesomeNotifications().initialize(
-      null,
-      [
-        NotificationChannel(
-          channelKey: _channelKey,
-          channelName: _channelName,
-          channelDescription: _channelDescription,
-          importance: NotificationImportance.High,
-          defaultColor: ColorApp.primaryColor,
-          ledColor: Colors.white,
-          playSound: true,
-          enableVibration: true,
-        )
-      ],
-      debug: true,
-    );
+    try {
+      tz.initializeTimeZones();
 
-    // Only request permission if notifications are enabled in settings
-    if (await _areNotificationsEnabled()) {
-      final isAllowed = await AwesomeNotifications().isNotificationAllowed();
-      if (!isAllowed) {
-        await AwesomeNotifications().requestPermissionToSendNotifications();
+      final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(timeZoneName));
+
+      await AwesomeNotifications().initialize(
+        null,
+        [
+          NotificationChannel(
+            channelKey: _channelKey,
+            channelName: _channelName,
+            channelDescription: _channelDescription,
+            importance: NotificationImportance.High,
+            defaultColor: ColorApp.primaryColor,
+            ledColor: Colors.white,
+            playSound: true,
+            enableVibration: true,
+          )
+        ],
+        debug: true,
+      );
+
+      if (await _areNotificationsEnabled()) {
+        final isAllowed = await AwesomeNotifications().isNotificationAllowed();
+        if (!isAllowed) {
+          await AwesomeNotifications().requestPermissionToSendNotifications();
+        }
       }
+
+      _isInitialized = true;
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error initializing notifications: $e');
+      }
+      _isInitialized = false;
     }
   }
 
@@ -57,6 +69,10 @@ class NotificationService {
     required String body,
     required DateTime endTime,
   }) async {
+    if (!_isInitialized) {
+      await initialize();
+    }
+
     if (!await _areNotificationsEnabled()) {
       if (kDebugMode) {
         print('Notifications are disabled in settings');
@@ -95,53 +111,5 @@ class NotificationService {
   static Future<void> cancelNotification(int id) async {
     if (!await _areNotificationsEnabled()) return;
     await AwesomeNotifications().cancel(id);
-  }
-}
-
-class TripNotificationOrchestrator {
-  final ApiService _apiService;
-
-  TripNotificationOrchestrator({required ApiService apiService})
-      : _apiService = apiService;
-
-  Future<bool> scheduleNotificationForTrip(String tripId) async {
-    try {
-      // Check if notifications are enabled first
-      final prefs = await SharedPreferences.getInstance();
-      final notificationsEnabled = prefs.getBool('notifications_enabled') ?? true;
-
-      if (!notificationsEnabled) {
-        if (kDebugMode) {
-          print('Notifications are disabled - not scheduling trip notification');
-        }
-        return false;
-      }
-
-      final trip = await _apiService.getTripDetails(tripId);
-      final notificationId = trip.id.hashCode;
-
-      return await NotificationService.scheduleTripEndNotification(
-        id: notificationId,
-        title: 'Trip Completed!',
-        body: 'Your journey to ${trip.destination} has ended. Would you like to rate it?',
-        endTime: trip.endTime,
-      );
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error scheduling notification for trip $tripId: $e');
-      }
-      return false;
-    }
-  }
-
-  Future<void> cancelTripNotification(String tripId) async {
-    try {
-      final notificationId = tripId.hashCode;
-      await NotificationService.cancelNotification(notificationId);
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error canceling notification for trip $tripId: $e');
-      }
-    }
   }
 }

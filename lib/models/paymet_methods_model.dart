@@ -1,33 +1,58 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:p/main.dart';
 
 class PaymentMethodesModel {
   String image;
-  int id;
+  String id;
 
   PaymentMethodesModel({required this.image,required this.id});
 }
 
 List<PaymentMethodesModel> payModel = [
   PaymentMethodesModel(
-    image: 'assets/images/visa.png',
-   id: 4936791
+      image: 'assets/images/visa.png',
+      id: "card"
   ),
   PaymentMethodesModel(
-    image: 'assets/images/masterCard.png',
-    id: 4936791
+      image: 'assets/images/masterCard.png',
+      id: "card"
   ),
   PaymentMethodesModel(
-    image: 'assets/images/instapay.png',
-   id: 4936791
+      image: 'assets/images/amex.png',
+      id: "card"
   ),
+  // PaymentMethodesModel(
+  //   image: 'assets/images/instapay.png',
+  //  id: card
+  // ),
   PaymentMethodesModel(
     image: 'assets/images/vodafone.png',
-  id:4937089 ,
+    id:"wallet" ,
   ),
   PaymentMethodesModel(
-    image: 'assets/images/payPal.png',
-    id: 4937087,
+    image: 'assets/images/orange.png',
+    id:"wallet" ,
+  ),
+  PaymentMethodesModel(
+    image: 'assets/images/we.png',
+    id:"wallet" ,
+  ),
+  PaymentMethodesModel(
+    image: 'assets/images/etisalat.png',
+    id:"wallet" ,
+  ),
+  PaymentMethodesModel(
+    image: 'assets/images/meeza.png',
+    id:"wallet" ,
+  ),
+  // PaymentMethodesModel(
+  //   image: 'assets/images/payPal.png',
+  //   id: 4937087,
+  // ),
+  PaymentMethodesModel(
+    image: 'assets/images/aman.png',
+    id:"kiosk" ,
+  ),
+  PaymentMethodesModel(
+    image: 'assets/images/masary.jpg',
+    id:"kiosk" ,
   ),
 ];

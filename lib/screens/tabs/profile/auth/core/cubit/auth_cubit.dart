@@ -31,7 +31,7 @@ class AuthCubit extends Cubit<AuthState> {
       await prefs.setBool('isSignedIn', true);
       final storedEmail = prefs.getString('email');
       await prefs.setString('email', storedEmail ?? username);
-      // Store email during sign-up BUT be careful "sometime conflict :(" (غالبا بيفتكر اخر واحد)
+      // Store email during sign-up BUT be careful "sometime conflict :("   (غالبا بيفتكر اخر واحد)
 
       await prefs.setString('name', username);
       await prefs.setString('token', user!.token!);

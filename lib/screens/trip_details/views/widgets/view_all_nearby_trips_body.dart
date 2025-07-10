@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/models/nearby_places.dart';
+import 'package:p/screens/event_details/views/widgets/event_details_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
 
 class ViewAllNearbyBody extends StatelessWidget {
   const ViewAllNearbyBody({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class ViewAllNearbyBody extends StatelessWidget {
                 color: isLight ? Colors.white : ColorApp.cardColorDark,
                 elevation: 10,
                 shadowColor:
-                    isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
+                isLight ? ColorApp.primaryColor : ColorApp.primaryColorDark,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.r),
                 ),
@@ -36,8 +36,8 @@ class ViewAllNearbyBody extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TripDetailsViewBody(
-                            image: '', tripId: '',
+                          builder: (context) => EventDetailsViewBody(
+                            image: '',
                           ),
                         ));
                   },
@@ -56,72 +56,69 @@ class ViewAllNearbyBody extends StatelessWidget {
                         ),
                         SizedBox(width: 10.w),
                         Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'place'.tr(),
-                                  style: TextStyle(
-                                      fontFamily: "pop",
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color:
-                                          isLight ? Colors.black : Colors.white),
-                                ),
-                                Text(
-                                  'company'.tr(),
-                                  style: TextStyle(
-                                      fontFamily: "pop",
-                                      fontSize: 13,
-                                      color:
-                                          isLight ? Colors.black : Colors.white),
-                                ),
-                                const Spacer(),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.yellow.shade700,
-                                      size: 14.w,
-                                    ),
-                                    Text(
-                                      'rate'.tr(),
-                                      style: TextStyle(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'place'.tr(),
+                                style: TextStyle(
+                                    fontFamily: "pop",
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color:
+                                    isLight ? Colors.black : Colors.white),
+                              ),
+                              Text(
+                                'company'.tr(),
+                                style: TextStyle(
+                                    fontFamily: "pop",
+                                    fontSize: 13,
+                                    color:
+                                    isLight ? Colors.black : Colors.white),
+                              ),
+                              const Spacer(),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.yellow.shade700,
+                                    size: 14.w,
+                                  ),
+                                  Text(
+                                    'rate'.tr(),
+                                    style: TextStyle(
+                                        fontFamily: "pop",
+                                        fontSize: 12.sp,
+                                        color: isLight
+                                            ? Colors.black
+                                            : Colors.white),
+                                  ),
+                                  const Spacer(),
+                                  RichText(
+                                    text: TextSpan(
+                                        style: TextStyle(
                                           fontFamily: "pop",
-                                          fontSize: 12.sp,
+                                          fontSize: 15.sp,
                                           color: isLight
-                                              ? Colors.black
-                                              : Colors.white),
-                                    ),
-                                    const Spacer(),
-                                    RichText(
-                                      text: TextSpan(
-                                          style: TextStyle(
-                                            fontFamily: "pop",
-                                            fontSize: 15.sp,
-                                            color: isLight
-                                                ? ColorApp.thirdColor
-                                                : Colors.white,
-                                          ),
-                                          text: "\$200",
-                                          children: [
-                                            TextSpan(
-                                                style: TextStyle(
-                                                  fontFamily: "pop",
-                                                  fontSize: 12.sp,
-                                                  color: isLight
-                                                      ? Colors.black54
-                                                      : Colors.white,
-                                                ),
-                                                text: " /Person")
-                                          ]),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
+                                              ? ColorApp.thirdColor
+                                              : Colors.white,
+                                        ),
+                                        text: "\$200",
+                                        children: [
+                                          TextSpan(
+                                              style: TextStyle(
+                                                fontFamily: "pop",
+                                                fontSize: 12.sp,
+                                                color: isLight
+                                                    ? Colors.black54
+                                                    : Colors.white,
+                                              ),
+                                              text: " /Person")
+                                        ]),
+                                  )
+                                ],
+                              )
+                            ],
                           ),
                         )
                       ],

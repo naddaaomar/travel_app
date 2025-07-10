@@ -6,6 +6,13 @@ class ApiService {
   static const String _baseUrl = 'https://journeymate.runasp.net/api/Trip';
 
   Future<Trip> getTripDetails(String tripId) async {
+
+  /*
+    if (tripId.startsWith('test_')) {
+      return Trip.createTestTrip();
+    }
+*/
+
     final uri = Uri.parse('$_baseUrl/$tripId');
 
     try {

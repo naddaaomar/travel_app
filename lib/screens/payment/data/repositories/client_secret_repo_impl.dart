@@ -13,18 +13,19 @@ class ClientSecretRepoImpl implements ClientSecretRepo {
 
   @override
   Future<Either<ErrorFailures, PaymentModel>> clientSecret(
-      {required int integrationId,
-      required String phone,
-      required String fName,
-      required String lName,
-      required double amount}) async {
+      {
+        required num bookingId,
+        required String paymentMethod,
+        required num amount,
+        required String currency,
+      }) async {
     try {
       var data = await clientSecretDs.clientSecret(
-          phone: phone,
-          fName: fName,
-          integrationId: integrationId,
-          lName: lName,
-          amount: amount);
+          bookingId: bookingId,
+          paymentMethod: paymentMethod,
+          amount: amount,
+          currency: currency
+      );
       return Right(data);
     } catch (e) {
       return Left(ErrorRemoteFailure(e.toString()));

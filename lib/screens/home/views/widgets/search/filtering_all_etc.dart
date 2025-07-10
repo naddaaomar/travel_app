@@ -4,13 +4,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/search/company_card.dart';
 import 'package:p/screens/home/views/widgets/search/event_card.dart';
 import 'package:p/screens/home/views/widgets/search/search_model.dart';
 import 'package:p/screens/home/views/widgets/search/trip_card.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
+
 import '../../../../tabs/offers/presentation/pages/offers_screen.dart';
 
 class FilteringAllEtc extends StatefulWidget {
