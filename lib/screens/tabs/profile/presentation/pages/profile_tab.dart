@@ -72,7 +72,8 @@ class _PersonTabState extends State<PersonTab> {
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: Text('Authentication Error: ${state.errorMessage}')),
+                content: Text('Authentication Error: ${state.errorMessage}'),
+            ),
           );
         }
       },

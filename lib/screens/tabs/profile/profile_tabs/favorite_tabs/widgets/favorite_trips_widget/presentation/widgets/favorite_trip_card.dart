@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/model/fav_trip_model.dart';
 import '../manager/favorites_cubit.dart';
 import '../manager/favorites_state.dart';
@@ -113,7 +114,37 @@ class FavoriteTripCard extends StatelessWidget {
               BlocBuilder<FavoritesCubit, FavoritesState>(
                 builder: (context, state) {
                   return FavoriteButton(
-                    isFavorite: trip.isFavorite,
+                    valueChanged: (isFavorite) async {
+                      print('Favorite button pressed. New state: $isFavorite');
+
+                      final prefs = await SharedPreferences.getInstance();
+                      final token = prefs.getString('token');
+
+                      if (token != null && token.isNotEmpty) {
+                        final updatedTrip = trip.copyWith(isFavorite: isFavorite);
+                        onToggleFavorite(updatedTrip);
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              isFavorite
+                                  ? 'Added to favorites'
+                                  : 'Removed from favorites',
+                            ),
+                            duration: const Duration(seconds: 1),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('You should be signed in to use favorites'),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    },
+
+                  /*  isFavorite: trip.isFavorite,
                     iconSize: 40,
                     valueChanged: (isFavorite) {
                       print('Favorite button pressed. New state: $isFavorite');
@@ -131,6 +162,8 @@ class FavoriteTripCard extends StatelessWidget {
                         ),
                       );
                     },
+
+                   */
                   );
                 },
               ),

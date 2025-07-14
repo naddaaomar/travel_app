@@ -23,6 +23,9 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
 
+      print(' Response from signIn: $user');
+      print('Token: ${user?.token}');
+
       if (user?.token == null) {
         emit(AuthError(errorMessage: 'Authentication failed - no token received'));
         return;
@@ -32,10 +35,12 @@ class AuthCubit extends Cubit<AuthState> {
       await prefs.setBool('isSignedIn', true);
       final storedEmail = prefs.getString('email');
       await prefs.setString('email', storedEmail ?? username);
-      // Store email during sign-up BUT be careful "sometime conflict :("   (غالبا بيفتكر اخر واحد)
 
       await prefs.setString('name', username);
       await prefs.setString('token', user!.token!);
+
+      final storedToken = prefs.getString('token');
+      print("Token stored in SharedPreferences: $storedToken");
 
       emit(AuthSuccess(user: user));
     }  catch (e) {if (e is DioException) {

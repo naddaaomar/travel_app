@@ -24,23 +24,31 @@ class FavoritesCubit extends Cubit<FavoritesState> {
   }
 
   Future<void> toggleFavorite(Trip trip) async {
-    print('Toggle favorite called for trip: ${trip.id}');
+    print(' Toggle favorite called for trip: ${trip.id}');
     final currentState = state;
 
     if (currentState is FavoritesLoaded) {
       try {
         final isRemoving = trip.isFavorite;
+        print(isRemoving
+            ? ' Removing trip from favorites: ${trip.id}'
+            : ' Adding trip to favorites: ${trip.id}');
+
         final updatedFavorites = isRemoving
             ? currentState.favorites.where((t) => t.id != trip.id).toList()
             : [...currentState.favorites, trip.copyWith(isFavorite: true)];
 
+        print(' Updated favorites count: ${updatedFavorites.length}');
         emit(FavoritesLoaded(updatedFavorites));
 
         final success = await _service.toggleFavorite(trip.id);
 
         if (!success) {
+          print(' Failed to update favorite on server. Reverting state.');
           emit(FavoritesLoaded(currentState.favorites));
           throw Exception('Failed to update favorites on server');
+        } else {
+          print(' Server updated successfully.');
         }
 
       } catch (e) {

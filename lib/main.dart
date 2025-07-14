@@ -8,6 +8,7 @@ import 'package:p/di.dart';
 import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
+import 'package:p/screens/home/views/home_view.dart';
 import 'package:p/screens/settings/bloc/notification_bloc/notification_bloc.dart';
 import 'package:p/screens/settings/bloc/permission_bloc/permissions_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,17 +17,32 @@ import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'screens/splash_screen/view/splash.dart';
 import 'screens/tabs/profile/profile_tabs/profile_tab_widgets/presentation/manager/profile_cubit.dart';
+import 'package:flutter/foundation.dart';
 
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+late String? token;
+
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   ApiManager.init();
 
-
   final prefs = await SharedPreferences.getInstance();
+  token = prefs.getString('token');
+
+  if (kIsWeb) {
+    print(" Running on Web");
+  } else {
+    print(" Running on Mobile");
+  }
+
+  if (token == null || token!.isEmpty) {
+    print(" Token not loaded from cache (Platform: ${kIsWeb ? 'Web' : 'Mobile'})");
+  } else {
+    print(" Token loaded from cache: $token");
+  }
 
   try {
     final appDocDir = await getApplicationDocumentsDirectory();
@@ -100,8 +116,9 @@ class MyApp extends StatelessWidget {
                     themeMode: themeMode,
                     debugShowCheckedModeBanner: false,
                     home:
+                      token != "empty" ? const HomeView() : const SplashScreen(),
                     // isFirstTime ?
-                    SplashScreen()
+                    //SplashScreen()
                   // : OnBoardViewBody(),
                 ),
               ),
