@@ -4,7 +4,7 @@ import 'package:p/screens/trip_details/models/TravelDetailsModel.dart';
 
 class ActivitiesBottomSheet extends StatelessWidget {
   ActivitiesBottomSheet({super.key, required this.itenraries});
-  List<Itenraries> itenraries;
+  List<Itineraries> itenraries;
 
   @override
   Widget build(BuildContext context) {
@@ -26,22 +26,22 @@ class ActivitiesBottomSheet extends StatelessWidget {
             SizedBox(height: 15),
             ...itenraries
                 .map((day) => Column(
-                      children: [
-                        Details(
-                          day: "Day ${day.dayNumber ?? ''}",
-                          txt1: day.activities?.isNotEmpty == true
-                              ? day.activities![0]
-                              : '',
-                          txt2: (day.activities?.length ?? 0) > 1
-                              ? day.activities![1]
-                              : '',
-                          txt3: (day.activities?.length ?? 0) > 2
-                              ? day.activities![2]
-                              : '',
-                        ),
-                        SizedBox(height: 20),
-                      ],
-                    ))
+              children: [
+                Details(
+                  day: "Day ${day.dayNumber ?? ''}",
+                  txt1: day.activities?.isNotEmpty == true
+                      ? day.activities![0]
+                      : '',
+                  txt2: (day.activities?.length ?? 0) > 1
+                      ? day.activities![1]
+                      : '',
+                  txt3: (day.activities?.length ?? 0) > 2
+                      ? day.activities![2]
+                      : '',
+                ),
+                SizedBox(height: 20),
+              ],
+            ))
                 .toList(),
           ],
         ),
@@ -53,10 +53,10 @@ class ActivitiesBottomSheet extends StatelessWidget {
 class Details extends StatelessWidget {
   Details(
       {super.key,
-      required this.day,
-      required this.txt1,
-      required this.txt2,
-      required this.txt3});
+        required this.day,
+        required this.txt1,
+        required this.txt2,
+        required this.txt3});
   String day;
   String txt1;
   String txt2;
@@ -82,7 +82,7 @@ class Details extends StatelessWidget {
               Text(
                 day,
                 style:
-                    TextStyle(fontFamily: "pop", fontWeight: FontWeight.w600),
+                TextStyle(fontFamily: "pop", fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 10),
               ActivityRow(txt: txt1),

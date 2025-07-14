@@ -1,3 +1,4 @@
+import 'package:p/screens/tabs/home/data/models/EventsModel.dart';
 import 'package:p/screens/tabs/home/data/models/NewestModel.dart';
 
 abstract class HomeDs {
@@ -5,4 +6,5 @@ abstract class HomeDs {
     required int PageSize,
     required int PageIndex,
   });
+  Future<List<EventsModel>> getEvents();
 }

@@ -3,7 +3,9 @@ import 'package:injectable/injectable.dart';
 import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/constants/constants.dart';
 import 'package:p/helpers/exceptions/exceptions.dart';
-import 'package:p/screens/all_discount_travels/data/remote/models/AllDiscountModel.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
+import 'package:p/screens/all_travels/data/models/AllTravelsModel.dart';
+
 import 'all_discounts_ds.dart';
 
 @Injectable(as: AllDiscountsDs)
@@ -13,7 +15,7 @@ class AllDiscountsDsImpl implements AllDiscountsDs {
   AllDiscountsDsImpl(this.apiManager);
 
   @override
-  Future<AllDiscountModel> getDiscounts(
+  Future<DiscountItemsModel> getDiscounts(
       {required int PageSize,
         required int PageIndex,
         String? Sort,
@@ -35,8 +37,8 @@ class AllDiscountsDsImpl implements AllDiscountsDs {
         if (CategorieyId != null) "CategorieyId": CategorieyId,
       });
 
-      AllDiscountModel allDiscountModel =
-      AllDiscountModel.fromJson(response.data);
+      DiscountItemsModel allDiscountModel =
+      DiscountItemsModel.fromJson(response.data);
 
       return allDiscountModel;
     } on DioException catch (e) {

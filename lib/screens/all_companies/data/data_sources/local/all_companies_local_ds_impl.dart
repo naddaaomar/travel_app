@@ -6,6 +6,7 @@ import 'package:p/screens/all_companies/data/models/AllCompaniesModel.dart';
 import 'all_companies_local_ds.dart';
 
 @Injectable(as: AllCompaniesLocalDs)
+
 class AllCompaniesLocalDsImpl implements AllCompaniesLocalDs {
   static const _boxName = 'Companies';
   static const _boxKey = 'allCompanies';
@@ -23,8 +24,12 @@ class AllCompaniesLocalDsImpl implements AllCompaniesLocalDs {
 
   @override
   Future<void> cacheCompanies(AllCompaniesModel companies) async {
-    final box = await _openBox();
-    await box.put(_boxKey, companies.toJson());
+    try{
+      final box = await _openBox();
+      await box.put(_boxKey, companies.toJson());
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   @override

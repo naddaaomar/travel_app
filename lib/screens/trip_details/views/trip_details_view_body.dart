@@ -27,7 +27,14 @@ class TripDetailsViewBody extends StatefulWidget {
   State<TripDetailsViewBody> createState() => _TripDetailsViewBodyState();
 }
 
+
 class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<TravelDetailsCubit>().getTravelDetails(id: widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
@@ -65,7 +72,7 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                               borderRadius: BorderRadius.vertical(
                                   bottom: Radius.circular(20.r)),
                               image: DecorationImage(
-                                image: NetworkImage(info.imageUrls![0]),
+                                image: NetworkImage(info.coverImageUrl??""),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -142,6 +149,7 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                         crossAxisAlignment: CrossAxisAlignment
                                             .start, // Align the title to the left
                                         children: [
+                                          Text("${info.id}"??""),
                                           Text(
                                             info.title ?? "",
                                             style: TextStyle(
@@ -482,7 +490,7 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                           isScrollControlled: true,
                                           builder: (context) =>
                                               ActivitiesBottomSheet(
-                                                itenraries: info.itenraries!,
+                                                itenraries: info.itineraries!,
                                               ),
                                         );
                                       },

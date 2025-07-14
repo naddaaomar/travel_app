@@ -20,4 +20,6 @@ class Constants {
   static const String leavingSoonEndPoint = "/api/Travel/leaving-soon";
   static const String newestCompanyEndPoint = "/api/Travel/newest-for-company";
   static const String newestEndPoint = "/api/Travel/newest";
+  static const String eventsEndPoint = "/api/ApiEvents/events";
+  static const String companyRatingsEndpoint = '/api/Company/rate';
 }

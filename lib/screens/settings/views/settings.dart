@@ -37,6 +37,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
+
     Locale currentLocal = context.locale;
     return WillPopScope(
       onWillPop: () async {
@@ -79,7 +80,9 @@ class _SettingsState extends State<Settings> {
           child: Scaffold(
             appBar: appBar(
               height: 75.h,
-              color: ColorApp.primaryColor,
+              color: isLight
+                  ? ColorApp.primaryColor
+                  : ColorApp.primaryColorDark,
               lable: "Settings",
               onPressed: () {
                 Navigator.pop(context);
@@ -89,13 +92,17 @@ class _SettingsState extends State<Settings> {
                 _advancedDrawerController.showDrawer();
               },
             ),
-            backgroundColor: ColorApp.primaryColor,
+            backgroundColor: isLight
+                ? ColorApp.primaryColor
+                : ColorApp.primaryColorDark,
             body: Column(
               children: [
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                        color: ColorApp.secondaryColor,
+                        color: isLight
+                            ? ColorApp.secondaryColor
+                            : ColorApp.secondaryColorDark,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.r),
                           topRight: Radius.circular(20.r),

@@ -24,11 +24,11 @@ class Respond extends StatelessWidget {
                 radius: 20.r,
                 child: ClipOval(
                     child: Image.asset(
-                  "assets/images/ai.png",
-                  fit: BoxFit.cover,
-                  width: 40.w,
-                  height: 40.h,
-                )),
+                      "assets/images/ai.png",
+                      fit: BoxFit.cover,
+                      width: 40.w,
+                      height: 40.h,
+                    )),
               ),
               BubbleSpecialTwo(
                 text: "respond",

@@ -13,8 +13,8 @@ import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/home/presentation/pages/home_tab.dart';
 import 'package:p/screens/tabs/map/views/map_view.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
-import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
-import 'package:p/screens/tabs/profile/views/pages/profile_tab.dart';
+import 'package:p/screens/auth/core/cubit/auth_cubit.dart';
+import '../../../tabs/profile/presentation/pages/profile_tab.dart';
 
 enum AppBarState { transparent, color, hidden }
 

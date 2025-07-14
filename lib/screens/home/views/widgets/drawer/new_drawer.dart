@@ -2,8 +2,10 @@ import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/settings/views/settings.dart';
 import '../../../../../models/drawer_model.dart';
 import '../../../../all_travels/presentation/pages/all_travels.dart';
@@ -19,6 +21,8 @@ class NewDrawer extends StatefulWidget {
 class _NewDrawerState extends State<NewDrawer> {
   @override
   Widget build(BuildContext context) {
+    bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(

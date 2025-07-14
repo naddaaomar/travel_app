@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/screens/ai/Ai_requests.dart';
 import 'package:p/screens/all_discount_travels/presentation/manager/all_discounts_cubit.dart';
 import 'package:p/screens/all_discount_travels/presentation/widgets/all_discount_card.dart';
 import 'package:p/screens/home/views/widgets/drawer/new_drawer.dart';
@@ -12,6 +13,7 @@ import 'package:p/screens/travel_filtration/presentation/manger/travel_filter_cu
 import 'package:p/screens/travel_filtration/presentation/pages/travel_filtration.dart';
 import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
 import 'package:shimmer/shimmer.dart';
+
 import '../../../../di.dart';
 
 class AllDiscounts extends StatelessWidget {
@@ -250,7 +252,17 @@ class AllDiscounts extends StatelessWidget {
                                                 .shrink(); // أو أي ويدجت بديلة
                                           }
                                           return InkWell(
-                                            onTap: () {
+                                            onTap: () async{
+                                              final aiRequests = AiRequests();
+
+                                              await aiRequests.trackInteractionClick(
+                                                contentId:state
+                                                    .allTravelsModel!
+                                                    .items![index]
+                                                    .id
+                                                    .toString(),
+                                                type: 'travel',
+                                              );
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(

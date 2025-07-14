@@ -1,13 +1,30 @@
 part of 'home_cubit.dart';
 
 @immutable
-sealed class HomeState {}
+class HomeState {
+  final bool isLoading;
+  final bool hasError;
+  final NewestModel? newestModel;
+  final List<EventsModel?>? eventsModel;
 
-final class HomeInitial extends HomeState {}
-final class NewestLoading extends HomeState {}
-final class NewestSuccess extends HomeState {
-  final NewestModel newestModel;
+  const HomeState({
+    this.isLoading = false,
+    this.hasError = false,
+    this.newestModel,
+    this.eventsModel,
+  });
 
-  NewestSuccess(this.newestModel);
+  HomeState copyWith({
+    bool? isLoading,
+    bool? hasError,
+    NewestModel? newestModel,
+    List<EventsModel?>? eventsModel,
+  }) {
+    return HomeState(
+      isLoading: isLoading ?? this.isLoading,
+      hasError: hasError ?? this.hasError,
+      newestModel: newestModel ?? this.newestModel,
+      eventsModel: eventsModel ?? this.eventsModel,
+    );
+  }
 }
-final class NewestError extends HomeState {}

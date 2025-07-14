@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:p/helpers/exceptions/failuers.dart';
-import 'package:p/screens/all_discount_travels/data/remote/models/AllDiscountModel.dart';
+import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 import 'package:p/screens/all_discount_travels/domain/repositories/all_discounts_repo.dart';
 
 @injectable
@@ -10,7 +10,7 @@ class AllDiscountsUseCase {
 
   AllDiscountsUseCase(this.allDiscountsRepo);
 
-  Future<Either<ErrorFailures, AllDiscountModel>> call(
+  Future<Either<ErrorFailures, DiscountItemsModel>> call(
       {required int PageIndex,
         required int PageSize,
         String? Sort,
