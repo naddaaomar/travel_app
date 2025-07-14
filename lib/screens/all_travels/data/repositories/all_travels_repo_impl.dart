@@ -19,6 +19,8 @@ class AllTravelsRepoImpl implements AllTravelsRepo {
     this.localDs,
     this.networkInfo,
   );
+
+
   @override
   Future<Either<ErrorFailures, AllTravelsModel>> getTravels({
     required int PageIndex,
@@ -30,10 +32,9 @@ class AllTravelsRepoImpl implements AllTravelsRepo {
   }) async {
     print("////////////////////////////////////////////");
     print(await networkInfo.isConnected);
-    print(await networkInfo.isConnected);
-    print(await networkInfo.isConnected);
-    print(await networkInfo.isConnected);
     print("////////////////////////////////////////////");
+
+    final isFiltered = MinPrice != null || MaxPrice != null || CategorieyId != null || (Sort != null && Sort != 'priceDec');
 
     try {
       if (await networkInfo.isConnected) {
@@ -46,21 +47,30 @@ class AllTravelsRepoImpl implements AllTravelsRepo {
           CategorieyId: CategorieyId,
         );
 
-        await localDs.cacheTravels(data);
-        print("data safedddddddddd");
+        // ✅ Only cache unfiltered data
+        if (!isFiltered) {
+          await localDs.cacheTravels(data);
+          print("✅ Cached unfiltered data");
+        }
+
         return Right(data);
       } else {
-        final cached = await localDs.getCachedTravels();
-        if (cached != null) {
-          print("📦 Using cached travels data");
-
-          return Right(cached);
+        // ✅ Only return cache if no filters applied
+        if (!isFiltered) {
+          final cached = await localDs.getCachedTravels();
+          if (cached != null) {
+            print("📦 Using cached travels data");
+            return Right(cached);
+          } else {
+            return Left(ErrorLocalFailure('No internet and no cached data'));
+          }
         } else {
-          return Left(ErrorLocalFailure('No internet and no cached data'));
+          return Left(ErrorLocalFailure('No internet and filters are applied'));
         }
       }
     } catch (e) {
       return Left(ErrorRemoteFailure(e.toString()));
     }
   }
+
 }

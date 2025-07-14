@@ -4,8 +4,10 @@ import 'package:p/helpers/exceptions/failuers.dart';
 import 'package:p/helpers/internet_checker/internet_checker.dart';
 import 'package:p/screens/tabs/home/data/data_sources/local/home_local_ds.dart';
 import 'package:p/screens/tabs/home/data/data_sources/remote/home_ds.dart';
+import 'package:p/screens/tabs/home/data/models/EventRecommendation.dart';
 import 'package:p/screens/tabs/home/data/models/NewestModel.dart';
 import 'package:p/screens/tabs/home/data/models/EventsModel.dart';
+import 'package:p/screens/tabs/home/data/models/TravelRecommendation.dart';
 import 'package:p/screens/tabs/home/domain/repositories/home_repo.dart';
 
 @Injectable(as: HomeRepo)
@@ -58,9 +60,66 @@ class HomeRepoImpl implements HomeRepo {
           print("📦 Using cached events data");
           return Right(cached);
         } else {
-          return Left(ErrorLocalFailure('No internet and no cached events data.'));
+          return Left(
+              ErrorLocalFailure('No internet and no cached events data.'));
         }
       }
+    } catch (e) {
+      return Left(ErrorRemoteFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<ErrorFailures, List<EventRecommendation>>> getEventRecommend(
+      {required int numRecommendations,
+      required int numHighestInteractions})async {
+    try {
+      // if (await networkInfo.isConnected) {
+        final data = await homeDs.getEventRecommend(
+     numHighestInteractions: numHighestInteractions,
+          numRecommendations: numRecommendations
+        );
+       // await localDs.cacheNewest(data);
+        print("✅ Newest data cached");
+        return Right(data);
+      // }
+      // else {
+      //   final cached = await localDs.getCachedNewest();
+      //   if (cached != null) {
+      //     print("📦 Using cached newest data");
+      //    // return Right(cached);
+      //   } else {
+      //     return Left(ErrorLocalFailure('No internet and no cached data.'));
+      //   }
+      // }
+    } catch (e) {
+      return Left(ErrorRemoteFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<ErrorFailures, List<TravelRecommendation>>> getTravelRecommend(
+      {required int numRecommendations,
+      required int numHighestInteractions})async {
+    try {
+      // if (await networkInfo.isConnected) {
+      final data = await homeDs.getTravelRecommend(
+          numHighestInteractions: numHighestInteractions,
+          numRecommendations: numRecommendations
+      );
+      // await localDs.cacheNewest(data);
+      print("✅ Newest data cached");
+      return Right(data);
+      // }
+      // else {
+      //   final cached = await localDs.getCachedNewest();
+      //   if (cached != null) {
+      //     print("📦 Using cached newest data");
+      //    // return Right(cached);
+      //   } else {
+      //     return Left(ErrorLocalFailure('No internet and no cached data.'));
+      //   }
+      // }
     } catch (e) {
       return Left(ErrorRemoteFailure(e.toString()));
     }

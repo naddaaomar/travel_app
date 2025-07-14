@@ -174,6 +174,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
           ),
           drawer: NewDrawer(
             controller: _advancedDrawerController,
+
           ),
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,

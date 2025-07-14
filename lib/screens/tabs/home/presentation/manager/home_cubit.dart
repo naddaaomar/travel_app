@@ -2,11 +2,15 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:p/screens/tabs/home/data/models/EventRecommendation.dart';
 import 'package:p/screens/tabs/home/data/models/EventsModel.dart';
 import 'package:p/screens/tabs/home/data/models/NewestModel.dart';
+import 'package:p/screens/tabs/home/data/models/TravelRecommendation.dart';
 import 'package:p/screens/tabs/home/domain/use_cases/home_use_case.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'home_state.dart';
+
 @injectable
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.homeUseCase) : super(const HomeState());
@@ -19,22 +23,29 @@ class HomeCubit extends Cubit<HomeState> {
   call({
     required int PageIndex,
     required int PageSize,
-  })async{
-   await getNewest(PageIndex: PageIndex, PageSize: PageSize);
-   await getEvents();
+    required int numRecommendations,
+    required int numHighestInteractions
+  }) async {
+     loadToken();
+    await getNewest(PageIndex: PageIndex, PageSize: PageSize);
+    await getEvents();
+    await getTravelsRecommend(numRecommendations: numRecommendations, numHighestInteractions: numHighestInteractions);
+    await getEventsRecommend(numRecommendations: numRecommendations, numHighestInteractions: numHighestInteractions);
   }
+
   Future<void> getNewest({
     required int PageIndex,
     required int PageSize,
   }) async {
     emit(state.copyWith(isLoading: true, hasError: false));
     try {
-      final response = await homeUseCase.call(PageIndex: PageIndex, PageSize: PageSize);
+      final response =
+          await homeUseCase.call(PageIndex: PageIndex, PageSize: PageSize);
       currentPage = PageIndex;
 
       response.fold(
-            (failure) => emit(state.copyWith(isLoading: false, hasError: true)),
-            (data) => emit(state.copyWith(
+        (failure) => emit(state.copyWith(isLoading: false, hasError: true)),
+        (data) => emit(state.copyWith(
           isLoading: false,
           hasError: false,
           newestModel: data,
@@ -51,11 +62,61 @@ class HomeCubit extends Cubit<HomeState> {
       final response = await homeUseCase.callEvents();
 
       response.fold(
+        (failure) => emit(state.copyWith(isLoading: false, hasError: true)),
+        (data) => emit(state.copyWith(
+          isLoading: false,
+          hasError: false,
+          eventsModel: data,
+        )),
+      );
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, hasError: true));
+    }
+  }
+  Future<void> loadToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    emit(state.copyWith(token: token));
+  }
+
+  Future<void> getEventsRecommend({
+    required int numRecommendations,
+    required int numHighestInteractions,
+  }) async {
+    emit(state.copyWith(isLoading: true, hasError: false));
+    try {
+      final response = await homeUseCase.getEventRecommend(
+          numRecommendations: numRecommendations,
+          numHighestInteractions: numHighestInteractions);
+
+      response.fold(
+        (failure) => emit(state.copyWith(isLoading: false, hasError: true)),
+        (data) => emit(state.copyWith(
+          isLoading: false,
+          hasError: false,
+          eventRecommendation: data,
+        )),
+      );
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, hasError: true));
+    }
+  }
+  Future<void> getTravelsRecommend({
+    required int numRecommendations,
+    required int numHighestInteractions,
+  }) async {
+    emit(state.copyWith(isLoading: true, hasError: false));
+    try {
+      final response = await homeUseCase.getTravelRecommend(
+          numRecommendations: numRecommendations,
+          numHighestInteractions: numHighestInteractions);
+
+      response.fold(
             (failure) => emit(state.copyWith(isLoading: false, hasError: true)),
             (data) => emit(state.copyWith(
           isLoading: false,
           hasError: false,
-          eventsModel: data,
+         travelRecommendation: data,
         )),
       );
     } catch (e) {

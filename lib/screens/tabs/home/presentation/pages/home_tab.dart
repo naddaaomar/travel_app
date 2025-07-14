@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/di.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/ai/Ai_requests.dart';
+import 'package:p/screens/tabs/home/presentation/pages/travel_recommend.dart';
 import 'package:p/screens/view_all_events/presentation/pages/view_all_recommended_events.dart';
 import 'package:p/screens/search/presentation/pages/location_card_new.dart';
 import 'package:p/screens/newest_view_all/presentation/pages/all_newest.dart';
@@ -16,19 +17,21 @@ import 'dart:ui' as ui;
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/trip_details/views/widgets/view_all_nearby_trips.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeTab extends StatelessWidget {
   HomeTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    bool isLight = context
-        .watch<ThemeBloc>()
-        .state == ThemeMode.light;
+    bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
     return BlocProvider(
-      create: (context) =>
-      getIt<HomeCubit>()
-        ..call(PageIndex: 1, PageSize: 6),
+      create: (context) => getIt<HomeCubit>()
+        ..call(
+            PageIndex: 1,
+            PageSize: 6,
+            numRecommendations: 5,
+            numHighestInteractions: 3),
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -47,24 +50,72 @@ class HomeTab extends StatelessWidget {
                     ),
                     // LocationCard(),
                     // SizedBox(height: 40.h),
+                    if (state.token != null &&
+                        (state.eventRecommendation != null ||
+                            state.travelRecommendation != null)) ...[
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Shimmer.fromColors(
+                              period: Duration(milliseconds: 3000),
+                              baseColor: ColorApp.thirdColor.withOpacity(1),
+                              highlightColor: Colors.grey.shade300,
+                              child: Text(
+                                "Travels\nJust for you",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: "vol",
+                                    color: Colors.white,
+                                    fontSize: 12),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      ColorApp.thirdColor.withOpacity(.7),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12))),
+                              onPressed: () {
+                                // Show Events
+                              },
+                              child: Text(
+                                "Events\nJust for you ",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: "vol",
+                                    color: Colors.white,
+                                    fontSize: 12),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () async{
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                            final token = await prefs.getString('token');
+                          onTap: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            //  final token = await prefs.getString('token');
                             final userId = await prefs.getString('user_id');
-                            print(token);
-                            print("////////////////////////////////////////////");
-                            print(userId);
+                            //  print(token);
+                            //  print("////////////////////////////////////////////");
+                            // print(userId);
                             final aiRequests = AiRequests();
 
-                            await aiRequests.syncInteractionStatesFromRemote(); // fetch favs + bookings
-                            await aiRequests.sendUserInteractions(userId??""); // send to AI endpoint
+                            await aiRequests
+                                .syncInteractionStatesFromRemote(); // fetch favs + bookings
+                            await aiRequests.sendUserInteractions(
+                                userId ?? ""); // send to AI endpoint
 
                             print("✅ AI sync test completed.");
-
                           },
                           child: Text(
                             'Events',
@@ -80,7 +131,9 @@ class HomeTab extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ViewAllEvents(eventModel: state.eventsModel,)));
+                                    builder: (context) => ViewAllEvents(
+                                          eventModel: state.eventsModel,
+                                        )));
                           },
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.black,
@@ -90,26 +143,41 @@ class HomeTab extends StatelessWidget {
                             style: TextStyle(
                                 fontFamily: "vol",
                                 fontSize: 13.sp,
-                                color: isLight ? ColorApp.thirdColor : Colors
-                                    .white,
+                                color: isLight
+                                    ? ColorApp.thirdColor
+                                    : Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 9.h),
+                    SizedBox(height: 0.h),
                     RecommendedPlaces(),
-                    SizedBox(height: 30.h),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Newest',
-                          style: TextStyle(
-                              fontFamily: "vol",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17.sp,
-                              color: isLight ? Colors.black : Colors.white),
+                        GestureDetector(
+                          onTap: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            final token = await prefs.getString('token');
+                            final userId = await prefs.getString('user_id');
+                            print(token);
+                            print(
+                                "////////////////////////////////////////////");
+                            print(userId);
+                            print(state.eventRecommendation);
+                            print(state.travelRecommendation);
+                          },
+                          child: Text(
+                            'Newest',
+                            style: TextStyle(
+                                fontFamily: "vol",
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17.sp,
+                                color: isLight ? Colors.black : Colors.white),
+                          ),
                         ),
                         TextButton(
                           onPressed: () {
@@ -126,8 +194,9 @@ class HomeTab extends StatelessWidget {
                             style: TextStyle(
                                 fontFamily: "vol",
                                 fontSize: 13.sp,
-                                color: isLight ? ColorApp.thirdColor : Colors
-                                    .white,
+                                color: isLight
+                                    ? ColorApp.thirdColor
+                                    : Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -136,7 +205,6 @@ class HomeTab extends StatelessWidget {
                     SizedBox(height: 7.h),
                     NearbyPlaces(),
                     SizedBox(height: 75.h),
-
                   ],
                 ),
               ),

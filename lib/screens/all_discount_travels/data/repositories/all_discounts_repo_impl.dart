@@ -14,7 +14,6 @@ class AllDiscountsRepoImpl implements AllDiscountsRepo {
   final NetworkInfo networkInfo;
 
   AllDiscountsRepoImpl(this.remoteDs, this.localDs, this.networkInfo);
-
   @override
   Future<Either<ErrorFailures, DiscountItemsModel>> getDiscounts({
     required int PageIndex,
@@ -24,6 +23,8 @@ class AllDiscountsRepoImpl implements AllDiscountsRepo {
     double? MaxPrice,
     int? CategorieyId,
   }) async {
+    final isFiltered = MinPrice != null || MaxPrice != null || CategorieyId != null || (Sort != null && Sort != 'priceDec');
+
     try {
       if (await networkInfo.isConnected) {
         final data = await remoteDs.getDiscounts(
@@ -35,20 +36,30 @@ class AllDiscountsRepoImpl implements AllDiscountsRepo {
           CategorieyId: CategorieyId,
         );
 
-       // await localDs.cacheDiscounts(data);
-        print("✅ Discounts cached");
+        // ✅ Only cache unfiltered data
+        if (!isFiltered) {
+          await localDs.cacheDiscounts(data);
+          print("✅ Discounts cached");
+        }
+
         return Right(data);
       } else {
-        final cached = await localDs.getCachedDiscounts();
-        if (cached != null) {
-          print("📦 Using cached discounts");
-          return Right(cached);
+        // ✅ Only read from cache if not filtered
+        if (!isFiltered) {
+          final cached = await localDs.getCachedDiscounts();
+          if (cached != null) {
+            print("📦 Using cached discounts");
+            return Right(cached);
+          } else {
+            return Left(ErrorLocalFailure('No internet and no cached discounts'));
+          }
         } else {
-          return Left(ErrorLocalFailure('No internet and no cached discounts'));
+          return Left(ErrorLocalFailure('No internet and filters are applied'));
         }
       }
     } catch (e) {
       return Left(ErrorRemoteFailure(e.toString()));
     }
   }
+
 }

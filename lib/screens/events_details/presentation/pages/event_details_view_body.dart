@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/di.dart';
 import 'package:p/helpers/themes/colors.dart';
@@ -38,7 +39,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
   }
 
   Future<void> _checkFavoriteStatus() async {
-  //  final favorites = FavoriteManager().favoritesNotifier.value;
+    //  final favorites = FavoriteManager().favoritesNotifier.value;
     setState(() {});
   }
 
@@ -48,7 +49,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
     final size = MediaQuery.of(context).size;
     return BlocProvider(
       create: (context) =>
-      getIt<EventDetailsCubit>()..getDetails(id: widget.id),
+          getIt<EventDetailsCubit>()..getDetails(id: widget.id),
       child: BlocConsumer<EventDetailsCubit, EventDetailsState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -71,50 +72,50 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                       children: [
                         state.isLoading && state.detailsModel == null
                             ? Shimmer.fromColors(
-                          baseColor: ColorApp.baseColor,
-                          highlightColor: ColorApp.highlightColor,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.vertical(
-                                  bottom: Radius.circular(20.r)),
-                              color:
-                              Colors.grey[300], // Placeholder color
-                            ),
-                            height: 200
-                                .h, // Adjust height to match your design
-                            width: double.infinity,
-                          ),
-                        )
+                                baseColor: ColorApp.baseColor,
+                                highlightColor: ColorApp.highlightColor,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.vertical(
+                                        bottom: Radius.circular(20.r)),
+                                    color:
+                                        Colors.grey[300], // Placeholder color
+                                  ),
+                                  height: 200
+                                      .h, // Adjust height to match your design
+                                  width: double.infinity,
+                                ),
+                              )
                             : FadeIn(
-                          duration: Duration(milliseconds: 1200),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.vertical(
-                                bottom: Radius.circular(20.r)),
-                            child: CachedNetworkImage(
-                              imageUrl: info?.image ?? "",
-                              height: 1000.h,
-                              width: double.infinity,
-                              fit: BoxFit.fill,
-                              placeholder: (context, url) =>
-                                  Shimmer.fromColors(
-                                    baseColor: Color(0xff9A8C7F),
-                                    highlightColor: ColorApp.highlightColor,
-                                    child: Container(
+                                duration: Duration(milliseconds: 1200),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.vertical(
+                                      bottom: Radius.circular(20.r)),
+                                  child: CachedNetworkImage(
+                                    imageUrl: info?.image ?? "",
+                                    height: 1000.h,
+                                    width: double.infinity,
+                                    fit: BoxFit.fill,
+                                    placeholder: (context, url) =>
+                                        Shimmer.fromColors(
+                                      baseColor: Color(0xff9A8C7F),
+                                      highlightColor: ColorApp.highlightColor,
+                                      child: Container(
+                                        height: 200.h,
+                                        width: double.infinity,
+                                        color: Colors.grey[300],
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Container(
                                       height: 200.h,
                                       width: double.infinity,
-                                      color: Colors.grey[300],
+                                      color: Colors.grey,
+                                      child: Icon(Icons.broken_image),
                                     ),
                                   ),
-                              errorWidget: (context, url, error) =>
-                                  Container(
-                                    height: 200.h,
-                                    width: double.infinity,
-                                    color: Colors.grey,
-                                    child: Icon(Icons.broken_image),
-                                  ),
-                            ),
-                          ),
-                        ),
+                                ),
+                              ),
                         Positioned(
                           top: 10.h,
                           left: 0.w,
@@ -138,7 +139,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                                     icon: Icon(
                                       Ionicons.chevron_back,
                                       color:
-                                      isLight ? Colors.brown : Colors.white,
+                                          isLight ? Colors.brown : Colors.white,
                                     ),
                                   ),
                                   IconButton(
@@ -169,480 +170,480 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 230.h),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: isLight
-                            ? ColorApp.secondaryColor
-                            : ColorApp.secondaryColorDark,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(30.r),
-                            topLeft: Radius.circular(30.r))),
-                    child: Padding(
-                      padding:
-                      EdgeInsets.only(right: 20.w, left: 20.w, top: 20.h),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: state.isLoading &&
-                                      state.detailsModel == null
-                                      ? buildShimmer(
-                                    height: 20.h,
-                                    lines: 2,
-                                    spacing: 6.h,
-                                    borderRadius:
-                                    BorderRadius.circular(4.r),
-                                  )
-                                      : FadeIn(
-                                    duration:
-                                    Duration(milliseconds: 1200),
-                                    child: Text(
-                                      info?.title ?? "",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.sp,
-                                        fontFamily: "vol",
-                                        color: isLight
-                                            ? Colors.black
-                                            : Colors.white,
-                                      ),
-                                      softWrap: true,
-                                      overflow: TextOverflow.visible,
-                                    ),
+                      margin: EdgeInsets.only(top: 230.h),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: isLight
+                              ? ColorApp.secondaryColor
+                              : ColorApp.secondaryColorDark,
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(30.r),
+                              topLeft: Radius.circular(30.r))),
+                      child: Padding(
+                        padding:
+                            EdgeInsets.only(right: 20.w, left: 20.w, top: 20.h),
+                        child: AnimationLimiter(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: AnimationConfiguration.toStaggeredList(
+                                duration: const Duration(milliseconds: 700),
+                                delay: const Duration(
+                                    milliseconds:
+                                        150), // Optional: staggering delay
+                                childAnimationBuilder: (widget) =>
+                                    FadeInAnimation(
+                                  // verticalOffset: 60.0, // Starts higher = more magic drop effect
+                                  curve: Curves.easeIn, // Smooth fade & drop
+                                  child: FadeInAnimation(
+                                    curve: Curves.easeIn,
+                                    child: widget,
                                   ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            state.isLoading
-                                ? buildShimmer(
-                              height: 25,
-                              lines: 10,
-                              borderRadius: BorderRadius.circular(10),
-                              spacing: 10,
-                            )
-                                : Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                if (info?.description != null) ...[
-                                  FadeIn(
-                                    duration:
-                                    Duration(milliseconds: 1450),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.circle,
-                                          color: isLight
-                                              ? ColorApp.primaryColor
-                                              : ColorApp.primaryColorDark,
-                                          size: 10.w,
-                                        ),
-                                        SizedBox(width: 5.w),
-                                        Text(
-                                          'Description',
-                                          style: TextStyle(
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: "pop",
-                                            color: isLight
-                                                ? Colors.black
-                                                : Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.w),
-                                  BlocBuilder<EventDetailsCubit,
-                                      EventDetailsState>(
-                                    builder: (context, state) {
-                                      final info = state.detailsModel;
-                                      final isExpanded =
-                                          state.isDescriptionExpanded;
-                                      final description =
-                                          info?.description ?? "";
-
-                                      final showSeeMore =
-                                          description.length > 300;
-                                      final displayText =
-                                      !isExpanded && showSeeMore
-                                          ? description.substring(
-                                          0, 250) +
-                                          '... '
-                                          : description;
-
-                                      return FadeIn(
-                                        duration:
-                                        Duration(milliseconds: 1750),
-                                        child: RichText(
-                                          text: TextSpan(
-                                            text: displayText,
-                                            style: TextStyle(
-                                              fontSize: 15.5.sp,
-                                              fontFamily: "pop",
-                                              color: isLight
-                                                  ? Colors.black
-                                                  : Colors.white,
-                                            ),
-                                            children: showSeeMore
-                                                ? [
-                                              TextSpan(
-                                                text: isExpanded
-                                                    ? ' Show less'
-                                                    : ' See more',
-                                                style: TextStyle(
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .bold,
-                                                  color: isLight
-                                                      ? ColorApp
-                                                      .primaryColor
-                                                      : ColorApp
-                                                      .primaryColorDark,
-                                                ),
-                                                recognizer:
-                                                TapGestureRecognizer()
-                                                  ..onTap = () {
-                                                    context
-                                                        .read<
-                                                        EventDetailsCubit>()
-                                                        .toggleDescriptionExpansion();
-                                                  },
-                                              ),
-                                            ]
-                                                : [],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ],
-                            ),
-                            SizedBox(
-                              height: (info?.description != null) ? 15.h : 0,
-                            ),
-                            if (state.isLoading)
-                              buildShimmer(
-                                height: 25,
-                                lines: 10,
-                                borderRadius: BorderRadius.circular(10),
-                                spacing: 10,
-                              )
-                            else if (info != null)
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // 📌 Dates
-                                  if (info.dates != null ||
-                                      info.date != null) ...[
-                                    FadeIn(
-                                      duration: Duration(milliseconds: 2050),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.circle,
-                                            color: isLight
-                                                ? ColorApp.primaryColor
-                                                : ColorApp.primaryColorDark,
-                                            size: 10.w,
-                                          ),
-                                          SizedBox(width: 5.w),
-                                          Text(
-                                            'Date',
-                                            style: TextStyle(
-                                              fontSize: 15.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: isLight
-                                                  ? Colors.black
-                                                  : Colors.white,
-                                              fontFamily: "pop",
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: state.isLoading &&
+                                                state.detailsModel == null
+                                            ? buildShimmer(
+                                                height: 20.h,
+                                                lines: 2,
+                                                spacing: 6.h,
+                                                borderRadius:
+                                                    BorderRadius.circular(4.r),
+                                              )
+                                            : Text(
+                                              info?.title ?? "",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20.sp,
+                                                fontFamily: "vol",
+                                                color: isLight
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                              ),
+                                              softWrap: true,
+                                              overflow:
+                                                  TextOverflow.visible,
                                             ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  state.isLoading
+                                      ? buildShimmer(
+                                          height: 25,
+                                          lines: 10,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          spacing: 10,
+                                        )
+                                      : Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            if (info?.description != null) ...[
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.circle,
+                                                    color: isLight
+                                                        ? ColorApp
+                                                            .primaryColor
+                                                        : ColorApp
+                                                            .primaryColorDark,
+                                                    size: 10.w,
+                                                  ),
+                                                  SizedBox(width: 5.w),
+                                                  Text(
+                                                    'Description',
+                                                    style: TextStyle(
+                                                      fontSize: 15.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontFamily: "pop",
+                                                      color: isLight
+                                                          ? Colors.black
+                                                          : Colors.white,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 10.w),
+                                              BlocBuilder<EventDetailsCubit,
+                                                  EventDetailsState>(
+                                                builder: (context, state) {
+                                                  final info =
+                                                      state.detailsModel;
+                                                  final isExpanded = state
+                                                      .isDescriptionExpanded;
+                                                  final description =
+                                                      info?.description ?? "";
+
+                                                  final showSeeMore =
+                                                      description.length > 300;
+                                                  final displayText =
+                                                      !isExpanded && showSeeMore
+                                                          ? description
+                                                                  .substring(
+                                                                      0, 250) +
+                                                              '... '
+                                                          : description;
+
+                                                  return RichText(
+                                                    text: TextSpan(
+                                                      text: displayText,
+                                                      style: TextStyle(
+                                                        fontSize: 15.5.sp,
+                                                        fontFamily: "pop",
+                                                        color: isLight
+                                                            ? Colors.black
+                                                            : Colors.white,
+                                                      ),
+                                                      children: showSeeMore
+                                                          ? [
+                                                              TextSpan(
+                                                                text: isExpanded
+                                                                    ? ' Show less'
+                                                                    : ' See more',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: isLight
+                                                                      ? ColorApp
+                                                                          .primaryColor
+                                                                      : ColorApp
+                                                                          .primaryColorDark,
+                                                                ),
+                                                                recognizer:
+                                                                    TapGestureRecognizer()
+                                                                      ..onTap =
+                                                                          () {
+                                                                        context
+                                                                            .read<EventDetailsCubit>()
+                                                                            .toggleDescriptionExpansion();
+                                                                      },
+                                                              ),
+                                                            ]
+                                                          : [],
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ],
+                                        ),
+                                  SizedBox(
+                                    height:
+                                        (info?.description != null) ? 15.h : 0,
+                                  ),
+                                  if (state.isLoading)
+                                    buildShimmer(
+                                      height: 25,
+                                      lines: 10,
+                                      borderRadius: BorderRadius.circular(10),
+                                      spacing: 10,
+                                    )
+                                  else if (info != null)
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // 📌 Dates
+                                        if (info.dates != null ||
+                                            info.date != null) ...[
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.circle,
+                                                color: isLight
+                                                    ? ColorApp.primaryColor
+                                                    : ColorApp
+                                                        .primaryColorDark,
+                                                size: 10.w,
+                                              ),
+                                              SizedBox(width: 5.w),
+                                              Text(
+                                                'Date',
+                                                style: TextStyle(
+                                                  fontSize: 15.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: isLight
+                                                      ? Colors.black
+                                                      : Colors.white,
+                                                  fontFamily: "pop",
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Icon(Icons.calendar_today,
+                                                  size: 16.sp,
+                                                  color:
+                                                      ColorApp.primaryColor),
+                                              SizedBox(width: 6.w),
+                                              Expanded(
+                                                // ✅ This allows the text to wrap instead of overflowing
+                                                child: Text(
+                                                  info.dates ??
+                                                      info.date ??
+                                                      "",
+                                                  style: TextStyle(
+                                                    fontSize: 12.5.sp,
+                                                    fontFamily: "pop",
+                                                    color: isLight
+                                                        ? Colors.black
+                                                        : Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
-                                      ),
-                                    ),
-                                    SizedBox(height: 10),
-                                    FadeIn(
-                                      duration: Duration(milliseconds: 2350),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Icon(Icons.calendar_today,
-                                              size: 16.sp,
-                                              color: ColorApp.primaryColor),
-                                          SizedBox(width: 8.w),
-                                          Expanded(
-                                            // ✅ This allows the text to wrap instead of overflowing
-                                            child: Text(
-                                              info.dates ?? info.date ?? "",
-                                              style: TextStyle(
-                                                fontSize: 12.5.sp,
+
+                                        SizedBox(height: 10.h),
+                                        // 📌 Category
+                                        if (info.category != null) ...[
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.circle,
+                                                color: isLight
+                                                    ? ColorApp.primaryColor
+                                                    : ColorApp
+                                                        .primaryColorDark,
+                                                size: 10.w,
+                                              ),
+                                              SizedBox(width: 5.w),
+                                              Text(
+                                                'Category',
+                                                style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    fontWeight:
+                                                        FontWeight.w500,
+                                                    color: isLight
+                                                        ? Colors.black
+                                                        : Colors.white,
+                                                    fontFamily: "pop"),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 7,
+                                          ),
+                                          Text(
+                                            info.category!,
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500,
                                                 fontFamily: "pop",
+                                                color: Colors.black),
+                                          )
+                                        ],
+                                        SizedBox(height: 15.h),
+
+                                        // 📌 Location
+                                        if (info.location != null) ...[
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.circle,
                                                 color: isLight
-                                                    ? Colors.black
-                                                    : Colors.white,
+                                                    ? ColorApp.primaryColor
+                                                    : ColorApp
+                                                        .primaryColorDark,
+                                                size: 10.w,
+                                              ),
+                                              SizedBox(width: 5.w),
+                                              Text(
+                                                'Location',
+                                                style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    fontWeight:
+                                                        FontWeight.w500,
+                                                    color: isLight
+                                                        ? Colors.black
+                                                        : Colors.white,
+                                                    fontFamily: "pop"),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Icon(Icons.location_on,
+                                                  size: 16.sp,
+                                                  color:
+                                                      ColorApp.primaryColor),
+                                              SizedBox(width: 8.w),
+                                              Expanded(
+                                                child: Text(
+                                                  info.location!,
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    color: isLight
+                                                        ? Colors.black
+                                                        : Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                        SizedBox(height: 12.h),
+
+                                        // 📌 External Link
+                                        if (info.link != null &&
+                                            info.link!.isNotEmpty)
+                                          InkWell(
+                                            onTap: () =>
+                                                launchURL(info.link!),
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.link,
+                                                    color: ColorApp
+                                                        .primaryColor),
+                                                SizedBox(width: 5.w),
+                                                Text(
+                                                  "Open event page",
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    color:
+                                                        ColorApp.primaryColor,
+                                                    decorationColor:
+                                                        ColorApp.primaryColor,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                        SizedBox(height: 20.h),
+
+                                        // 📌 Map
+                                        if (info.mapLink != null &&
+                                            info.mapLink!.isNotEmpty) ...[
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 5.h),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Icon(
+                                                  Icons.map,
+                                                  color: isLight
+                                                      ? ColorApp.primaryColor
+                                                      : ColorApp
+                                                          .primaryColorDark,
+                                                  size: 16.sp,
+                                                ),
+                                                SizedBox(width: 5.w),
+                                                Text(
+                                                  'Show on Map'.tr(),
+                                                  style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    fontWeight:
+                                                        FontWeight.w500,
+                                                    color: isLight
+                                                        ? Colors.black
+                                                        : Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: 10.h),
+                                          if (result != null)
+                                            EventOnMap(
+                                              Latitude: result['lat']!,
+                                              Longitude: result['lng']!,
+                                              width: double.infinity,
+                                              hight: 200.h,
+                                            ),
+                                          SizedBox(height: 20.h),
+                                          Center(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  HomeViewBody.currentIndex =
+                                                      2;
+                                                });
+
+                                                // Future.delayed(
+                                                //   Duration(milliseconds: 200),
+                                                //       () {
+                                                //     Navigator.pushReplacement(
+                                                //         context,
+                                                //         MaterialPageRoute(
+                                                //           builder: (context) => ViewAllEvents(),
+                                                //         ));
+                                                //   },
+                                                // );
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                elevation: 10,
+                                                shadowColor: isLight
+                                                    ? ColorApp.primaryColor
+                                                    : ColorApp
+                                                        .primaryColorDark,
+                                                backgroundColor: isLight
+                                                    ? ColorApp.primaryColor
+                                                    : ColorApp
+                                                        .primaryColorDark,
+                                              ),
+                                              child: Text(
+                                                "Interested".tr(),
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 17.sp),
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-
-                                  SizedBox(height: 12.h),
-                                  // 📌 Category
-                                  if (info.category != null) ...[
-                                    FadeIn(
-                                      duration: Duration(milliseconds: 2650),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.circle,
-                                            color: isLight
-                                                ? ColorApp.primaryColor
-                                                : ColorApp.primaryColorDark,
-                                            size: 10.w,
+                                          SizedBox(
+                                            height: 7.h,
                                           ),
-                                          SizedBox(width: 5.w),
-                                          Text(
-                                            'Category',
-                                            style: TextStyle(
-                                                fontSize: 15.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: isLight
-                                                    ? Colors.black
-                                                    : Colors.white,
-                                                fontFamily: "pop"),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    FadeIn(
-                                      duration: Duration(milliseconds: 2950),
-                                      child: Text(
-                                        info.category!,
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: "pop",
-                                            color: Colors.black),
-                                      ),
-                                    )
-                                  ],
-                                  SizedBox(height: 15.h),
-
-                                  // 📌 Location
-                                  if (info.location != null) ...[
-                                    FadeIn(
-                                      duration: Duration(milliseconds: 3250),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.circle,
-                                            color: isLight
-                                                ? ColorApp.primaryColor
-                                                : ColorApp.primaryColorDark,
-                                            size: 10.w,
-                                          ),
-                                          SizedBox(width: 5.w),
-                                          Text(
-                                            'Location',
-                                            style: TextStyle(
-                                                fontSize: 15.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: isLight
-                                                    ? Colors.black
-                                                    : Colors.white,
-                                                fontFamily: "pop"),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    FadeIn(
-                                      duration: Duration(milliseconds: 3550),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Icon(Icons.location_on,
-                                              size: 16.sp,
-                                              color: ColorApp.primaryColor),
-                                          SizedBox(width: 8.w),
-                                          Expanded(
-                                            child: Text(
-                                              info.location!,
-                                              style: TextStyle(
-                                                fontSize: 14.sp,
-                                                color: isLight
-                                                    ? Colors.black
-                                                    : Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                  SizedBox(height: 12.h),
-
-                                  // 📌 External Link
-                                  if (info.link != null &&
-                                      info.link!.isNotEmpty)
-                                    FadeIn(
-                                      duration: Duration(milliseconds: 3850),
-                                      child: InkWell(
-                                        onTap: () => launchURL(info.link!),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.link,
-                                                color: ColorApp.primaryColor),
-                                            SizedBox(width: 5.w),
-                                            Text(
-                                              "Open event page",
-                                              style: TextStyle(
-                                                fontSize: 14.sp,
-                                                color: ColorApp.primaryColor,
-                                                decorationColor:
-                                                ColorApp.primaryColor,
-                                                decoration:
-                                                TextDecoration.underline,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                  SizedBox(height: 20.h),
-
-                                  // 📌 Map
-                                  if (info.mapLink != null &&
-                                      info.mapLink!.isNotEmpty) ...[
-                                    FadeIn(
-                                      duration: Duration(milliseconds: 4150),
-                                      child: Padding(
-                                        padding:
-                                        EdgeInsets.symmetric(vertical: 5.h),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.map,
-                                              color: isLight
-                                                  ? ColorApp.primaryColor
-                                                  : ColorApp.primaryColorDark,
-                                              size: 16.sp,
-                                            ),
-                                            SizedBox(width: 5.w),
-                                            Text(
-                                              'Show on Map'.tr(),
-                                              style: TextStyle(
-                                                fontSize: 15.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: isLight
-                                                    ? Colors.black
-                                                    : Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 10.h),
-                                    if (result != null)
-                                      FadeIn(
-                                        duration: Duration(milliseconds: 4450),
-                                        child: EventOnMap(
-                                          Latitude: result['lat']!,
-                                          Longitude: result['lng']!,
-                                          width: double.infinity,
-                                          hight: 200.h,
-                                        ),
-                                      ),
-                                    SizedBox(height: 20.h),
-                                    FadeIn(
-                                      duration: Duration(milliseconds: 4750),
-                                      child: Center(
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              HomeViewBody.currentIndex = 2;
-                                            });
-
-                                            // Future.delayed(
-                                            //   Duration(milliseconds: 200),
-                                            //       () {
-                                            //     Navigator.pushReplacement(
-                                            //         context,
-                                            //         MaterialPageRoute(
-                                            //           builder: (context) => ViewAllEvents(),
-                                            //         ));
-                                            //   },
-                                            // );
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 10,
-                                            shadowColor: isLight
-                                                ? ColorApp.primaryColor
-                                                : ColorApp.primaryColorDark,
-                                            backgroundColor: isLight
-                                                ? ColorApp.primaryColor
-                                                : ColorApp.primaryColorDark,
-                                          ),
-                                          child: Text(
-                                            "Interested".tr(),
-                                            style: TextStyle(
-                                                color: Colors.white, fontSize: 17.sp),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 7.h,
-                                    ),
-                                    FadeIn(
-                                      duration: Duration(milliseconds: 5050),
-                                      child: Center(
-                                          child: Text(
+                                          Center(
+                                              child: Text(
                                             "what are you waiting for ?".tr(),
                                             style: TextStyle(
-                                                color: isLight ? Colors.black : Colors.white),
+                                                color: isLight
+                                                    ? Colors.black
+                                                    : Colors.white),
                                           )),
-                                    ),
-                                    FadeIn(
-                                      duration: Duration(milliseconds: 5050),
-                                      child: Center(
-                                          child: Text(
+                                          Center(
+                                              child: Text(
                                             "discover more.".tr(),
                                             style: TextStyle(
-                                                color: isLight ? Colors.black : Colors.white),
+                                                color: isLight
+                                                    ? Colors.black
+                                                    : Colors.white),
                                           )),
+                                          SizedBox(
+                                            height: 10.h,
+                                          )
+                                        ]
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    )
-                                  ]
                                 ],
                               ),
-                          ],
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  )
+                      ))
                 ],
               ),
             ),

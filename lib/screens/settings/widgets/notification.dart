@@ -35,7 +35,7 @@ class NotificationToggle extends StatelessWidget {
                 "Enable Notifications",
                 style: TextStyle(
                   fontWeight: FontWeight.w400,
-                  fontSize: 17.sp,
+                  fontSize: 15.sp,
                   color: isLight ? Colors.black : Colors.white,
                 ),
               ),

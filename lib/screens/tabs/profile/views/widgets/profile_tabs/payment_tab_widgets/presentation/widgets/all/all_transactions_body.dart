@@ -136,13 +136,22 @@ class TransactionCard extends StatelessWidget {
                                       id: transaction.bookingItem?.travelId
                                               ?.toString() ??
                                           "");
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditBookingScreen(
-                                    model: transaction,
-                                    travelDetailsModel: travelDetails),
-                              ));
+                          Navigator.of(context, rootNavigator: true).push(
+                            MaterialPageRoute(
+                              builder: (context) => EditBookingScreen(
+                                  model: transaction,
+                                  travelDetailsModel: travelDetails
+                              ),
+                              fullscreenDialog: true,
+                            ),
+                          );
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => EditBookingScreen(
+                          //           model: transaction,
+                          //           travelDetailsModel: travelDetails),
+                          //     ));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.orange,

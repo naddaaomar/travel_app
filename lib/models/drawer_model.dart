@@ -12,23 +12,44 @@ class DrawerModel {
   String label;
   IconData icon;
   final Widget Function() widget;
+  final String routeName;
 
-  DrawerModel({required this.label, required this.icon, required this.widget});
+  DrawerModel({
+    required this.label,
+    required this.icon,
+    required this.widget,
+    required this.routeName,
+  });
 }
-
 List<DrawerModel> drawer = [
   DrawerModel(
-      icon: Icons.home_outlined, label: 'home', widget: () => HomeViewBody()),
-DrawerModel(
-icon: Icons.cases_outlined, label: 'All Travels', widget: () => AllTravels()),
+    icon: Icons.home_outlined,
+    label: 'home',
+    widget: () => HomeViewBody(),
+    routeName: 'Home',
+  ),
   DrawerModel(
-      icon: Icons.cases_outlined, label: 'All Discounts', widget: () => AllDiscounts()),
-DrawerModel(
-icon: Icons.domain, label: 'All Companies', widget: () => AllCompanies()),
+    icon: Icons.cases_outlined,
+    label: 'All Travels',
+    widget: () => AllTravels(),
+    routeName: 'AllTravels',
+  ),
   DrawerModel(
-      icon: Icons.settings_outlined,
-      label: 'settings',
-      widget: () => Settings()),
-
-
+    icon: Icons.cases_outlined,
+    label: 'All Discounts',
+    widget: () => AllDiscounts(),
+    routeName: 'AllDiscounts',
+  ),
+  DrawerModel(
+    icon: Icons.domain,
+    label: 'All Companies',
+    widget: () => AllCompanies(),
+    routeName: 'AllCompanies',
+  ),
+  DrawerModel(
+    icon: Icons.settings_outlined,
+    label: 'settings',
+    widget: () => Settings(),
+    routeName: 'Settings',
+  ),
 ];

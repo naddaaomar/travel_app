@@ -9,18 +9,17 @@ import 'package:p/di.dart';
 import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:p/screens/ai/models/event_interaction.dart';
 import 'package:p/screens/settings/bloc/notification_bloc/notification_bloc.dart';
+import 'package:p/screens/settings/bloc/permission_bloc/permissions_bloc.dart';
 import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/profile_tab_widgets/presentation/manager/profile_cubit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'screens/ai/models/event_interaction.dart';
 import 'screens/onboard/views/widgets/onboard_view_body.dart';
 import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
-import 'screens/settings/bloc/permission_bloc/permissions_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'screens/splash_screen/view/splash.dart';
-import 'screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
+
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
@@ -28,12 +27,19 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   ApiManager.init();
+
+  final prefs = await SharedPreferences.getInstance();
   final appDocDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocDir.path);
   await Hive.initFlutter(appDocDir.path);
   Hive.registerAdapter(EventInteractionAdapter());
   await Hive.openBox<EventInteraction>('interactions');
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  try {
+    final appDocDir = await getApplicationDocumentsDirectory();
+    Hive.init(appDocDir.path);
+  } catch (e) {
+    Hive.init('hive_storage');
+  }
 
   bool isFirstTime = prefs.getBool('onboarding_seen') ?? false;
   Bloc.observer = MyBlocObserver();
@@ -46,9 +52,6 @@ void main() async {
       saveLocale: true,
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<AuthCubit>(
-            create: (context) => AuthCubit(),
-          ),
           BlocProvider(
             create: (context) => ThemeBloc(),
           ),
@@ -56,10 +59,17 @@ void main() async {
               create: (context) => LocaleBloc()
           ),
           BlocProvider(
+            create: (context) => PermissionsBloc(),
+          ),
+          BlocProvider(
+            create: (context) => NotificationBloc(),
+          ),
+          BlocProvider(
               create: (context) => ProfileCubit()
           ),
         ],
-        child: MyApp(isFirstTime: isFirstTime),
+        child: MyApp(
+          isFirstTime: isFirstTime,),
       )));
 }
 
@@ -67,7 +77,8 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   final bool isFirstTime;
-  MyApp({super.key,required this.isFirstTime});
+
+  MyApp({super.key,required this.isFirstTime, });
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LocaleBloc, Locale>(
@@ -83,17 +94,20 @@ class MyApp extends StatelessWidget {
                   await EasyLocalization.of(context)!.setLocale(locale);
                 },
                 child: MaterialApp(
-                  navigatorObservers: [routeObserver],
-                  navigatorKey: navigatorKey,
-                  localizationsDelegates: context.localizationDelegates,
-                  supportedLocales: context.supportedLocales,
-                  locale:
-                  context.locale,
-                  theme: MyThemeData.lightTheme,
-                  darkTheme: MyThemeData.darkTheme,
-                  themeMode: themeMode,
-                  debugShowCheckedModeBanner: false,
-                  home: isFirstTime ? SplashScreen() : OnBoardViewBody(),
+                    navigatorObservers: [routeObserver],
+                    navigatorKey: navigatorKey,
+                    localizationsDelegates: context.localizationDelegates,
+                    supportedLocales: context.supportedLocales,
+                    locale:
+                    context.locale,
+                    theme: MyThemeData.lightTheme,
+                    darkTheme: MyThemeData.darkTheme,
+                    themeMode: themeMode,
+                    debugShowCheckedModeBanner: false,
+                    home:
+                     isFirstTime ?
+                    SplashScreen()
+                   : OnBoardViewBody(),
                 ),
               ),
             );

@@ -97,6 +97,7 @@ class _CompanyProfileState extends State<CompanyProfile>
           ),
           drawer: NewDrawer(
             controller: _advancedDrawerController,
+
           ),
           child: MultiBlocProvider(
             providers: [

@@ -9,15 +9,3 @@ class InclusionModel {
 }
 
 
-List<InclusionModel> inclusionModel = [
-  InclusionModel(
-    label: "hiking tours to Mount Sinai with sunrise or sunset views."
-  ),
-  InclusionModel(
-      label: "hiking tours to Mount Sinai with sunrise or sunset views."
-  ),
-  InclusionModel(
-      label: "hiking tours to Mount Sinai with sunrise or sunset views."
-  ),
-
-];

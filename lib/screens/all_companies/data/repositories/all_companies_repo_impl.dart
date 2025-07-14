@@ -14,7 +14,6 @@ class AllCompaniesRepoImpl implements AllCompaniesRepo {
   final NetworkInfo networkInfo;
 
   AllCompaniesRepoImpl(this.remoteDs, this.localDs, this.networkInfo);
-
   @override
   Future<Either<ErrorFailures, AllCompaniesModel>> getCompanies({
     required int PageIndex,
@@ -22,6 +21,8 @@ class AllCompaniesRepoImpl implements AllCompaniesRepo {
     String? sort,
     int? rate,
   }) async {
+    final isFiltered = (sort != null && sort != 'default') || rate != null;
+
     try {
       if (await networkInfo.isConnected) {
         final data = await remoteDs.getCompanies(
@@ -30,22 +31,32 @@ class AllCompaniesRepoImpl implements AllCompaniesRepo {
           sort: sort,
           rate: rate,
         );
-        await localDs.cacheCompanies(data);
-        print("✅ Companies cached");
+
+        // ✅ Only cache unfiltered data
+        if (!isFiltered) {
+          await localDs.cacheCompanies(data);
+          print("✅ Companies cached");
+        }
+
         return Right(data);
       } else {
-        final cached = await localDs.getCachedCompanies();
-        if (cached != null) {
-          print("📦 Using cached companies");
-          return Right(cached);
+        // ✅ Only return cached data if not filtering
+        if (!isFiltered) {
+          final cached = await localDs.getCachedCompanies();
+          if (cached != null) {
+            print("📦 Using cached companies");
+            return Right(cached);
+          } else {
+            return Left(ErrorLocalFailure("No internet and no cached companies"));
+          }
         } else {
-          return Left(ErrorLocalFailure("No internet and no cached companies"));
+          return Left(ErrorLocalFailure("لا يمكنك استخدام الفلاتر دون اتصال بالإنترنت"));
         }
       }
     } catch (e) {
       print(e.toString());
       return Left(ErrorRemoteFailure(e.toString()));
-
     }
   }
+
 }
