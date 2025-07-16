@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:p/helpers/themes/colors.dart';
-
+import 'package:p/screens/auth/presentation/widgets/forget_password.dart';
 
 class PasswordDialog extends StatefulWidget {
   final Function(String, String) onUpdatePassword;
-  final Function() onResetPassword;
+  final String userEmail;
 
   const PasswordDialog({
     super.key,
     required this.onUpdatePassword,
-    required this.onResetPassword,
+    required this.userEmail,
   });
 
   @override
@@ -26,6 +26,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
   bool _showConfirmPassword = false;
   bool _isPasswordCorrect = false;
   bool _isLoading = false;
+  bool _showResetOption = false;
 
   void _verifyPassword() {
     if (_currentPasswordController.text.isEmpty) {
@@ -35,7 +36,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
     setState(() => _isPasswordCorrect = true);
   }
 
-  void _updatePassword() {
+  Future<void> _updatePassword() async {
     if (_newPasswordController.text.isEmpty ||
         _confirmPasswordController.text.isEmpty) {
       _showError('Please fill all fields');
@@ -52,10 +53,24 @@ class _PasswordDialogState extends State<PasswordDialog> {
       return;
     }
 
-    widget.onUpdatePassword(
-      _currentPasswordController.text,
-      _newPasswordController.text,
-    );
+    setState(() => _isLoading = true);
+
+    try {
+      await widget.onUpdatePassword(
+        _currentPasswordController.text,
+        _newPasswordController.text,
+      );
+
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      _showError('Failed to update password');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   void _showError(String message) {
@@ -68,6 +83,15 @@ class _PasswordDialogState extends State<PasswordDialog> {
     );
   }
 
+  void _navigateToResetPassword() {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ForgetPassword(),
+      ),
+    );
+  }
 
   Widget _buildPasswordField({
     required TextEditingController controller,
@@ -128,7 +152,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
                       onPressed: _verifyPassword,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorApp.primaryColor,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                       ),
                       child: const Text(
                         'Verify Password',
@@ -142,7 +166,9 @@ class _PasswordDialogState extends State<PasswordDialog> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: TextButton(
-                      onPressed: widget.onResetPassword,
+                      onPressed: () {
+                        setState(() => _showResetOption = true);
+                      },
                       child: const Text(
                         'Forgot Password?',
                         style: TextStyle(
@@ -154,6 +180,38 @@ class _PasswordDialogState extends State<PasswordDialog> {
                   ),
                 ],
               ),
+              if (_showResetOption) ...[
+                const SizedBox(height: 24),
+                Text(
+                  'Reset password link will be sent to:',
+                  style: TextStyle(
+                    fontFamily: 'vol',
+                    color: Colors.black54,
+                  ),
+                ),
+                Text(
+                  widget.userEmail,
+                  style: TextStyle(
+                    fontFamily: 'vol',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: _navigateToResetPassword,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorApp.primaryColor,
+                    minimumSize: const Size(double.infinity, 48),
+                  ),
+                  child: const Text(
+                    'Send Reset Link',
+                    style: TextStyle(
+                        fontFamily: "vol",
+                        color: Colors.black
+                    ),
+                  ),
+                ),
+              ],
               const Divider(height: 24),
             ],
             if (_isPasswordCorrect) ...[

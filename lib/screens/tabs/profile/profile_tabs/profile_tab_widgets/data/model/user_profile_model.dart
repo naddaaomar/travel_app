@@ -9,7 +9,7 @@ class UserProfile {
     required this.password,
   });
 
-  int get passwordLength => password.length;
+  int get passwordLength => password.length ;
 
   UserProfile copyWith({
     String? name,

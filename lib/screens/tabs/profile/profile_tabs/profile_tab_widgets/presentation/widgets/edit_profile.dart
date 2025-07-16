@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:p/helpers/themes/colors.dart';
+import 'package:p/screens/auth/presentation/widgets/forget_password.dart';
 import '../../data/model/user_profile_model.dart';
 import '../manager/profile_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../manager/profile_state.dart';
+import 'password_dialog.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final UserProfile initialProfile;
@@ -31,6 +33,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   bool _showNewPassword = false;
   bool _showConfirmPassword = false;
   bool _isPasswordVerified = false;
+  bool _isLoading = false;
 
   double _cancelButtonYOffset = 0.0;
   double _saveButtonYOffset = 0.0;
@@ -62,20 +65,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _onSaveTapUp(TapUpDetails details) => setState(() => _saveButtonYOffset = 0.0);
   void _onSaveTapCancel() => setState(() => _saveButtonYOffset = 0.0);
 
-  Future<void> _verifyCurrentPassword() async {
+ /* Future<void> _verifyCurrentPassword() async {
     if (_currentPasswordController.text.isEmpty) {
       _showSnackBar('Please enter current password');
       return;
     }
 
-    final cubit = context.read<ProfileCubit>();
-    await cubit.updatePassword(
-      _currentPasswordController.text,
-      _currentPasswordController.text,
-    );
+    setState(() => _isLoading = true);
 
-    if (mounted && cubit.state is ProfileLoaded) {
-      setState(() => _isPasswordVerified = true);
+    try {
+      final isValid = await context.read<ProfileCubit>()
+          .verifyPassword(_currentPasswordController.text);
+
+      if (mounted) {
+        setState(() {
+          _isPasswordVerified = isValid;
+          _isLoading = false;
+        });
+
+        if (!isValid) {
+          _showSnackBar('Current password is incorrect');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+        _showSnackBar('Error verifying password');
+      }
     }
   }
 
@@ -90,23 +106,54 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return;
     }
 
-    final cubit = context.read<ProfileCubit>();
-    await cubit.updatePassword(
-      _currentPasswordController.text,
-      _newPasswordController.text,
-    );
+    setState(() => _isLoading = true);
 
-    if (mounted && cubit.state is ProfileLoaded) {
-      setState(() {
-        _isPasswordVerified = false;
-        _currentPasswordController.clear();
-        _newPasswordController.clear();
-        _confirmPasswordController.clear();
-      });
-      _showSnackBar('Password updated successfully');
+    try {
+      final success = await context.read<ProfileCubit>().updatePassword(
+        _currentPasswordController.text,
+        _newPasswordController.text,
+      );
+
+      if (mounted && success) {
+        setState(() {
+          _isPasswordVerified = false;
+          _currentPasswordController.clear();
+          _newPasswordController.clear();
+          _confirmPasswordController.clear();
+          _isLoading = false;
+        });
+        _showSnackBar('Password updated successfully');
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+        _showSnackBar('Failed to update password');
+      }
     }
   }
 
+  */
+
+  Future<void> _editPassword() async {
+    await showDialog(
+      context: context,
+      builder: (context) => BlocProvider.value(
+        value: BlocProvider.of<ProfileCubit>(context),
+        child: PasswordDialog(
+          onUpdatePassword: (currentPassword, newPassword) async {
+            await context.read<ProfileCubit>().updatePassword(
+              currentPassword,
+              newPassword,
+            );
+            if (mounted && context.read<ProfileCubit>().state is ProfileLoaded) {
+              Navigator.pop(context);
+            }
+          },
+          userEmail: _editedProfile.email,
+        ),
+      ),
+    );
+  }
 
   void _submitForm() {
     if (!_formKey.currentState!.validate()) return;
@@ -147,9 +194,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.black),
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -166,7 +211,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   buildTextField('Email', _emailController, isEmail: true),
                   const SizedBox(height: 20),
                   buildPasswordChangeSection(),
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 160),
                   buildActionButtons(),
                 ],
               ),
@@ -176,6 +221,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
     );
   }
+
   Widget buildTextField(
       String label,
       TextEditingController controller, {
@@ -224,7 +270,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Widget buildPasswordChangeSection() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         if (!_isPasswordVerified) ...[
           buildPasswordField(
@@ -232,22 +278,49 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             label: 'Current Password',
             showPassword: _showCurrentPassword,
             onToggleVisibility: () => setState(
-                    () => _showCurrentPassword = !_showCurrentPassword),
+                  () => _showCurrentPassword = !_showCurrentPassword,
+            ),
           ),
-          const SizedBox(height: 4),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: _verifyCurrentPassword,
-              child: const Text(
-                'VERIFY PASSWORD',
-                style: TextStyle(
-                  fontFamily: 'vol',
-                  fontSize: 16,
-                  color: ColorApp.thirdColor,
+          const SizedBox(height: 32),
+          Column(
+            children: [
+              SizedBox(
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _editPassword,
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text(
+                    'VERIFY PASSWORD',
+                    style: TextStyle(
+                      fontFamily: 'vol',
+                      fontSize: 16,
+                      color: ColorApp.thirdColor,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(height: 7),
+              SizedBox(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ForgetPassword(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'FORGOT PASSWORD?',
+                    style: TextStyle(
+                      fontFamily: 'vol',
+                      fontSize: 16,
+                      color: ColorApp.thirdColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
         if (_isPasswordVerified) ...[
@@ -256,20 +329,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             label: 'New Password',
             showPassword: _showNewPassword,
             onToggleVisibility: () => setState(
-                    () => _showNewPassword = !_showNewPassword),
+                  () => _showNewPassword = !_showNewPassword,
+            ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 16),
           buildPasswordField(
             controller: _confirmPasswordController,
             label: 'Confirm Password',
             showPassword: _showConfirmPassword,
             onToggleVisibility: () => setState(
-                    () => _showConfirmPassword = !_showConfirmPassword),
+                  () => _showConfirmPassword = !_showConfirmPassword,
+            ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: _updatePassword,
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _editPassword,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ColorApp.primaryColor,
+                padding: const EdgeInsets.symmetric(vertical: 16),),
               child: const Text(
                 'UPDATE PASSWORD',
                 style: TextStyle(
@@ -280,21 +359,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
         ],
-        const SizedBox(height: 6),
-        Align(
-          alignment: Alignment.centerRight,
-          child: TextButton(
-            onPressed: _verifyCurrentPassword,
-            child: const Text(
-              'FORGOT PASSWORD?',
-              style: TextStyle(
-                fontFamily: 'vol',
-                fontSize: 16,
-                color: ColorApp.thirdColor,
-              ),
-            ),
-          ),
-        ),
       ],
     );
   }
@@ -330,6 +394,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: ColorApp.primaryColor, width: 2),
         ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
+
         suffixIcon: IconButton(
           icon: Icon(
             showPassword ? Icons.visibility : Icons.visibility_off,
@@ -357,18 +426,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
                 transform: Matrix4.translationValues(
-                  0,
-                  _cancelHovered ? -10.0 : _cancelButtonYOffset,
-                  0,
-                ),
+                    0, _cancelHovered ? -10.0 : _cancelButtonYOffset, 0),
                 child: OutlinedButton(
                   onPressed: () => Navigator.pop(context),
                   style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
+                    padding: const EdgeInsets.symmetric(horizontal: 25),),
                   child: const Text(
                     'CANCEL',
                     style: TextStyle(
@@ -380,8 +442,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                 ),
               ),
-            ),
-          ),
+            ),),
           const Spacer(),
           MouseRegion(
             onEnter: (_) => setState(() => _saveHovered = true),
@@ -393,28 +454,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
                 transform: Matrix4.translationValues(
-                  0,
-                  _saveHovered ? -10.0 : _saveButtonYOffset,
-                  0,
-                ),
+                    0, _saveHovered ? -10.0 : _saveButtonYOffset, 0),
                 child: ElevatedButton(
-                  onPressed: _submitForm,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text(
-                    'SAVE',
-                    style: TextStyle(
-                      fontFamily: 'vol',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      letterSpacing: 2.2,
-                      color: ColorApp.thirdColor,
-                    ),
-                  ),
+                    onPressed: _submitForm,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),),
+                    child: const Text(
+                      'SAVE',
+                      style: TextStyle(
+                        fontFamily: 'vol',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        letterSpacing: 2.2,
+                        color: ColorApp.thirdColor,
+                      ),)
                 ),
               ),
             ),

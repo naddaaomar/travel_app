@@ -132,7 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                         const SizedBox(
-                          height: 60,
+                          height: 48,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(20),
@@ -146,7 +146,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   style: TextStyle(
                                       fontFamily: 'vol',
                                       color: Colors.white,
-                                      fontSize: 40,
+                                      fontSize: 28,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),

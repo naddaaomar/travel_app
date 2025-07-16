@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/screens/auth/core/cubit/auth_cubit.dart';
 import 'package:p/screens/auth/core/cubit/auth_state.dart';
 import 'package:p/screens/auth/presentation/widgets/signin_controller.dart';
+import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/profile/presentation/widgets/main_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/forget_password.dart';
@@ -25,17 +26,6 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> _checkAuthStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    final isSignedIn = await AppSignInController.isSignedIn();
-
-    if (isSignedIn && mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) =>  MainProfile()),
-      );
-    }
-  }
 
   @override
   void dispose() {
@@ -69,6 +59,8 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
+
     return BlocProvider(
       create: (context) => AuthCubit(),
       child: Scaffold(
@@ -126,7 +118,7 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                           ),
                           const SizedBox(
-                            height: 60,
+                            height: 48,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(20),
@@ -289,7 +281,7 @@ class _SignInPageState extends State<SignInPage> {
                                               ),
                                             ),
                                             const SizedBox(
-                                              height: 64,
+                                              height: 48,
                                             ),
                                             FadeInUp(
                                               duration: const Duration(
@@ -375,7 +367,7 @@ class _SignInPageState extends State<SignInPage> {
                                               ),
                                             ),
                                             const SizedBox(
-                                              height: 24,
+                                              height: 16,
                                             ),
                                             FadeInUp(
                                               duration: const Duration(

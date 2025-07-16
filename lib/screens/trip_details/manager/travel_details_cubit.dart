@@ -7,19 +7,28 @@ import 'package:p/screens/trip_details/models/TravelDetailsModel.dart';
 part 'travel_details_state.dart';
 
 class TravelDetailsCubit extends Cubit<TravelDetailsState> {
-  TravelDetailsCubit() : super(TravelDetailsInitial());
+  TravelDetailsCubit() : super(const TravelDetailsState());
 
-  TravelDetailsData data = TravelDetailsData();
-  static TravelDetailsCubit get(context)=>BlocProvider.of(context);
+  static TravelDetailsCubit get(context) => BlocProvider.of(context);
+
+  final TravelDetailsData data = TravelDetailsData();
+
   getTravelDetails({required String id}) async {
     try {
-      emit(TravelDetailsLoading());
-      TravelDetailsModel travelDetailsModel =
-      await data.getTravelDetails(id: id);
-      emit(TravelDetailsSuccess(travelDetailsModel));
+      emit(state.copyWith(isLoading: true, error: null));
+
+      final travelDetailsModel = await data.getTravelDetails(id: id);
+
+      emit(state.copyWith(
+        isLoading: false,
+        travelDetailsModel: travelDetailsModel,
+        error: null,
+      ));
     } catch (e) {
-      print(e.toString());
-      emit(TravelDetailsError());
+      emit(state.copyWith(
+        isLoading: false,
+        error: 'Failed to load travel details',
+      ));
     }
   }
 }

@@ -1,16 +1,26 @@
 part of 'travel_details_cubit.dart';
 
 @immutable
-sealed class TravelDetailsState {}
+class TravelDetailsState {
+  final bool isLoading;
+  final TravelDetailsModel? travelDetailsModel;
+  final String? error;
 
-final class TravelDetailsInitial extends TravelDetailsState {}
+  const TravelDetailsState({
+    this.isLoading = false,
+    this.travelDetailsModel,
+    this.error,
+  });
 
-final class TravelDetailsLoading extends TravelDetailsState {}
-
-final class TravelDetailsSuccess extends TravelDetailsState {
-  TravelDetailsModel travelDetailsModel;
-
-  TravelDetailsSuccess(this.travelDetailsModel);
+  TravelDetailsState copyWith({
+    bool? isLoading,
+    TravelDetailsModel? travelDetailsModel,
+    String? error,
+  }) {
+    return TravelDetailsState(
+      isLoading: isLoading ?? this.isLoading,
+      travelDetailsModel: travelDetailsModel ?? this.travelDetailsModel,
+      error: error,
+    );
+  }
 }
-
-final class TravelDetailsError extends TravelDetailsState {}

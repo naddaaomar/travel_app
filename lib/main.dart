@@ -1,48 +1,52 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:p/di.dart';
 import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
+import 'package:p/screens/auth/core/new_google_auth/g_auth_cubit.dart';
+import 'package:p/screens/auth/core/new_google_auth/g_auth_repo.dart';
+import 'package:p/screens/auth/core/new_google_auth/g_auth_state.dart';
 import 'package:p/screens/home/views/home_view.dart';
 import 'package:p/screens/settings/bloc/notification_bloc/notification_bloc.dart';
 import 'package:p/screens/settings/bloc/permission_bloc/permissions_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'screens/settings/bloc/lang_bloc/lang_bloc.dart';
 import 'screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'screens/splash_screen/view/splash.dart';
 import 'screens/tabs/profile/profile_tabs/profile_tab_widgets/presentation/manager/profile_cubit.dart';
-import 'package:flutter/foundation.dart';
-
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
-late String? token;
+late GoogleAuthRepository googleAuthRepo;
+late GoogleAuthCubit googleAuthCubit;
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   ApiManager.init();
 
-  final prefs = await SharedPreferences.getInstance();
-  token = prefs.getString('token');
+  const secureStorage = FlutterSecureStorage();
+  final token = await secureStorage.read(key: 'auth_token');
 
-  if (kIsWeb) {
-    print(" Running on Web");
-  } else {
-    print(" Running on Mobile");
-  }
+  final dio = Dio(BaseOptions(baseUrl: 'https://journeymate.runasp.net'));
+  final googleSignIn = GoogleSignIn();
 
-  if (token == null || token!.isEmpty) {
-    print(" Token not loaded from cache (Platform: ${kIsWeb ? 'Web' : 'Mobile'})");
-  } else {
-    print(" Token loaded from cache: $token");
-  }
+  googleAuthRepo = GoogleAuthRepository(
+    dio: dio,
+    googleSignIn: googleSignIn,
+    storage: secureStorage,
+  );
+
+  googleAuthCubit = GoogleAuthCubit(googleAuthRepo);
 
   try {
     final appDocDir = await getApplicationDocumentsDirectory();
@@ -51,45 +55,36 @@ void main() async {
     Hive.init('hive_storage');
   }
 
+  final prefs = await SharedPreferences.getInstance();
   bool isFirstTime = prefs.getBool('onboarding_seen') ?? false;
   Bloc.observer = MyBlocObserver();
   configureDependencies();
 
   runApp(EasyLocalization(
-      supportedLocales: [Locale('en'), Locale('ar')],
-      path: 'assets/translations',
-      startLocale: Locale("en"),
-      saveLocale: true,
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => ThemeBloc(),
-          ),
-          BlocProvider(
-              create: (context) => LocaleBloc()
-          ),
-          BlocProvider(
-            create: (context) => PermissionsBloc(),
-          ),
-          BlocProvider(
-            create: (context) => NotificationBloc(),
-          ),
-          BlocProvider(
-              create: (context) => ProfileCubit()
-          ),
-        ],
-        child: MyApp(
-            isFirstTime: isFirstTime,),
-      )));
+    supportedLocales: [Locale('en'), Locale('ar')],
+    path: 'assets/translations',
+    startLocale: Locale("en"),
+    saveLocale: true,
+    child: MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ThemeBloc()),
+        BlocProvider(create: (context) => LocaleBloc()),
+        BlocProvider(create: (context) => PermissionsBloc()),
+        BlocProvider(create: (context) => NotificationBloc()),
+        BlocProvider(create: (context) => ProfileCubit()),
+        BlocProvider(
+          create: (context) => googleAuthCubit..checkAuthStatus(),
+        ),
+      ],
+      child: MyApp(isFirstTime: isFirstTime),
+    ),
+  ));
 }
-
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   final bool isFirstTime;
+  const MyApp({super.key, required this.isFirstTime});
 
-
-  MyApp({super.key,required this.isFirstTime, });
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LocaleBloc, Locale>(
@@ -100,26 +95,25 @@ class MyApp extends StatelessWidget {
               designSize: const Size(420, 880),
               minTextAdapt: true,
               splitScreenMode: true,
-              builder: (context, child) => BlocListener<LocaleBloc, Locale>(
-                listener: (context, locale) async {
-                  await EasyLocalization.of(context)!.setLocale(locale);
-                },
-                child: MaterialApp(
-                    navigatorObservers: [routeObserver],
-                    navigatorKey: navigatorKey,
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale:
-                    context.locale,
-                    theme: MyThemeData.lightTheme,
-                    darkTheme: MyThemeData.darkTheme,
-                    themeMode: themeMode,
-                    debugShowCheckedModeBanner: false,
-                    home:
-                      token != "empty" ? const HomeView() : const SplashScreen(),
-                    // isFirstTime ?
-                    //SplashScreen()
-                  // : OnBoardViewBody(),
+              builder: (context, child) => MaterialApp(
+                navigatorObservers: [routeObserver],
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: context.locale,
+                theme: MyThemeData.lightTheme,
+                darkTheme: MyThemeData.darkTheme,
+                themeMode: themeMode,
+                debugShowCheckedModeBanner: false,
+                home: BlocBuilder<GoogleAuthCubit, GoogleAuthState>(
+                  builder: (context, authState) {
+                    if (authState is GoogleAuthLoading) {
+                      return const SplashScreen();
+                    } else if (authState is GoogleAuthAuthenticated) {
+                      return const HomeView();
+                    } else {
+                      return const SplashScreen();
+                    }
+                  },
                 ),
               ),
             );
@@ -129,4 +123,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

@@ -89,15 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.pop(context);
             }
           },
-          onResetPassword: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Password reset link sent to ${profile.email}'),
-                duration: const Duration(seconds: 3),
-              ),
-            );
-            Navigator.pop(context);
-          },
+          userEmail: profile.email,
         ),
       ),
     );

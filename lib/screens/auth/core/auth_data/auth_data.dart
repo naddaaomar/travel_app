@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:p/screens/auth/core/auth_data/AuthDataModel.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthData {
   AuthData._();
@@ -65,6 +66,10 @@ class AuthData {
       if (response.statusCode == 200) {
         final authData = AuthDataModel.fromJson(response.data);
         print(authData);
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('email', email);
+
         await _saveTokens(authData);
         return authData;
       }
@@ -88,22 +93,6 @@ class AuthData {
     }
   }
 
-
-  static Future<void> _saveUserData(AuthDataModel authData) async {
-    if (authData.token != null) {
-      await _storage.write(key: 'token', value: authData.token);
-    }
-    if (authData.email != null) {
-      await _storage.write(key: 'user_email',  value: authData.email,);
-    }
-    if (authData.userName != null) {
-      await _storage.write(key: 'user_name', value: authData.email,);
-    }
-    await _storage.write(key: 'user_id', value: authData.email?? 'default_user');
-  }
-
-
-
   static Future<AuthDataModel?> signIn({
     required String username,
     required String password,
@@ -117,31 +106,56 @@ class AuthData {
         },
       );
 
-      debugPrint(' SignIn Status Code: ${response.statusCode}');
-      debugPrint(' SignIn Response Data: ${response.data}');
-      debugPrint(' SignIn Response Type: ${response.runtimeType}');
+      debugPrint('Login Response: ${response.data}');
 
-      if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
-        final authData = AuthDataModel.fromJson(response.data);
-        if (authData.token != null) {
-          await _saveTokens(authData);
-          return authData;
-        } else {
-          print(' No token in response');
-        }
-      } else if (response.statusCode == 400 && response.data is String) {
-        print(' Server Message: ${response.data}');
-        throw response.data;
-      } else {
-        print(' Unexpected response structure');
+      if (response.statusCode == 200) {
+        final token = response.data['token'];
+        if (token == null) throw Exception('No token received');
+
+        final email = await _extractEmail(response.data, username);
+
+        final authData = AuthDataModel(
+          token: token,
+          email: email,
+        );
+
+        await _saveAuthData(authData);
+        return authData;
       }
-
-      return null;
+      throw Exception('Login failed: ${response.data['message'] ?? 'Unknown error'}');
     } on DioException catch (e) {
-      debugPrint(' DioException: ${e.response?.data}');
-      throw _handleError(e);
+      debugPrint('Login Error: ${e.message}');
+      throw Exception(_handleError(e));
     }
   }
+
+  static Future<String> _extractEmail(Map<String, dynamic> data, String username) async {
+    final email = data['email'] ?? data['userEmail'] ?? data['Email'];
+
+    if (email == null) {
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        return prefs.getString('email') ?? username;
+      } catch (e) {
+        debugPrint('Error accessing SharedPreferences: $e');
+        return username;
+      }
+    }
+
+    return email;
+  }
+
+  static Future<void> _saveAuthData(AuthDataModel authData) async {
+    if (authData.token != null) {
+      await _storage.write(key: 'token', value: authData.token);
+    }
+    if (authData.email != null) {
+      await _storage.write(key: 'email', value: authData.email);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('email', authData.email!);
+    }
+  }
+
   // static Future<AuthDataModel?> refreshAccessToken() async {
   //   try {
   //     final refreshToken = await getRefreshToken();
