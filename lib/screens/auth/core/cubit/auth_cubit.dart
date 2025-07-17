@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/screens/auth/core/auth_data/AuthDataModel.dart';
+import 'package:p/screens/tabs/profile/profile_tabs/profile_tab_widgets/presentation/manager/profile_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../auth_data/auth_data.dart';
 import 'auth_state.dart';
@@ -40,11 +41,16 @@ class AuthCubit extends Cubit<AuthState> {
 
       await prefs.setString('name', username);
       await prefs.setString('password', password);
-
       await prefs.setString('token', user!.token!);
 
       final storedToken = prefs.getString('token');
       print("Token stored in SharedPreferences: $storedToken");
+
+
+      if (context.mounted) {
+        final profileCubit = context.read<ProfileCubit>();
+        profileCubit.loadProfile(username, user.email!, password);
+      }
 
       await FavoriteAuth.saveAuthToken(user.token!);
 
@@ -82,7 +88,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthSuccess(user: user));
 
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isSignedIn', true);
+        await prefs.setBool('isSignedUp', true);
         await prefs.setString('email', email );
         await prefs.setString('name', userName);
         await prefs.setString('password', password);

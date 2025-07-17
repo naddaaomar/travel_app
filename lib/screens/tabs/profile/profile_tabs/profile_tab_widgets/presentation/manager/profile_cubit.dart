@@ -35,6 +35,9 @@ class ProfileCubit extends Cubit<ProfileState> {
     } catch (e) {
       emit(ProfileError('Failed to update name'));
     }
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', newName);
   }
 
   Future<void> updateEmail(String newEmail) async {
@@ -47,7 +50,11 @@ class ProfileCubit extends Cubit<ProfileState> {
     } catch (e) {
       emit(ProfileError('Failed to update email'));
     }
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('email', newEmail);
   }
+
   Future<bool> verifyPassword(String currentPassword) async {
     if (state is! ProfileLoaded) return false;
 
@@ -60,6 +67,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       return false;
     }
   }
+
   Future<bool> updatePassword(String currentPassword, String newPassword) async {
     if (state is! ProfileLoaded) return false;
 

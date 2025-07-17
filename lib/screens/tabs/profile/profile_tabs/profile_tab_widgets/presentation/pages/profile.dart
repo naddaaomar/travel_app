@@ -42,6 +42,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _signOut() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('isSignedIn');
+    await prefs.remove('isSignedUp');
+
     await prefs.remove('email');
     await prefs.remove('name');
     await prefs.remove('password');
@@ -51,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.pushNamedAndRemoveUntil(
       context, '/',
           (route) => false,
-    );
+            );
   }
 
   Future<void> _navigateToEditProfile(UserProfile profile) async {
