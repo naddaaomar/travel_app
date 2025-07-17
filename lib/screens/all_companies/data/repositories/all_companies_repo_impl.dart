@@ -56,6 +56,7 @@ class AllCompaniesRepoImpl implements AllCompaniesRepo {
     } catch (e) {
       print(e.toString());
       return Left(ErrorRemoteFailure(e.toString()));
+
     }
   }
 

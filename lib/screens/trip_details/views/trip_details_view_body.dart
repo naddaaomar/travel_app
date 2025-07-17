@@ -1,12 +1,15 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:favorite_button/favorite_button.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:p/helpers/internet_checker/internet_checker_impl.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/models/inclusion_model.dart';
 import 'package:p/screens/booking/presentation/pages/booking_screen.dart';
@@ -42,13 +45,21 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
     return SafeArea(
       child: BlocProvider(
         create: (context) =>
-            TravelDetailsCubit()..getTravelDetails(id: widget.id),
+            TravelDetailsCubit(networkInfo: NetworkInfoImpl(Connectivity()))..getTravelDetails(id: widget.id),
         child: BlocConsumer<TravelDetailsCubit, TravelDetailsState>(
           listener: (context, state) {
             // TODO: implement listener
           },
           builder: (context, state) {
             var info = state.travelDetailsModel;
+            double? calculateOriginalPrice(
+                double? discountedPrice, double? discountPercent) {
+              if (discountedPrice == null ||
+                  discountPercent == null ||
+                  discountPercent == 0) return null;
+              return discountedPrice / (1 - discountPercent / 100);
+            }
+
             return Scaffold(
               body: Stack(
                 children: [
@@ -182,20 +193,86 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                                 ],
                                               ),
                                             ),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Text(
-                                              "${(info?.price)?.toStringAsFixed(0)} EGP",
-                                              style: TextStyle(
-                                                fontFamily: "pop",
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 16.sp,
-                                                color: isLight
-                                                    ? Colors.black
-                                                    : Colors.white,
+                                            if (info?.saleDiscount == 0) ...[
+                                              SizedBox(
+                                                width: 20,
                                               ),
-                                            ),
+
+                                              Text(
+                                                "${(info?.price)?.toStringAsFixed(0)} EGP",
+                                                style: TextStyle(
+                                                  fontFamily: "pop",
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 16.sp,
+                                                  color: isLight
+                                                      ? Colors.black
+                                                      : Colors.white,
+                                                ),
+                                              ),
+                                            ] else ...[
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 4,
+                                                                vertical: 2),
+                                                        decoration: BoxDecoration(
+                                                            color: Color(
+                                                                0xff811500),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5)),
+                                                        child: Text(
+                                                          "-${info?.saleDiscount?.toStringAsFixed(0)}",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontFamily: "pop",
+                                                              fontSize: 10),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Shimmer.fromColors(
+                                                        baseColor: ColorApp
+                                                            .primaryColor,
+                                                        highlightColor: Colors
+                                                            .grey.shade300,
+                                                        period: Duration(
+                                                            milliseconds: 2100),
+                                                        child: Text(
+                                                          "EGP ${info?.price?.toStringAsFixed(0)}",
+                                                          style: TextStyle(
+                                                            fontFamily: "pop",
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 17.sp,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Text(
+                                                    "EGP ${calculateOriginalPrice(info?.price?.toDouble(), info?.saleDiscount?.toDouble())?.toStringAsFixed(0)}",
+                                                    style: TextStyle(
+                                                      fontFamily: "pop",
+                                                      fontSize: 12,
+                                                      decoration: TextDecoration
+                                                          .lineThrough,
+                                                      decorationColor:
+                                                          Colors.red,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ]
                                           ],
                                         ),
                                         //SizedBox(height: 15,),
@@ -341,20 +418,52 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                         SizedBox(
                                           height: 5.w,
                                         ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 15),
-                                          child: Text(
-                                            info?.description ?? '',
-                                            style: TextStyle(
-                                                fontFamily: "pop",
-                                                fontSize: 12.sp,
-                                                color: isLight
-                                                    ? Colors.black
-                                                    : Colors.white),
-                                          ),
-                                        ),
-                                        if (info?.categoryName != null) ...[
+                                            BlocBuilder<TravelDetailsCubit, TravelDetailsState>(
+                                              builder: (context, state) {
+                                                final description = state.travelDetailsModel?.description ?? '';
+                                                final isExpanded = state.isDescriptionExpanded;
+                                                final isLongText = description.length > 100;
+                                                final visibleText = isExpanded
+                                                    ? description
+                                                    : description.length > 100
+                                                    ? description.substring(0, 100)
+                                                    : description;
+
+                                                return Padding(
+                                                  padding: const EdgeInsets.only(left: 15, right: 15),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: visibleText,
+                                                          style: TextStyle(
+                                                            fontFamily: "pop",
+                                                            fontSize: 16.sp,
+                                                            color: isLight ? Colors.black : Colors.white,
+                                                          ),
+                                                        ),
+                                                        if (isLongText)
+                                                          TextSpan(
+                                                            text: isExpanded ? " See less" : " ... See more",
+                                                            style: TextStyle(
+                                                              fontSize: 17.sp,
+                                                              fontWeight: FontWeight.w500,
+                                                              color: ColorApp.primaryColor,
+                                                            ),
+                                                            recognizer: TapGestureRecognizer()
+                                                              ..onTap = () {
+                                                                context.read<TravelDetailsCubit>().toggleDescriptionExpanded();
+                                                              },
+                                                          ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            )
+
+                                            ,
+                                            if (info?.categoryName != null) ...[
                                           Column(
                                             children: [
                                               SizedBox(
@@ -790,93 +899,98 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                         SizedBox(
                                           height: 15,
                                         ),
-                                        Center(
-                                          child: Text(
-                                            "Enjoy These Features",
-                                            style: TextStyle(
-                                                fontFamily: "pop",
-                                                fontSize: 12,
-                                                color: isLight
-                                                    ? Colors.black
-                                                    : Colors.white),
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.circle,
-                                              color: isLight
-                                                  ? ColorApp.primaryColor
-                                                  : ColorApp.primaryColorDark,
-                                              size: 10.w,
-                                            ),
-                                            SizedBox(
-                                              width: 5.w,
-                                            ),
-                                            Text(
-                                              'Amenities',
+                                        if(info?.amenities?.isEmpty==false)...[
+                                          Center(
+                                            child: Text(
+                                              "Enjoy These Features",
                                               style: TextStyle(
-                                                fontFamily: "pop",
-                                                fontSize: 13.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: isLight
-                                                    ? Colors.black
-                                                    : Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 7.h,
-                                        ),
-                                        SizedBox(
-                                          height:
-                                              40, // height of each container
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10.w),
-                                            itemCount: info?.amenities?.length,
-                                            itemBuilder: (context, index) {
-                                              return Container(
-                                                margin: EdgeInsets.only(
-                                                    right: 10.w),
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 12.w,
-                                                    vertical: 8.h),
-                                                decoration: BoxDecoration(
+                                                  fontFamily: "pop",
+                                                  fontSize: 12,
                                                   color: isLight
-                                                      ? Color(0xFFEFEFEF)
-                                                      : Color(0xFF444444),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20.r),
-                                                  border: Border.all(
-                                                    color: isLight
-                                                        ? ColorApp.primaryColor
-                                                        : ColorApp
-                                                            .primaryColorDark,
-                                                    width: 1.5,
-                                                  ),
+                                                      ? Colors.black
+                                                      : Colors.white),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.circle,
+                                                color: isLight
+                                                    ? ColorApp.primaryColor
+                                                    : ColorApp.primaryColorDark,
+                                                size: 10.w,
+                                              ),
+                                              SizedBox(
+                                                width: 5.w,
+                                              ),
+                                              Text(
+                                                'Amenities',
+                                                style: TextStyle(
+                                                  fontFamily: "pop",
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: isLight
+                                                      ? Colors.black
+                                                      : Colors.white,
                                                 ),
-                                                child: Center(
-                                                  child: Text(
-                                                    "${info?.amenities![index]}",
-                                                    style: TextStyle(
-                                                      fontFamily: "pop",
-                                                      fontSize: 11,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 7.h,
+                                          ),
+                                          SizedBox(
+                                            height:
+                                            40, // height of each container
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10.w),
+                                              itemCount: info?.amenities?.length,
+                                              itemBuilder: (context, index) {
+                                                return Container(
+                                                  margin: EdgeInsets.only(
+                                                      right: 10.w),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 12.w,
+                                                      vertical: 8.h),
+                                                  decoration: BoxDecoration(
+                                                    color: isLight
+                                                        ? Color(0xFFEFEFEF)
+                                                        : Color(0xFF444444),
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        20.r),
+                                                    border: Border.all(
                                                       color: isLight
-                                                          ? Colors.black
-                                                          : Colors.white,
+                                                          ? ColorApp.primaryColor
+                                                          : ColorApp
+                                                          .primaryColorDark,
+                                                      width: 1.5,
                                                     ),
                                                   ),
-                                                ),
-                                              );
-                                            },
+                                                  child: Center(
+                                                    child: Text(
+                                                      "${info?.amenities![index]}",
+                                                      style: TextStyle(
+                                                        fontFamily: "pop",
+                                                        fontSize: 11,
+                                                        color: isLight
+                                                            ? Colors.black
+                                                            : Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(height: 15),
-                                        if ((info?.included?.isNotEmpty ?? false))...[
+
+                                        ],
+
+                                        if ((info?.included?.isNotEmpty ??
+                                            false)) ...[
+                                          SizedBox(height: 15),
                                           GestureDetector(
                                             onTap: () {
                                               showModalBottomSheet(
@@ -918,8 +1032,8 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                           SizedBox(height: 15),
                                         ],
 
-
-                                        if ((info?.notIncluded?.isNotEmpty ?? false))...[
+                                        if ((info?.notIncluded?.isNotEmpty ??
+                                            false)) ...[
                                           GestureDetector(
                                             onTap: () {
                                               print(info?.notIncluded);
@@ -959,11 +1073,11 @@ class _TripDetailsViewBodyState extends State<TripDetailsViewBody> {
                                                 ),
                                               ],
                                             ),
-                                          )],
-
-                                        SizedBox(
-                                          height: 20,
-                                        ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
 
                                         Center(
                                           child: ElevatedButton(

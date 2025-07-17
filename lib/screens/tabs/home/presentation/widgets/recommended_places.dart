@@ -10,6 +10,7 @@ import 'package:p/screens/ai/Ai_requests.dart';
 import 'package:p/screens/events_details/presentation/pages/event_details_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/home/presentation/manager/home_cubit.dart';
+import 'package:p/screens/user_interaction/presentation/manager/interaction_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:ui' as ui;
 
@@ -94,12 +95,11 @@ class RecommendedPlaces extends StatelessWidget {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(10.r),
                           onTap: () async {
-                            final aiRequests = AiRequests(); // no arguments now
-
-                            await aiRequests.trackInteractionClick(
-                              contentId: event!.id.toString(),
+                            await context.read<InteractionCubit>().trackInteraction(
+                              contentId:event!.id.toString(),
                               type: 'event',
                             );
+
 
                             Navigator.push(
                               context,

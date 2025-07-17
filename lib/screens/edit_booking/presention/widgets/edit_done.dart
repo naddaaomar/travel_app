@@ -92,26 +92,33 @@ class EditDone extends StatelessWidget {
                         hintText: "Enter a number",
                         hasInput: hasInput,
                         isFocused: state.isFocusedPeople,
-                        validate: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Please enter a number';
+                          validate: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Please enter a number';
+                            }
+
+                            final numValue = int.tryParse(value);
+                            if (numValue == null) {
+                              return 'Please enter a valid number';
+                            }
+
+                            if (numValue == 0) {
+                              return "Value can't be zero";
+                            }
+
+                            final availableSeats = travelDetailsModel?.availableSeats;
+
+                            if (availableSeats == null) {
+                              return 'Seat availability is currently unknown';
+                            }
+
+                            if (numValue > availableSeats) {
+                              return 'Only $availableSeats seats available';
+                            }
+
+                            return null; // Valid input
                           }
 
-                          final numValue = int.tryParse(value);
-                          if (numValue == null) {
-                            return 'Please enter a valid number';
-                          }
-                          if (numValue == 0) {
-                            return "value can't be zero";
-                          }
-
-                          if (numValue >
-                              ((travelDetailsModel?.availableSeats) ?? 9)) {
-                            return 'Only ${travelDetailsModel?.availableSeats} seats available';
-                          }
-
-                          return null; // Valid input
-                        },
                       )),
                   SizedBox(
                     height: 20,

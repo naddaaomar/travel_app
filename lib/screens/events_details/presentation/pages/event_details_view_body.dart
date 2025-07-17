@@ -12,7 +12,6 @@ import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/events_details/presentation/manager/event_details_cubit.dart';
 import 'package:p/screens/home/views/widgets/home_view_body.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
-import 'package:p/screens/tabs/profile/views/widgets/profile_tabs/fav_tab_widgets/favorites.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/event_on_map.dart';
@@ -60,9 +59,9 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
           final mapLink =
               "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52517.594734037535!2d31.180523146180434!3d30.05946546726634!2m3...";
           final result = extractLatLngFromEmbedUrl(mapLink);
-          return Scaffold(
-            body: SafeArea(
-              child: Stack(
+          return SafeArea(
+            child: Scaffold(
+              body: Stack(
                 children: [
                   SizedBox(
                     height: size.height * 0.35,
@@ -283,7 +282,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                                                       .isDescriptionExpanded;
                                                   final description =
                                                       info?.description ?? "";
-
+              
                                                   final showSeeMore =
                                                       description.length > 300;
                                                   final displayText =
@@ -293,7 +292,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                                                                       0, 250) +
                                                               '... '
                                                           : description;
-
+              
                                                   return RichText(
                                                     text: TextSpan(
                                                       text: displayText,
@@ -410,7 +409,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                                             ],
                                           ),
                                         ],
-
+              
                                         SizedBox(height: 10.h),
                                         // 📌 Category
                                         if (info.category != null) ...[
@@ -451,7 +450,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                                           )
                                         ],
                                         SizedBox(height: 15.h),
-
+              
                                         // 📌 Location
                                         if (info.location != null) ...[
                                           Row(
@@ -502,7 +501,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                                           )
                                         ],
                                         SizedBox(height: 12.h),
-
+              
                                         // 📌 External Link
                                         if (info.link != null &&
                                             info.link!.isNotEmpty)
@@ -530,9 +529,9 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                                               ],
                                             ),
                                           ),
-
+              
                                         SizedBox(height: 20.h),
-
+              
                                         // 📌 Map
                                         if (info.mapLink != null &&
                                             info.mapLink!.isNotEmpty) ...[
@@ -582,7 +581,7 @@ class _TripDetailsViewBodyState extends State<EventDetailsViewBody> {
                                                   HomeViewBody.currentIndex =
                                                       2;
                                                 });
-
+              
                                                 // Future.delayed(
                                                 //   Duration(milliseconds: 200),
                                                 //       () {

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:p/screens/ai/Ai_requests.dart';
 import 'package:p/screens/events_details/presentation/pages/event_details_view_body.dart';
 import 'package:p/screens/search/data/models/EventsSearchModel.dart';
 import 'package:p/screens/search/presentation/widgets/search_model.dart';
+import 'package:p/screens/user_interaction/presentation/manager/interaction_cubit.dart';
 
 class EventCard extends StatelessWidget {
   EventCard({super.key, required this.model});
@@ -13,12 +15,11 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async{
-        final aiRequests = AiRequests();
-
-        await aiRequests.trackInteractionClick(
+        await context.read<InteractionCubit>().trackInteraction(
           contentId: model.id.toString(),
           type: 'event',
         );
+
 
         Navigator.push(context, MaterialPageRoute(builder: (context) =>EventDetailsViewBody(id: model.id.toString()) ,));
       },

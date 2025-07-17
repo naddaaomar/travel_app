@@ -1,8 +1,4 @@
-/// items : [{"id":1,"title":"Mediterranean Cruise","description":"7-day cruise exploring the Mediterranean coast","price":1500,"baseCost":1200,"saleDiscount":0.1,"startDate":"2025-05-23T00:00:00","endDate":"2025-05-30T00:00:00","creationDate":"2025-04-23T00:00:00","availableSeats":50,"departurePoint":"Barcelona Port","departurePointLat":41.3851,"departurePointLng":2.1734,"destinationCity":"Multiple Cities","destinationCityLat":0,"destinationCityLng":0,"transportationType":"Cruise Ship","amenities":["Pool","Spa","Restaurants","Entertainment"],"coverImageUrl":"https://i.pinimg.com/736x/14/7f/ea/147fea20f16d94e7960d2bd3b507fd2e.jpg","profileImageUrl":null,"companyProfileImageUrl":"https://journeymate.runasp.net//CompanyImages/1.jpg","included":[],"notIncluded":[],"specialOffer":null,"companyId":1,"companyName":"Pharaoh Travels","categoryId":1,"categoryName":"Adventure","imageUrls":["https://journeymate.runasp.net/TravelImages/1/1.jpeg","https://journeymate.runasp.net/TravelImages/1/2.jpeg","https://journeymate.runasp.net/TravelImages/1/3.jpeg"],"itenraries":[]},{"id":2,"title":"Alpine Adventure","description":"5-day hiking tour through the Alps","price":950,"baseCost":800,"saleDiscount":0.05,"startDate":"2025-06-07T00:00:00","endDate":"2025-06-12T00:00:00","creationDate":"2025-04-23T00:00:00","availableSeats":20,"departurePoint":"Munich Central Station","departurePointLat":48.1351,"departurePointLng":11.582,"destinationCity":"Chamonix","destinationCityLat":45.9237,"destinationCityLng":6.8694,"transportationType":"Bus","amenities":["Guided tours","Equipment rental","Meals included"],"coverImageUrl":"https://i.pinimg.com/736x/14/7f/ea/147fea20f16d94e7960d2bd3b507fd2e.jpg","profileImageUrl":null,"companyProfileImageUrl":"https://journeymate.runasp.net//CompanyImages/1.jpg","included":[],"notIncluded":[],"specialOffer":null,"companyId":2,"companyName":"Nile Explorers","categoryId":2,"categoryName":"Beach & Sun","imageUrls":["https://journeymate.runasp.net/TravelImages/2/1.jpeg","https://journeymate.runasp.net/TravelImages/2/2.jpeg","https://journeymate.runasp.net/TravelImages/2/3.jpeg"],"itenraries":[]},{"id":3,"title":"Japan Cultural Tour","description":"10-day cultural exploration of Japan","price":2500,"baseCost":2000,"saleDiscount":0.08,"startDate":"2025-06-22T00:00:00","endDate":"2025-07-02T00:00:00","creationDate":"2025-04-23T00:00:00","availableSeats":30,"departurePoint":"Tokyo Narita Airport","departurePointLat":35.7647,"departurePointLng":140.3861,"destinationCity":"Kyoto","destinationCityLat":35.0116,"destinationCityLng":135.7681,"transportationType":"Train","amenities":["Guided tours","Traditional meals","Temple visits"],"coverImageUrl":"https://i.pinimg.com/736x/14/7f/ea/147fea20f16d94e7960d2bd3b507fd2e.jpg","profileImageUrl":null,"companyProfileImageUrl":"https://journeymate.runasp.net//CompanyImages/1.jpg","included":[],"notIncluded":[],"specialOffer":null,"companyId":3,"companyName":"Cleopatra Tours","categoryId":3,"categoryName":"Cruise","imageUrls":["https://journeymate.runasp.net/TravelImages/3/1.jpeg","https://journeymate.runasp.net/TravelImages/3/2.jpeg","https://journeymate.runasp.net/TravelImages/3/3.jpeg"],"itenraries":[]}]
-/// totalCount : 12
-/// totalPages : 4
-/// fromItem : 1
-/// toItem : 3
+
 
 class AllTravelsModel {
   AllTravelsModel({
@@ -66,36 +62,6 @@ AllTravelsModel copyWith({  List<Items>? items,
 
 }
 
-/// id : 1
-/// title : "Mediterranean Cruise"
-/// description : "7-day cruise exploring the Mediterranean coast"
-/// price : 1500
-/// baseCost : 1200
-/// saleDiscount : 0.1
-/// startDate : "2025-05-23T00:00:00"
-/// endDate : "2025-05-30T00:00:00"
-/// creationDate : "2025-04-23T00:00:00"
-/// availableSeats : 50
-/// departurePoint : "Barcelona Port"
-/// departurePointLat : 41.3851
-/// departurePointLng : 2.1734
-/// destinationCity : "Multiple Cities"
-/// destinationCityLat : 0
-/// destinationCityLng : 0
-/// transportationType : "Cruise Ship"
-/// amenities : ["Pool","Spa","Restaurants","Entertainment"]
-/// coverImageUrl : "https://i.pinimg.com/736x/14/7f/ea/147fea20f16d94e7960d2bd3b507fd2e.jpg"
-/// profileImageUrl : null
-/// companyProfileImageUrl : "https://journeymate.runasp.net//CompanyImages/1.jpg"
-/// included : []
-/// notIncluded : []
-/// specialOffer : null
-/// companyId : 1
-/// companyName : "Pharaoh Travels"
-/// categoryId : 1
-/// categoryName : "Adventure"
-/// imageUrls : ["https://journeymate.runasp.net/TravelImages/1/1.jpeg","https://journeymate.runasp.net/TravelImages/1/2.jpeg","https://journeymate.runasp.net/TravelImages/1/3.jpeg"]
-/// itenraries : []
 
 class Items {
   Items({
@@ -119,16 +85,16 @@ class Items {
       List<String>? amenities, 
       String? coverImageUrl, 
       dynamic profileImageUrl, 
-      String? companyProfileImageUrl, 
-      List<dynamic>? included, 
-      List<dynamic>? notIncluded, 
+      String? companyProfileImageUrl,
+      List<String>? included,
+      List<String>? notIncluded,
       dynamic specialOffer, 
       num? companyId, 
       String? companyName, 
       num? categoryId, 
       String? categoryName, 
       List<String>? imageUrls, 
-      List<dynamic>? itenraries,}){
+      List<String>? itenraries,}){
     _id = id;
     _title = title;
     _description = description;
@@ -183,30 +149,15 @@ class Items {
     _coverImageUrl = json['coverImageUrl'];
     _profileImageUrl = json['profileImageUrl'];
     _companyProfileImageUrl = json['companyProfileImageUrl'];
-    if (json['included'] != null) {
-      _included = [];
-      json['included'].forEach((v) {
-        _included?.add(v);
-      });
-    }
-    if (json['notIncluded'] != null) {
-      _notIncluded = [];
-      json['notIncluded'].forEach((v) {
-        _notIncluded?.add(v);
-      });
-    }
+    _included = json['included'] != null ? List<String>.from(json['included']) : [];
+    _notIncluded = json['notIncluded'] != null ? List<String>.from(json['notIncluded']) : [];
     _specialOffer = json['specialOffer'];
     _companyId = json['companyId'];
     _companyName = json['companyName'];
     _categoryId = json['categoryId'];
     _categoryName = json['categoryName'];
     _imageUrls = json['imageUrls'] != null ? json['imageUrls'].cast<String>() : [];
-    if (json['itenraries'] != null) {
-      _itenraries = [];
-      json['itenraries'].forEach((v) {
-        _itenraries?.add(v);
-      });
-    }
+    _itenraries = json['itenraries'] != null ? List<String>.from(json['itenraries']) : [];
   }
   num? _id;
   String? _title;
@@ -229,15 +180,15 @@ class Items {
   String? _coverImageUrl;
   dynamic _profileImageUrl;
   String? _companyProfileImageUrl;
-  List<dynamic>? _included;
-  List<dynamic>? _notIncluded;
+  List<String>? _included;
+  List<String>? _notIncluded;
   dynamic _specialOffer;
   num? _companyId;
   String? _companyName;
   num? _categoryId;
   String? _categoryName;
   List<String>? _imageUrls;
-  List<dynamic>? _itenraries;
+  List<String>? _itenraries;
 Items copyWith({  num? id,
   String? title,
   String? description,
@@ -259,15 +210,15 @@ Items copyWith({  num? id,
   String? coverImageUrl,
   dynamic profileImageUrl,
   String? companyProfileImageUrl,
-  List<dynamic>? included,
-  List<dynamic>? notIncluded,
+  List<String>? included,
+  List<String>? notIncluded,
   dynamic specialOffer,
   num? companyId,
   String? companyName,
   num? categoryId,
   String? categoryName,
   List<String>? imageUrls,
-  List<dynamic>? itenraries,
+  List<String>? itenraries,
 }) => Items(  id: id ?? _id,
   title: title ?? _title,
   description: description ?? _description,
@@ -353,21 +304,15 @@ Items copyWith({  num? id,
     map['coverImageUrl'] = _coverImageUrl;
     map['profileImageUrl'] = _profileImageUrl;
     map['companyProfileImageUrl'] = _companyProfileImageUrl;
-    if (_included != null) {
-      map['included'] = _included?.map((v) => v.toJson()).toList();
-    }
-    if (_notIncluded != null) {
-      map['notIncluded'] = _notIncluded?.map((v) => v.toJson()).toList();
-    }
+    map['included'] = _included;
+    map['notIncluded'] = _notIncluded;
     map['specialOffer'] = _specialOffer;
     map['companyId'] = _companyId;
     map['companyName'] = _companyName;
     map['categoryId'] = _categoryId;
     map['categoryName'] = _categoryName;
     map['imageUrls'] = _imageUrls;
-    if (_itenraries != null) {
-      map['itenraries'] = _itenraries?.map((v) => v.toJson()).toList();
-    }
+    map['itenraries'] = _itenraries;
     return map;
   }
 

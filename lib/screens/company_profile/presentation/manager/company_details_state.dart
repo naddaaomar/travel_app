@@ -35,6 +35,8 @@ class CompanyDetailsState {
   final TravelTabType currentTab;
   final bool scrolledToPage;
   final bool scrolledDown;
+  final bool isDescriptionExpanded;
+
 
 
   const CompanyDetailsState({
@@ -64,6 +66,8 @@ class CompanyDetailsState {
     this.currentTab = TravelTabType.newest,
     this.scrolledToPage = false,
     this.scrolledDown = false,
+    this.isDescriptionExpanded = false,
+
 
   });
 
@@ -94,6 +98,8 @@ class CompanyDetailsState {
     TravelTabType? currentTab,
     bool? scrolledToPage,
     bool? scrolledDown,
+    bool? isDescriptionExpanded,
+
 
   }) {
     return CompanyDetailsState(
@@ -126,6 +132,8 @@ class CompanyDetailsState {
       currentTab: currentTab ?? this.currentTab,
       scrolledToPage: scrolledToPage ?? this.scrolledToPage,
       scrolledDown: scrolledDown ?? this.scrolledDown,
+      isDescriptionExpanded: isDescriptionExpanded ?? this.isDescriptionExpanded,
+
 
     );
   }

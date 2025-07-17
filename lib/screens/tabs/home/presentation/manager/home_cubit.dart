@@ -27,10 +27,11 @@ class HomeCubit extends Cubit<HomeState> {
     required int numHighestInteractions
   }) async {
      loadToken();
+     getTravelsRecommend(numRecommendations: numRecommendations, numHighestInteractions: numHighestInteractions);
+     getEventsRecommend(numRecommendations: numRecommendations, numHighestInteractions: numHighestInteractions);
     await getNewest(PageIndex: PageIndex, PageSize: PageSize);
     await getEvents();
-    await getTravelsRecommend(numRecommendations: numRecommendations, numHighestInteractions: numHighestInteractions);
-    await getEventsRecommend(numRecommendations: numRecommendations, numHighestInteractions: numHighestInteractions);
+
   }
 
   Future<void> getNewest({

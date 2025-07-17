@@ -5,6 +5,7 @@ import 'package:p/screens/company_profile/presentation/manager/company_details_c
 import 'package:p/screens/company_profile/presentation/widgets/tabs/cards/leaving_soon_card.dart';
 import 'package:p/screens/company_profile/presentation/widgets/travel_tabs.dart';
 import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
+import 'package:p/screens/user_interaction/presentation/manager/interaction_cubit.dart';
 
 class TabFour extends StatefulWidget {
   TabFour({super.key, required this.companyId});
@@ -43,12 +44,12 @@ class _TabFourState extends State<TabFour> {
           errorMessage: state.hasErrorLeavingSoon ? "No travels found for this company." : null,
           itemBuilder: (item, index) => GestureDetector(
               onTap: ()async {
-                final aiRequests = AiRequests();
-
-                await aiRequests.trackInteractionClick(
-                  contentId:item.id.toString(),
+                await context.read<InteractionCubit>().trackInteraction(
+                  contentId: item.id.toString(),
                   type: 'travel',
                 );
+
+
                 Navigator.push(context, MaterialPageRoute(builder: (context) =>TripDetailsViewBody(id: item.id.toString()) ,));
               },
               child: LeavingSoonCard(items: item)),

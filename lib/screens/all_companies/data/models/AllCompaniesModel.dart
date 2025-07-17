@@ -227,15 +227,9 @@ Items copyWith({  num? id,
     map['coverImageUrl'] = _coverImageUrl;
     map['establishedDate'] = _establishedDate;
     map['rating'] = _rating;
-    if (_socialMediaLinks != null) {
-      map['socialMediaLinks'] = _socialMediaLinks?.map((v) => v.toJson()).toList();
-    }
-    if (_paymentMethods != null) {
-      map['paymentMethods'] = _paymentMethods?.map((v) => v.toJson()).toList();
-    }
-    if (_ratings != null) {
-      map['ratings'] = _ratings?.map((v) => v.toJson()).toList();
-    }
+    map['socialMediaLinks'] = _socialMediaLinks?.map((e) => e.toString()).toList();
+    map['paymentMethods'] = _paymentMethods?.map((e) => e.toString()).toList();
+    map['ratings'] = _ratings?.map((e) => e.toString()).toList();
     if (_travels != null) {
       map['travels'] = _travels?.map((v) => v.toJson()).toList();
     }
@@ -247,8 +241,6 @@ Items copyWith({  num? id,
 
 }
 
-/// dayOfWeek : "Monday"
-/// workingTime : "9:00 AM - 6:00 PM"
 
 class WorkingHours {
   WorkingHours({
@@ -281,36 +273,6 @@ WorkingHours copyWith({  String? dayOfWeek,
 
 }
 
-/// id : 4
-/// title : "Safari Expedition"
-/// description : "8-day wildlife safari in Tanzania"
-/// price : 3500
-/// baseCost : 3000
-/// saleDiscount : 0
-/// startDate : "2025-07-22T00:00:00"
-/// endDate : "2025-07-30T00:00:00"
-/// creationDate : "2025-04-23T00:00:00"
-/// availableSeats : 15
-/// departurePoint : "Kilimanjaro Airport"
-/// departurePointLat : -3.4294
-/// departurePointLng : 37.0745
-/// destinationCity : "Serengeti"
-/// destinationCityLat : -2.3333
-/// destinationCityLng : 34.8333
-/// transportationType : "Jeep"
-/// amenities : ["Safari guides","Camping gear","Wildlife photography"]
-/// coverImageUrl : "https://i.pinimg.com/736x/14/7f/ea/147fea20f16d94e7960d2bd3b507fd2e.jpg"
-/// profileImageUrl : null
-/// companyProfileImageUrl : "https://journeymate.runasp.net//CompanyImages/1.jpg"
-/// included : []
-/// notIncluded : []
-/// specialOffer : null
-/// companyId : 4
-/// companyName : "Ancient Pathways"
-/// categoryId : 4
-/// categoryName : null
-/// imageUrls : []
-/// itenraries : []
 
 class Travels {
   Travels({
@@ -335,15 +297,15 @@ class Travels {
       String? coverImageUrl, 
       dynamic profileImageUrl, 
       String? companyProfileImageUrl, 
-      List<dynamic>? included, 
-      List<dynamic>? notIncluded, 
+      List<String>? included,
+      List<String>? notIncluded,
       dynamic specialOffer, 
       num? companyId, 
       String? companyName, 
       num? categoryId, 
       dynamic categoryName, 
       List<dynamic>? imageUrls, 
-      List<dynamic>? itenraries,}){
+      List<String>? itenraries,}){
     _id = id;
     _title = title;
     _description = description;
@@ -397,19 +359,8 @@ class Travels {
     _amenities = json['amenities'] != null ? json['amenities'].cast<String>() : [];
     _coverImageUrl = json['coverImageUrl'];
     _profileImageUrl = json['profileImageUrl'];
-    _companyProfileImageUrl = json['companyProfileImageUrl'];
-    if (json['included'] != null) {
-      _included = [];
-      json['included'].forEach((v) {
-        _included?.add(v);
-      });
-    }
-    if (json['notIncluded'] != null) {
-      _notIncluded = [];
-      json['notIncluded'].forEach((v) {
-        _notIncluded?.add(v);
-      });
-    }
+    _included = json['included'] != null ? List<String>.from(json['included']) : [];
+    _notIncluded = json['notIncluded'] != null ? List<String>.from(json['notIncluded']) : [];
     _specialOffer = json['specialOffer'];
     _companyId = json['companyId'];
     _companyName = json['companyName'];
@@ -421,12 +372,7 @@ class Travels {
         _imageUrls?.add(v);
       });
     }
-    if (json['itenraries'] != null) {
-      _itenraries = [];
-      json['itenraries'].forEach((v) {
-        _itenraries?.add(v);
-      });
-    }
+    _itenraries = json['itenraries'] != null ? List<String>.from(json['itenraries']) : [];
   }
   num? _id;
   String? _title;
@@ -449,15 +395,15 @@ class Travels {
   String? _coverImageUrl;
   dynamic _profileImageUrl;
   String? _companyProfileImageUrl;
-  List<dynamic>? _included;
-  List<dynamic>? _notIncluded;
+  List<String>? _included;
+  List<String>? _notIncluded;
   dynamic _specialOffer;
   num? _companyId;
   String? _companyName;
   num? _categoryId;
   dynamic _categoryName;
   List<dynamic>? _imageUrls;
-  List<dynamic>? _itenraries;
+  List<String>? _itenraries;
 Travels copyWith({  num? id,
   String? title,
   String? description,
@@ -479,15 +425,15 @@ Travels copyWith({  num? id,
   String? coverImageUrl,
   dynamic profileImageUrl,
   String? companyProfileImageUrl,
-  List<dynamic>? included,
-  List<dynamic>? notIncluded,
+  List<String>? included,
+  List<String>? notIncluded,
   dynamic specialOffer,
   num? companyId,
   String? companyName,
   num? categoryId,
   dynamic categoryName,
   List<dynamic>? imageUrls,
-  List<dynamic>? itenraries,
+  List<String>? itenraries,
 }) => Travels(  id: id ?? _id,
   title: title ?? _title,
   description: description ?? _description,
@@ -573,12 +519,8 @@ Travels copyWith({  num? id,
     map['coverImageUrl'] = _coverImageUrl;
     map['profileImageUrl'] = _profileImageUrl;
     map['companyProfileImageUrl'] = _companyProfileImageUrl;
-    if (_included != null) {
-      map['included'] = _included?.map((v) => v.toJson()).toList();
-    }
-    if (_notIncluded != null) {
-      map['notIncluded'] = _notIncluded?.map((v) => v.toJson()).toList();
-    }
+    map['included'] = _included;
+    map['notIncluded'] = _notIncluded;
     map['specialOffer'] = _specialOffer;
     map['companyId'] = _companyId;
     map['companyName'] = _companyName;
@@ -587,9 +529,7 @@ Travels copyWith({  num? id,
     if (_imageUrls != null) {
       map['imageUrls'] = _imageUrls?.map((v) => v.toJson()).toList();
     }
-    if (_itenraries != null) {
-      map['itenraries'] = _itenraries?.map((v) => v.toJson()).toList();
-    }
+    map['itenraries'] = _itenraries;
     return map;
   }
 

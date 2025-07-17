@@ -12,6 +12,11 @@ class DiscountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double? calculateOriginalPrice(double? discountedPrice, double? discountPercent) {
+      if (discountedPrice == null || discountPercent == null || discountPercent == 0) return null;
+      return discountedPrice / (1 - discountPercent / 100);
+    }
+
     return SizedBox(
       height: 110,
       child: Card(
@@ -96,7 +101,7 @@ class DiscountCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "${(items.price ?? 0)} EGP",
+                    "${calculateOriginalPrice(items?.price?.toDouble(), items?.saleDiscount?.toDouble())?.toStringAsFixed(0)} EGP",
                     style: const TextStyle(
                       fontFamily: "pop",
                       fontSize: 12,
@@ -115,7 +120,7 @@ class DiscountCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "${items.price ?? 0} EGP",
+                      "${items.price?.toStringAsFixed(0) ?? 0} EGP",
                       style: TextStyle(
                         fontFamily: "pop",
                         fontWeight: FontWeight.w500,

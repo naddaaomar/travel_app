@@ -336,13 +336,17 @@ class AllCompanies extends StatelessWidget {
                                                 child: Container(
                                                   margin: EdgeInsets.symmetric(
                                                       horizontal: 5),
-                                                  padding: EdgeInsets.all(10),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 3),
                                                   decoration: BoxDecoration(
-                                                    color: isCurrent
-                                                        ? Color(0xffD67561)
-                                                        : Colors.grey.shade300,
-                                                    shape: BoxShape.circle,
-                                                  ),
+                                                      color: isCurrent
+                                                          ? Color(0xffD67561)
+                                                          : Colors
+                                                              .grey.shade300,
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
                                                   child: Text(
                                                     '$pageNum',
                                                     style: TextStyle(

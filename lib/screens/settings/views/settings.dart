@@ -113,7 +113,7 @@ class _SettingsState extends State<Settings> {
                       child: Align(
                         child: Container(
                           alignment: Alignment.center,
-                          height: 600,
+                          height: 500,
                           padding: EdgeInsets.symmetric(horizontal: 15),
                           decoration: BoxDecoration(
                               color: Colors.transparent,
@@ -150,9 +150,9 @@ class _SettingsState extends State<Settings> {
                                     },
                                     isDown: isThemeDown),
                                 isThemeDown ? ThemeDropDown() : SizedBox(),
-                                SizedBox(
-                                  height: 20,
-                                ),
+                                // SizedBox(
+                                //   height: 20,
+                                // ),
                                 // SettingsWidget(
                                 //     duration: 1200,
                                 //     title: "Language",

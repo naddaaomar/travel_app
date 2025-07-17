@@ -3,7 +3,6 @@ import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:p/screens/all_companies/data/models/AllCompaniesModel.dart';
 
 import 'offers_local_ds.dart';
 
@@ -11,7 +10,6 @@ import 'offers_local_ds.dart';
 class OffersLocalDsImpl implements OffersLocalDs {
   static const _boxName = 'OffersBox';
   static const _collectionName = 'offers';
-  static const _companiesKey = 'cached_companies';
   static const _discountsKey = 'cached_discounts';
 
   Future<CollectionBox<Map>> _openBox() async {
@@ -22,20 +20,6 @@ class OffersLocalDsImpl implements OffersLocalDs {
       path: dir.path,
     );
     return await collection.openBox<Map>(_collectionName);
-  }
-
-  @override
-  Future<void> cacheCompanies(AllCompaniesModel companies) async {
-    final box = await _openBox();
-    await box.put(_companiesKey, companies.toJson());
-  }
-
-  @override
-  Future<AllCompaniesModel?> getCachedCompanies() async {
-    final box = await _openBox();
-    final data = await box.get(_companiesKey);
-    if (data == null) return null;
-    return AllCompaniesModel.fromJson(data);
   }
 
   @override

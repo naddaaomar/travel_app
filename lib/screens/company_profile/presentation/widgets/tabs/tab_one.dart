@@ -1,9 +1,13 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/company_profile/data/models/CompanyDetailsModel.dart';
+import 'package:p/screens/company_profile/presentation/manager/company_details_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TabOne extends StatelessWidget {
@@ -46,12 +50,52 @@ class TabOne extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InfoWidget(
-                      title: "Description",
-                      txt: data?.description ?? "",
-                      iconData: Ionicons.information_circle_outline,
-                    ),
-                    SizedBox(height: 15),
+                    BlocBuilder<CompanyDetailsCubit, CompanyDetailsState>(
+                      builder: (context, state) {
+                        final description = state.companyDetailsModel?.description ?? '';
+                        final isExpanded = state.isDescriptionExpanded;
+                        final isLongText = description.length > 100;
+
+                        final visibleText = isExpanded
+                            ? description
+                            : description.length > 100
+                            ? description.substring(0, 100)
+                            : description;
+
+                        return InfoWidget(
+                          title: "Description",
+                          iconData: Ionicons.information_circle_outline,
+                          txtWidget: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: visibleText,
+                                  style: TextStyle(
+                                    fontSize: 17.sp,
+                                    color:  Colors.black  ,
+                                  ),
+                                ),
+                                if (isLongText)
+                                  TextSpan(
+                                    text: isExpanded ? " See less" : " ... See more",
+                                    style: TextStyle(
+                                      fontSize: 17.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: ColorApp.primaryColor,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        context.read<CompanyDetailsCubit>().toggleDescriptionExpanded();
+                                      },
+                                  ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    )
+
+                    ,SizedBox(height: 15),
                     InfoWidget(
                       title: "Email",
                       txt: data?.email ?? "",
@@ -139,10 +183,12 @@ class InfoWidget extends StatelessWidget {
   InfoWidget(
       {super.key,
       required this.title,
-      required this.txt,
+       this.txt,
+       this.txtWidget,
       required this.iconData});
   String title;
-  String txt;
+  String? txt;
+  final Widget? txtWidget;
   IconData iconData;
 
   @override
@@ -182,12 +228,7 @@ class InfoWidget extends StatelessWidget {
             SizedBox(
               height: 5,
             ),
-            Text(
-              txt,
-              style: TextStyle(
-                fontFamily: "pop",
-              ),
-            ),
+            txtWidget ?? Text(txt ?? '', style: TextStyle(fontSize: 14,fontFamily: "pop")),
           ],
         ),
       ),

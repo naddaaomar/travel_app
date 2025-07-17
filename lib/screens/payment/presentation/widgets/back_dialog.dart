@@ -29,6 +29,7 @@ Future<bool> backDialog({
                       style: TextStyle(fontSize: 12, fontFamily: "pop"),
                       textAlign: TextAlign.center,
                     ),
+
                     duration: Duration(seconds: 2),
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
@@ -42,9 +43,10 @@ Future<bool> backDialog({
                 );
 
                 int count = 0;
-                Navigator.of(context).popUntil((route) {
-                  return count++ >= popCount;
-                });
+                while (count < popCount && Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                  count++;
+                }
               });
             }
           },

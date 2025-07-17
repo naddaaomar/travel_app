@@ -40,7 +40,8 @@ class AllNewestCard extends StatelessWidget {
                     ? Image.network(
                   imageUrl!,
                   width: 140,
-                  fit: BoxFit.cover,
+                  height: 200,
+                  fit: BoxFit.fitHeight,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(
                       "assets/images/no_image.png",

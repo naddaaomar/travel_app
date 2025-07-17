@@ -15,6 +15,7 @@ class AllDiscountsLocalDsImpl implements AllDiscountsLocalDs {
     final dir = await getApplicationDocumentsDirectory();
     final collection = await BoxCollection.open(
       _boxName,
+
       {_collectionName},
       path: dir.path,
     );

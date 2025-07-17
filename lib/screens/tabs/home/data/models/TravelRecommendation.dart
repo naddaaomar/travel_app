@@ -52,8 +52,8 @@ class TravelRecommendation {
       String? coverImageUrl, 
       String? profileImageUrl, 
       String? companyProfileImageUrl, 
-      List<dynamic>? included, 
-      List<dynamic>? notIncluded, 
+      List<String>? included,
+      List<String>? notIncluded,
       dynamic specialOffer, 
       num? companyId, 
       String? companyName, 
@@ -115,18 +115,8 @@ class TravelRecommendation {
     _coverImageUrl = json['coverImageUrl'];
     _profileImageUrl = json['profileImageUrl'];
     _companyProfileImageUrl = json['companyProfileImageUrl'];
-    if (json['included'] != null) {
-      _included = [];
-      json['included'].forEach((v) {
-        _included?.add(v);
-      });
-    }
-    if (json['notIncluded'] != null) {
-      _notIncluded = [];
-      json['notIncluded'].forEach((v) {
-        _notIncluded?.add(v);
-      });
-    }
+    _included = json['included'] != null ? List<String>.from(json['included']) : [];
+    _notIncluded = json['notIncluded'] != null ? List<String>.from(json['notIncluded']) : [];
     _specialOffer = json['specialOffer'];
     _companyId = json['companyId'];
     _companyName = json['companyName'];
@@ -166,8 +156,8 @@ class TravelRecommendation {
   String? _coverImageUrl;
   String? _profileImageUrl;
   String? _companyProfileImageUrl;
-  List<dynamic>? _included;
-  List<dynamic>? _notIncluded;
+  List<String>? _included;
+  List<String>? _notIncluded;
   dynamic _specialOffer;
   num? _companyId;
   String? _companyName;
@@ -196,8 +186,8 @@ TravelRecommendation copyWith({  num? id,
   String? coverImageUrl,
   String? profileImageUrl,
   String? companyProfileImageUrl,
-  List<dynamic>? included,
-  List<dynamic>? notIncluded,
+  List<String>? included,
+  List<String>? notIncluded,
   dynamic specialOffer,
   num? companyId,
   String? companyName,
@@ -290,12 +280,8 @@ TravelRecommendation copyWith({  num? id,
     map['coverImageUrl'] = _coverImageUrl;
     map['profileImageUrl'] = _profileImageUrl;
     map['companyProfileImageUrl'] = _companyProfileImageUrl;
-    if (_included != null) {
-      map['included'] = _included?.map((v) => v.toJson()).toList();
-    }
-    if (_notIncluded != null) {
-      map['notIncluded'] = _notIncluded?.map((v) => v.toJson()).toList();
-    }
+    map['included'] = _included;
+    map['notIncluded'] = _notIncluded;
     map['specialOffer'] = _specialOffer;
     map['companyId'] = _companyId;
     map['companyName'] = _companyName;

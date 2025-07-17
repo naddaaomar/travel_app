@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -56,6 +57,7 @@ class OffersCubit extends Cubit<OffersState> {
       response.fold(
         (l) {
           emit(state.copyWith(isLoadingDiscounts: false, error: l.message));
+          print(l.message);
         },
         (r) {
           print("cubiiit");
@@ -82,7 +84,9 @@ class OffersCubit extends Cubit<OffersState> {
     isFetchingMore = true;
     if (!loadMore) emit(state.copyWith(isLoadingCompanies: true));
 
+
     try {
+
       final response = await offersUseCase.callCompanies(
         rate: rate,
         sort: sort,

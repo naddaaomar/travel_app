@@ -25,7 +25,6 @@ class BookingDsImpl implements BookingDs {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = await prefs.getString('token');
-      final userId = await prefs.getString('user_id');
       var response = await apiManager
           .postDate(endPoint: Constants.bookingEndpoint, headers: {
         "Authorization": 'Bearer $token'

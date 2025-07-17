@@ -8,6 +8,7 @@ import 'package:p/screens/ai/Ai_requests.dart';
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/home/presentation/manager/home_cubit.dart';
 import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
+import 'package:p/screens/user_interaction/presentation/manager/interaction_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NearbyPlaces extends StatelessWidget {
@@ -49,15 +50,12 @@ class NearbyPlaces extends StatelessWidget {
               children:
                   List.generate(state.newestModel?.items!.length ?? 0, (index) {
                 return GestureDetector(
-                  onTap: () async{
-                    final aiRequests = AiRequests();
-
-                    await aiRequests.trackInteractionClick(
-                      contentId: state.newestModel?.items![index].id
-                          .toString() ??
-                          '',
+                  onTap: () async {
+                    await context.read<InteractionCubit>().trackInteraction(
+                      contentId: state.newestModel?.items![index].id.toString() ?? '',
                       type: 'travel',
                     );
+
 
                     Navigator.push(
                         context,
@@ -115,16 +113,16 @@ class NearbyPlaces extends StatelessWidget {
                               SizedBox(width: 10.w),
                               Expanded(
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      state.newestModel?.items![index]
-                                              .title ??
+                                      state.newestModel?.items![index].title ??
                                           "",
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           fontFamily: "pop",
-                                          fontSize: 15.sp,
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.w600,
                                           color: isLight
                                               ? Colors.black
@@ -186,6 +184,7 @@ class NearbyPlaces extends StatelessWidget {
             ),
           );
         }
+
         return FadeIn(
           duration: Duration(milliseconds: 700),
           child: Padding(

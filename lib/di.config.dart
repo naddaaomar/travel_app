@@ -10,6 +10,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:connectivity_plus/connectivity_plus.dart' as _i895;
 import 'package:get_it/get_it.dart' as _i174;
+import 'package:hive/hive.dart' as _i979;
 import 'package:injectable/injectable.dart' as _i526;
 
 import 'helpers/api_manager/api_manager.dart' as _i501;
@@ -92,6 +93,30 @@ import 'screens/company_profile/domain/use_cases/company_details_use_case.dart'
     as _i226;
 import 'screens/company_profile/presentation/manager/company_details_cubit.dart'
     as _i71;
+import 'screens/company_rating_and_notification/rating_company/data/data_sources/rating_ds.dart'
+    as _i962;
+import 'screens/company_rating_and_notification/rating_company/data/data_sources/rating_ds_impl.dart'
+    as _i1045;
+import 'screens/company_rating_and_notification/rating_company/domain/repositories/rating_repo.dart'
+    as _i2;
+import 'screens/company_rating_and_notification/rating_company/domain/repositories/rating_repo_impl.dart'
+    as _i32;
+import 'screens/company_rating_and_notification/rating_company/domain/use_cases/rating_use_case.dart'
+    as _i736;
+import 'screens/company_rating_and_notification/rating_company/presentation/manager/rating_cubit.dart'
+    as _i480;
+import 'screens/event_details/data/data_source/remote/event_details_ds.dart'
+    as _i470;
+import 'screens/event_details/data/data_source/remote/event_details_ds_impl.dart'
+    as _i296;
+import 'screens/event_details/data/repositories/event_details_repo_impl.dart'
+    as _i631;
+import 'screens/event_details/domain/repositories/event_details_repo.dart'
+    as _i132;
+import 'screens/event_details/domain/use_cases/event_details_use_case.dart'
+    as _i1051;
+import 'screens/event_details/presentation/manager/event_details_cubit.dart'
+    as _i574;
 import 'screens/events_details/data/data_sources/remote/event_details_ds.dart'
     as _i874;
 import 'screens/events_details/data/data_sources/remote/event_details_ds_impl.dart'
@@ -133,12 +158,20 @@ import 'screens/search/presentation/manager/search_cubit.dart' as _i649;
 import 'screens/tabs/home/data/data_sources/local/home_local_ds.dart' as _i882;
 import 'screens/tabs/home/data/data_sources/local/home_local_ds_impl.dart'
     as _i852;
+import 'screens/tabs/home/data/data_sources/local/recommendation_local_ds.dart'
+    as _i384;
+import 'screens/tabs/home/data/data_sources/local/recommendation_local_ds_impl.dart'
+    as _i391;
 import 'screens/tabs/home/data/data_sources/remote/home_ds.dart' as _i324;
 import 'screens/tabs/home/data/data_sources/remote/home_ds_impl.dart' as _i821;
 import 'screens/tabs/home/data/repositories/home_repo_impl.dart' as _i469;
 import 'screens/tabs/home/domain/repositories/home_repo.dart' as _i810;
 import 'screens/tabs/home/domain/use_cases/home_use_case.dart' as _i263;
 import 'screens/tabs/home/presentation/manager/home_cubit.dart' as _i907;
+import 'screens/tabs/offers/data/data_sources/local/companies_local_ds.dart'
+    as _i88;
+import 'screens/tabs/offers/data/data_sources/local/companies_local_ds_impl.dart'
+    as _i32;
 import 'screens/tabs/offers/data/data_sources/local/offers_local_ds.dart'
     as _i92;
 import 'screens/tabs/offers/data/data_sources/local/offers_local_ds_impl.dart'
@@ -166,6 +199,23 @@ import 'screens/travel_filtration/domain/use_cases/travel_filter_use_case.dart'
     as _i1006;
 import 'screens/travel_filtration/presentation/manger/travel_filter_cubit.dart'
     as _i615;
+import 'screens/user_interaction/data/data_sources/local/hive_interaction_local_ds.dart'
+    as _i996;
+import 'screens/user_interaction/data/data_sources/remote/interaction_remote_ds.dart'
+    as _i635;
+import 'screens/user_interaction/data/models/di_module.dart' as _i864;
+import 'screens/user_interaction/data/models/event_interaction_model.dart'
+    as _i92;
+import 'screens/user_interaction/data/repositories/interaction_repository_impl.dart'
+    as _i59;
+import 'screens/user_interaction/domain/repositories/interaction_repository.dart'
+    as _i53;
+import 'screens/user_interaction/domain/use_cases/save_interaction.dart'
+    as _i945;
+import 'screens/user_interaction/domain/use_cases/send_interactions.dart'
+    as _i187;
+import 'screens/user_interaction/presentation/manager/interaction_cubit.dart'
+    as _i383;
 import 'screens/view_all_events/data/data_sources/remote/all_events_ds.dart'
     as _i566;
 import 'screens/view_all_events/data/data_sources/remote/all_events_ds_impl.dart'
@@ -181,20 +231,27 @@ import 'screens/view_all_events/presentation/manager/all_events_cubit.dart'
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
-  _i174.GetIt init({
+  Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
-  }) {
+  }) async {
     final gh = _i526.GetItHelper(
       this,
       environment,
       environmentFilter,
     );
+    final hiveBoxModule = _$HiveBoxModule();
     final registerModule = _$RegisterModule();
+    await gh.factoryAsync<_i979.Box<_i92.EventInteractionModel>>(
+      () => hiveBoxModule.interactionBox,
+      preResolve: true,
+    );
     gh.lazySingleton<_i501.ApiManager>(() => _i501.ApiManager());
     gh.lazySingleton<_i895.Connectivity>(() => registerModule.connectivity);
     gh.factory<_i559.CompanyDetailsDs>(
         () => _i168.CompanyDetailsDsImpl(gh<_i501.ApiManager>()));
+    gh.factory<_i962.CompanyRatingDs>(
+        () => _i1045.CompanyRatingDsImpl(gh<_i501.ApiManager>()));
     gh.factory<_i566.AllEventsDs>(
         () => _i164.AllEventsDsImpl(gh<_i501.ApiManager>()));
     gh.factory<_i419.AllTravelsLocalDs>(() => _i592.AllTravelsLocalDsImpl());
@@ -220,22 +277,34 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i342.AllNewestRepoImpl(gh<_i1036.AllNewestDs>()));
     gh.factory<_i905.CompanyDiscountsDs>(
         () => _i536.CompanyDiscountsDsImpl(gh<_i501.ApiManager>()));
+    gh.lazySingleton<_i635.InteractionRemoteDataSource>(
+        () => _i635.InteractionRemoteDataSource(gh<_i501.ApiManager>()));
     gh.factory<_i44.TravelCategoryDs>(
         () => _i107.TravelCategoryDsImpl(gh<_i501.ApiManager>()));
+    gh.factory<_i2.CompanyRatingRepo>(
+        () => _i32.CompanyRatingRepoImpl(gh<_i962.CompanyRatingDs>()));
     gh.factory<_i631.AllCompaniesLocalDs>(
         () => _i496.AllCompaniesLocalDsImpl());
     gh.factory<_i907.AllNewestUseCase>(
         () => _i907.AllNewestUseCase(gh<_i601.AllNewestRepo>()));
     gh.factory<_i874.EventDetailsDs>(
         () => _i570.EventDetailsDsImpl(gh<_i501.ApiManager>()));
+    gh.factory<_i384.RecommendationLocalDs>(
+        () => _i391.RecommendationLocalDsImpl());
     gh.factory<_i617.EventDetailsRepo>(
         () => _i727.EventDetailsRepoImpl(gh<_i874.EventDetailsDs>()));
     gh.factory<_i61.BookingDs>(
         () => _i708.BookingDsImpl(gh<_i501.ApiManager>()));
     gh.factory<_i312.OffersDs>(
         () => _i583.OffersDsImpl(gh<_i501.ApiManager>()));
+    gh.lazySingleton<_i996.HiveInteractionLocalDataSource>(() =>
+        _i996.HiveInteractionLocalDataSourceImpl(
+            gh<_i979.Box<_i92.EventInteractionModel>>()));
     gh.factory<_i991.BookingRepo>(
         () => _i659.BookingRepoImpl(gh<_i61.BookingDs>()));
+    gh.factory<_i470.EventDetailsDs>(
+        () => _i296.EventDetailsDsImpl(gh<_i501.ApiManager>()));
+    gh.factory<_i88.CompaniesLocalDs>(() => _i32.CompaniesLocalDsImpl());
     gh.lazySingleton<_i1006.SearchRepo>(
         () => _i594.SearchRepoImpl(gh<_i845.SearchDs>()));
     gh.factory<_i529.AllDiscountsDs>(
@@ -246,10 +315,15 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i351.CompanyDiscountsRepoImpl(gh<_i905.CompanyDiscountsDs>()));
     gh.factory<_i259.CompanyDetailsRepo>(
         () => _i545.CompanyDetailsRepoImpl(gh<_i559.CompanyDetailsDs>()));
+    gh.factory<_i53.InteractionRepository>(() => _i59.InteractionRepositoryImpl(
+          gh<_i996.HiveInteractionLocalDataSource>(),
+          gh<_i635.InteractionRemoteDataSource>(),
+        ));
     gh.factory<_i193.OffersRepo>(() => _i580.OffersRepoImpl(
           gh<_i312.OffersDs>(),
           gh<_i92.OffersLocalDs>(),
           gh<_i483.NetworkInfo>(),
+          gh<_i88.CompaniesLocalDs>(),
         ));
     gh.factory<_i805.TravelFilterRepo>(() => _i779.TravelFilterRepoImpl(
           gh<_i44.TravelCategoryDs>(),
@@ -263,6 +337,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i304.CompanyOffersCubit(gh<_i585.CompanyDiscountsUseCase>()));
     gh.factory<_i226.CompanyDetailsUseCase>(
         () => _i226.CompanyDetailsUseCase(gh<_i259.CompanyDetailsRepo>()));
+    gh.factory<_i132.EventDetailsRepo>(
+        () => _i631.EventDetailsRepoImpl(gh<_i470.EventDetailsDs>()));
     gh.factory<_i807.AllEventsUseCase>(
         () => _i807.AllEventsUseCase(gh<_i438.AllEventsRepo>()));
     gh.factory<_i795.AllTravelsRepo>(() => _i509.AllTravelsRepoImpl(
@@ -275,17 +351,14 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i631.AllCompaniesLocalDs>(),
           gh<_i483.NetworkInfo>(),
         ));
-    gh.factory<_i810.HomeRepo>(() => _i469.HomeRepoImpl(
-          gh<_i324.HomeDs>(),
-          gh<_i882.HomeLocalDs>(),
-          gh<_i483.NetworkInfo>(),
-        ));
     gh.factory<_i617.BookingUseCase>(
         () => _i617.BookingUseCase(gh<_i991.BookingRepo>()));
     gh.factory<_i877.SearchUseCase>(
         () => _i877.SearchUseCase(gh<_i1006.SearchRepo>()));
     gh.factory<_i1006.TravelFilterUseCase>(
         () => _i1006.TravelFilterUseCase(gh<_i805.TravelFilterRepo>()));
+    gh.factory<_i736.CompanyRatingUseCase>(
+        () => _i736.CompanyRatingUseCase(gh<_i2.CompanyRatingRepo>()));
     gh.factory<_i74.AllEventsCubit>(
         () => _i74.AllEventsCubit(gh<_i807.AllEventsUseCase>()));
     gh.factory<_i591.AllDiscountsRepo>(() => _i438.AllDiscountsRepoImpl(
@@ -297,20 +370,36 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i880.AllTravelsUseCase(gh<_i795.AllTravelsRepo>()));
     gh.factory<_i44.AllTravelsCubit>(
         () => _i44.AllTravelsCubit(gh<_i880.AllTravelsUseCase>()));
+    gh.factory<_i810.HomeRepo>(() => _i469.HomeRepoImpl(
+          gh<_i324.HomeDs>(),
+          gh<_i882.HomeLocalDs>(),
+          gh<_i483.NetworkInfo>(),
+          gh<_i384.RecommendationLocalDs>(),
+        ));
     gh.factory<_i615.TravelFilterCubit>(
         () => _i615.TravelFilterCubit(gh<_i1006.TravelFilterUseCase>()));
     gh.factory<_i344.BookingCubit>(
         () => _i344.BookingCubit(bookingUseCase: gh<_i617.BookingUseCase>()));
     gh.factory<_i1066.EventDetailsUseCase>(
         () => _i1066.EventDetailsUseCase(gh<_i617.EventDetailsRepo>()));
+    gh.factory<_i1051.EventDetailsUseCase>(
+        () => _i1051.EventDetailsUseCase(gh<_i132.EventDetailsRepo>()));
     gh.factory<_i437.ClientSecretRepo>(
         () => _i425.ClientSecretRepoImpl(gh<_i25.ClientSecretDs>()));
+    gh.factory<_i945.SaveInteractionUseCase>(
+        () => _i945.SaveInteractionUseCase(gh<_i53.InteractionRepository>()));
+    gh.factory<_i187.SendInteractionsUseCase>(
+        () => _i187.SendInteractionsUseCase(gh<_i53.InteractionRepository>()));
     gh.factory<_i649.SearchCubit>(
         () => _i649.SearchCubit(gh<_i877.SearchUseCase>()));
     gh.factory<_i1011.OffersUseCase>(
         () => _i1011.OffersUseCase(gh<_i193.OffersRepo>()));
+    gh.factory<_i383.InteractionCubit>(
+        () => _i383.InteractionCubit(gh<_i945.SaveInteractionUseCase>()));
     gh.factory<_i71.CompanyDetailsCubit>(
         () => _i71.CompanyDetailsCubit(gh<_i226.CompanyDetailsUseCase>()));
+    gh.factory<_i480.CompanyRatingCubit>(
+        () => _i480.CompanyRatingCubit(gh<_i736.CompanyRatingUseCase>()));
     gh.factory<_i263.HomeUseCase>(
         () => _i263.HomeUseCase(gh<_i810.HomeRepo>()));
     gh.factory<_i903.AllCompaniesUseCase>(
@@ -327,11 +416,15 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i727.OffersCubit(offersUseCase: gh<_i1011.OffersUseCase>()));
     gh.factory<_i661.EventDetailsCubit>(
         () => _i661.EventDetailsCubit(gh<_i1066.EventDetailsUseCase>()));
+    gh.factory<_i574.EventDetailsCubit>(
+        () => _i574.EventDetailsCubit(gh<_i1051.EventDetailsUseCase>()));
     gh.factory<_i907.HomeCubit>(() => _i907.HomeCubit(gh<_i263.HomeUseCase>()));
     gh.factory<_i230.AllDiscountsCubit>(
         () => _i230.AllDiscountsCubit(gh<_i750.AllDiscountsUseCase>()));
     return this;
   }
 }
+
+class _$HiveBoxModule extends _i864.HiveBoxModule {}
 
 class _$RegisterModule extends _i1017.RegisterModule {}

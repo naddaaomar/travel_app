@@ -19,7 +19,7 @@ class TravelFilterState {
     this.priceDown = false,
     this.bottomContainer,
     this.selectedCategories = null,
-    this.currentRangeValues = const RangeValues(1000, 4000),
+    this.currentRangeValues = const RangeValues(700, 10000),
     this.selectedPriceRange,
     this.selectedPriceOrder,
     this.selectedOrder = "Descending",

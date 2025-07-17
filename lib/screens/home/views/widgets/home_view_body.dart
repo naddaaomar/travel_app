@@ -13,8 +13,8 @@ import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/tabs/home/presentation/pages/home_tab.dart';
 import 'package:p/screens/tabs/map/views/map_view.dart';
 import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
-import 'package:p/screens/tabs/profile/auth/core/cubit/auth_cubit.dart';
-import 'package:p/screens/tabs/profile/views/pages/profile_tab.dart';
+import 'package:p/screens/auth/core/cubit/auth_cubit.dart';
+import '../../../tabs/profile/presentation/pages/profile_tab.dart';
 
 enum AppBarState { transparent, color, hidden }
 
@@ -31,18 +31,17 @@ class HomeViewBody extends StatefulWidget {
 class _HomeViewBodyState extends State<HomeViewBody>
     with TickerProviderStateMixin {
   final ValueNotifier<AppBarState> _appBarStateNotifier =
-  ValueNotifier(AppBarState.transparent);
+      ValueNotifier(AppBarState.transparent);
 
   List<Widget> get tabs => [
-    HomeTab(),
-    OffersScreen(),
-    BlocProvider(
-      create: (context) => AuthCubit(),
-      child: PersonTab(
-          appBarStateNotifier: _appBarStateNotifier),
-    ),
-    MapView(),
-  ];
+        HomeTab(),
+        OffersScreen(),
+        BlocProvider(
+          create: (context) => AuthCubit(),
+          child: PersonTab(appBarStateNotifier: _appBarStateNotifier),
+        ),
+        MapView(),
+      ];
 
   @override
   void initState() {
@@ -71,7 +70,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
       } else {
         Future.delayed(
           Duration(milliseconds: 200),
-              () => setState(() {}),
+          () => setState(() {}),
         );
       }
     });
@@ -98,6 +97,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
     if (HomeViewBody.currentIndex != 2) {
       return AppBar(
         backgroundColor: Colors.transparent,
+        toolbarHeight: 70,
         elevation: 0,
         leading: MainRow(
           controller: _advancedDrawerController,
@@ -111,9 +111,11 @@ class _HomeViewBodyState extends State<HomeViewBody>
     }
 
     return AppBar(
-      backgroundColor:
-      _appBarStateNotifier.value == AppBarState.color ? Color(0xFFDF6951) : Colors.transparent,
+      backgroundColor: _appBarStateNotifier.value == AppBarState.color
+          ? Color(0xFFDF6951)
+          : Colors.transparent,
       elevation: 0,
+      toolbarHeight: 70,
       leading: MainRow(
         controller: _advancedDrawerController,
       ),
@@ -145,7 +147,7 @@ class _HomeViewBodyState extends State<HomeViewBody>
           return false;
         }
 
-        return true; // Exit the app
+        return true;
       },
       child: SafeArea(
         child: AdvancedDrawer(
@@ -168,13 +170,12 @@ class _HomeViewBodyState extends State<HomeViewBody>
           animateChildDecoration: true,
           rtlOpening: true,
           openRatio: .5,
-          disabledGestures: false,
+          disabledGestures: HomeViewBody.currentIndex == 3 ? true : false,
           childDecoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           drawer: NewDrawer(
             controller: _advancedDrawerController,
-
           ),
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
@@ -185,13 +186,12 @@ class _HomeViewBodyState extends State<HomeViewBody>
               resizeToAvoidBottomInset: false,
               key: ValueKey(context.locale),
               extendBody: true,
-
               appBar: _buildAppBar(),
               body: LayoutBuilder(
                 builder: (context, constraints) {
                   return SizedBox(
                     height:
-                    constraints.maxHeight, // Ensure it takes full height
+                        constraints.maxHeight, // Ensure it takes full height
                     child: Stack(
                       children: [
                         tabs[HomeViewBody.currentIndex],
@@ -200,16 +200,16 @@ class _HomeViewBodyState extends State<HomeViewBody>
                           builder: (context, isFocused, child) {
                             return isFocused
                                 ? Positioned.fill(
-                              child: GestureDetector(
-                                onTap: () {
-                                  FocusScope.of(context)
-                                      .unfocus(); // Close keyboard when tapping the background
-                                },
-                                child: Container(
-                                  color: Colors.white.withOpacity(0.6),
-                                ),
-                              ),
-                            )
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        FocusScope.of(context)
+                                            .unfocus(); // Close keyboard when tapping the background
+                                      },
+                                      child: Container(
+                                        color: Colors.white.withOpacity(0.6),
+                                      ),
+                                    ),
+                                  )
                                 : SizedBox.shrink();
                           },
                         ),
@@ -234,33 +234,33 @@ class _HomeViewBodyState extends State<HomeViewBody>
               ),
               bottomNavigationBar: _isKeyboardVisible
                   ? SizedBox
-                  .shrink() // Hide navigation bar when keyboard is visible
+                      .shrink() // Hide navigation bar when keyboard is visible
                   : CurvedNavigationBar(
-                index: HomeViewBody.currentIndex,
-                color: isLight
-                    ? ColorApp.primaryColor
-                    : ColorApp.primaryColorDark,
-                backgroundColor: Colors.transparent,
-                animationDuration: const Duration(milliseconds: 400),
-                items: [
-                  Icon(Icons.home,
-                      color: isLight ? Colors.black : Colors.white),
-                  Icon(Icons.local_offer_outlined,
-                      color: isLight ? Colors.black : Colors.white),
-                  Icon(Icons.person,
-                      color: isLight ? Colors.black : Colors.white),
-                  Image.asset(
-                    'assets/images/map.png',
-                    width: 35.w,
-                    color: isLight ? Colors.black : Colors.white,
-                  ),
-                ],
-                onTap: (index) {
-                  setState(() {
-                    HomeViewBody.currentIndex = index;
-                  });
-                },
-              ),
+                      index: HomeViewBody.currentIndex,
+                      color: isLight
+                          ? ColorApp.primaryColor
+                          : ColorApp.primaryColorDark,
+                      backgroundColor: Colors.transparent,
+                      animationDuration: const Duration(milliseconds: 400),
+                      items: [
+                        Icon(Icons.home,
+                            color: isLight ? Colors.black : Colors.white),
+                        Icon(Icons.local_offer_outlined,
+                            color: isLight ? Colors.black : Colors.white),
+                        Icon(Icons.person,
+                            color: isLight ? Colors.black : Colors.white),
+                        Image.asset(
+                          'assets/images/map.png',
+                          width: 35.w,
+                          color: isLight ? Colors.black : Colors.white,
+                        ),
+                      ],
+                      onTap: (index) {
+                        setState(() {
+                          HomeViewBody.currentIndex = index;
+                        });
+                      },
+                    ),
             ),
           ),
         ),

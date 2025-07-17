@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../data/models/AllTravelsModel.dart';
@@ -129,11 +130,9 @@ class AllTravelsCard extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 50),
                             child: IconButton(
-                              iconSize: 18,
+                             // iconSize: 18,
                               onPressed: () {},
-                              icon: FavoriteButton(valueChanged: (_isFavorite) {
-                                print('Is Favorite : $_isFavorite');
-                              }),
+                              icon: Icon(Ionicons.heart,size: 25,)
                             ),
                           ),
                         ),

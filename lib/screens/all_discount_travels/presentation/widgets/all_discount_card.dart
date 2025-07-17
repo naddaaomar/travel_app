@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:p/screens/all_discount_travels/data/remote/models/DiscountItemsModel.dart';
 import 'package:shimmer/shimmer.dart';
-
 
 class AllDiscountCard extends StatelessWidget {
   AllDiscountCard({super.key, required this.items});
@@ -12,6 +12,14 @@ class AllDiscountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double? calculateOriginalPrice(
+        double? discountedPrice, double? discountPercent) {
+      if (discountedPrice == null ||
+          discountPercent == null ||
+          discountPercent == 0) return null;
+      return discountedPrice / (1 - discountPercent / 100);
+    }
+
     final imageUrl = items.coverImageUrl;
     final isValidImageUrl = imageUrl != null &&
         imageUrl.isNotEmpty &&
@@ -39,32 +47,32 @@ class AllDiscountCard extends StatelessWidget {
                 ),
                 child: isValidImageUrl
                     ? CachedNetworkImage(
-                  imageUrl: imageUrl!,
-                  width: 140,
-                  height: 130,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: const Color(0xffD8D1CA),
-                    highlightColor: const Color(0xffCBC0B6),
-                    child: Container(
-                      width: 140,
-                      height: 130,
-                      color: Colors.white,
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Image.asset(
-                    "assets/images/no_image.png",
-                    width: 140,
-                    height: 130,
-                    fit: BoxFit.fill,
-                  ),
-                )
+                        imageUrl: imageUrl!,
+                        width: 140,
+                        height: 130,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Shimmer.fromColors(
+                          baseColor: const Color(0xffD8D1CA),
+                          highlightColor: const Color(0xffCBC0B6),
+                          child: Container(
+                            width: 140,
+                            height: 130,
+                            color: Colors.white,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                          "assets/images/no_image.png",
+                          width: 140,
+                          height: 130,
+                          fit: BoxFit.fill,
+                        ),
+                      )
                     : Image.asset(
-                  "assets/images/no_image.png",
-                  width: 140,
-                  height: 130,
-                  fit: BoxFit.fill,
-                ),
+                        "assets/images/no_image.png",
+                        width: 140,
+                        height: 130,
+                        fit: BoxFit.fill,
+                      ),
               ),
               SizedBox(
                 width: 15,
@@ -90,7 +98,6 @@ class AllDiscountCard extends StatelessWidget {
                       style: TextStyle(
                           fontFamily: "pop",
                           fontSize: 10,
-
                           color: Colors.black54),
                     ),
                     Text(
@@ -100,11 +107,25 @@ class AllDiscountCard extends StatelessWidget {
                           fontSize: 10,
                           color: Colors.black54),
                     ),
+                    Text(
+                      "EGP ${calculateOriginalPrice(items?.price?.toDouble(), items?.saleDiscount?.toDouble())?.toStringAsFixed(0)}",
+                      style: TextStyle(
+                        fontFamily: "pop",
+                        fontSize: 12,
+                        decoration: TextDecoration.lineThrough,
+                        decorationColor: Colors.red,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
                           padding:
-                          EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                              EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             gradient: LinearGradient(
@@ -114,7 +135,7 @@ class AllDiscountCard extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            "${items.price.toString()} EGP",
+                            "${items.price?.toStringAsFixed(0).toString()} EGP",
                             style: TextStyle(
                                 fontSize: 11,
                                 color: Colors.white,
@@ -123,19 +144,10 @@ class AllDiscountCard extends StatelessWidget {
                           ),
                         ),
                         Spacer(),
-                        Flexible(
-                          flex: 10,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 50),
-                            child: IconButton(
-                              iconSize: 18,
-                              onPressed: () {},
-                              icon: FavoriteButton(valueChanged: (_isFavorite) {
-                                print('Is Favorite : $_isFavorite');
-                              }),
-                            ),
-                          ),
-                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: IconButton(onPressed: () {}, icon: Icon(Ionicons.heart)),
+                        )
                       ],
                     ),
                   ],
@@ -144,59 +156,59 @@ class AllDiscountCard extends StatelessWidget {
             ],
           ),
         )
-      // Row(
-      //   crossAxisAlignment: CrossAxisAlignment.center,
-      //   children: [
+        // Row(
+        //   crossAxisAlignment: CrossAxisAlignment.center,
+        //   children: [
 
-      //     Expanded(
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.start,
-      //         children: [
-      //           Row(
-      //             children: [
-      //               for (int i = 0; i < fullStars; i++)
-      //                 Icon(Icons.star, color: Colors.yellow.shade800, size: 17),
-      //               if (fractional >= 0.5)
-      //                 Icon(Icons.star_half,
-      //                     color: Colors.yellow.shade800, size: 17),
-      //               for (int i = 0;
-      //               i < emptyStars - (fractional >= 0.5 ? 1 : 0);
-      //               i++)
-      //                 Icon(Icons.star_border,
-      //                     color: Colors.yellow.shade800, size: 17),
-      //             ],
-      //           ),
-      //
-      //           SizedBox(
-      //             height: 40,
-      //           ),
-      //           Row(
-      //             mainAxisAlignment: MainAxisAlignment.start,
-      //             crossAxisAlignment: CrossAxisAlignment.start,
-      //             children: [
-      //               Icon(
-      //                 Icons.location_on_outlined,
-      //                 color: ColorApp.primaryColor.withOpacity(.6),
-      //                 size: 17,
-      //               ),
-      //               Expanded(
-      //                 child: Text(
-      //                   items.address ?? "",
-      //                   overflow: TextOverflow.ellipsis,
-      //                   style: TextStyle(
-      //                       fontSize: 11,
-      //                       color: Colors.black54,
-      //                       fontFamily: "pop"),
-      //                 ),
-      //               )
-      //             ],
-      //           ),
-      //           // Rating stars
-      //         ],
-      //       ),
-      //     )
-      //   ],
-      // ),
-    );
+        //     Expanded(
+        //       child: Column(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: [
+        //           Row(
+        //             children: [
+        //               for (int i = 0; i < fullStars; i++)
+        //                 Icon(Icons.star, color: Colors.yellow.shade800, size: 17),
+        //               if (fractional >= 0.5)
+        //                 Icon(Icons.star_half,
+        //                     color: Colors.yellow.shade800, size: 17),
+        //               for (int i = 0;
+        //               i < emptyStars - (fractional >= 0.5 ? 1 : 0);
+        //               i++)
+        //                 Icon(Icons.star_border,
+        //                     color: Colors.yellow.shade800, size: 17),
+        //             ],
+        //           ),
+        //
+        //           SizedBox(
+        //             height: 40,
+        //           ),
+        //           Row(
+        //             mainAxisAlignment: MainAxisAlignment.start,
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [
+        //               Icon(
+        //                 Icons.location_on_outlined,
+        //                 color: ColorApp.primaryColor.withOpacity(.6),
+        //                 size: 17,
+        //               ),
+        //               Expanded(
+        //                 child: Text(
+        //                   items.address ?? "",
+        //                   overflow: TextOverflow.ellipsis,
+        //                   style: TextStyle(
+        //                       fontSize: 11,
+        //                       color: Colors.black54,
+        //                       fontFamily: "pop"),
+        //                 ),
+        //               )
+        //             ],
+        //           ),
+        //           // Rating stars
+        //         ],
+        //       ),
+        //     )
+        //   ],
+        // ),
+        );
   }
 }

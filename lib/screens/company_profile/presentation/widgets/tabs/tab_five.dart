@@ -5,6 +5,7 @@ import 'package:p/screens/company_profile/presentation/manager/company_details_c
 import 'package:p/screens/company_profile/presentation/widgets/tabs/cards/all_travels_card.dart';
 import 'package:p/screens/company_profile/presentation/widgets/travel_tabs.dart';
 import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
+import 'package:p/screens/user_interaction/presentation/manager/interaction_cubit.dart';
 
 class TabFive extends StatefulWidget {
   TabFive({super.key, required this.companyId});
@@ -45,12 +46,12 @@ class _TabFiveState extends State<TabFive> {
               : null,
           itemBuilder: (item, index) => GestureDetector(
               onTap: () async{
-                final aiRequests = AiRequests();
-
-                await aiRequests.trackInteractionClick(
-                  contentId:item.id.toString(),
+                await context.read<InteractionCubit>().trackInteraction(
+                  contentId: item.id.toString(),
                   type: 'travel',
                 );
+
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(

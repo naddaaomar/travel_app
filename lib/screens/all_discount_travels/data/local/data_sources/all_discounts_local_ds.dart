@@ -6,3 +6,4 @@ abstract class AllDiscountsLocalDs {
   Future<void> cacheDiscounts(DiscountItemsModel discounts);
   Future<DiscountItemsModel?> getCachedDiscounts();
 }
+

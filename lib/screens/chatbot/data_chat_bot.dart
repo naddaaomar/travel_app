@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:p/screens/chatbot/widgets/chat_message.dart';
+import 'package:p/screens/ai_chatbot/domain/entities/chat_message.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
 class SignalRService {

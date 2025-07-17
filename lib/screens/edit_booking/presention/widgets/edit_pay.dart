@@ -58,7 +58,7 @@ class EditPay extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => PayMethod(
-                      popCount: 2,
+                      popCount: 1,
                       bookingId: stateBooking.bookingModel?.id ?? 0,
                       amount: stateBooking.bookingModel?.totalCost ?? 0,
                       people: cubit.getSummaryText(),

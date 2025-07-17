@@ -101,7 +101,7 @@ dependencies:
   signalr_netcore: ^1.4.3
   jwt_decoder: ^2.0.1
   flutter_staggered_animations: ^1.1.1
-
+  android_alarm_manager_plus: ^4.0.7
 
 dependency_overrides:
   flutter_plugin_android_lifecycle: 2.0.11

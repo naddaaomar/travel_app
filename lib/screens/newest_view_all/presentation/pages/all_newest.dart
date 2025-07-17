@@ -12,6 +12,7 @@ import 'package:p/screens/tabs/offers/presentation/pages/offers_screen.dart';
 import 'package:p/screens/travel_filtration/presentation/manger/travel_filter_cubit.dart';
 import 'package:p/screens/travel_filtration/presentation/pages/travel_filtration.dart';
 import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
+import 'package:p/screens/user_interaction/presentation/manager/interaction_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../di.dart';
@@ -254,9 +255,7 @@ class AllNewest extends StatelessWidget {
                                           }
                                           return InkWell(
                                             onTap: () async{
-                                              final aiRequests = AiRequests();
-
-                                              await aiRequests.trackInteractionClick(
+                                              await context.read<InteractionCubit>().trackInteraction(
                                                 contentId: state
                                                     .allTravelsModel!
                                                     .items![index]
@@ -264,6 +263,8 @@ class AllNewest extends StatelessWidget {
                                                     .toString(),
                                                 type: 'travel',
                                               );
+
+
 
                                               Navigator.push(
                                                   context,

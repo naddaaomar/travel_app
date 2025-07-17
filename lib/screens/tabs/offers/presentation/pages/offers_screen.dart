@@ -182,7 +182,10 @@ class OffersScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                if (state.error != null) Center(child: Text(state.error!)),
+                // if (state.error != null) Center(child: Padding(
+                //   padding: const EdgeInsets.only(bottom: 100),
+                //   child: Text(state.error!),
+                // )),
               ],
             );
           },

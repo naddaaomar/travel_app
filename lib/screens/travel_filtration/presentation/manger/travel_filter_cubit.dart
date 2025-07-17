@@ -164,7 +164,7 @@ class TravelFilterCubit extends Cubit<TravelFilterState> {
   void clearPrice() {
     emit(state.copyWith(
       selectedOrder: null,
-      currentRangeValues: const RangeValues(1000, 4000),
+      currentRangeValues: const RangeValues(700, 10000),
       selectedPriceRange: null,
     ));
   }

@@ -56,6 +56,9 @@ class CompanyDetailsCubit extends Cubit<CompanyDetailsState> {
     }
     scrollToCurrentPage(currentPage: pageIndex);
   }
+  void toggleDescriptionExpanded() {
+    emit(state.copyWith(isDescriptionExpanded: !state.isDescriptionExpanded));
+  }
 
   void scrollToCurrentPage({required int currentPage }) {
     double buttonWidth = 55;

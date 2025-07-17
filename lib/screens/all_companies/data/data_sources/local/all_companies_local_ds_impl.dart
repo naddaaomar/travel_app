@@ -7,6 +7,7 @@ import 'package:p/screens/all_companies/data/models/AllCompaniesModel.dart';
 import 'all_companies_local_ds.dart';
 
 @Injectable(as: AllCompaniesLocalDs)
+
 class AllCompaniesLocalDsImpl implements AllCompaniesLocalDs {
   static const _boxName = 'Companies';
   static const _boxKey = 'allCompanies';

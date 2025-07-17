@@ -89,7 +89,7 @@ class _WelcomePageViewBodyState extends State<OnBoardViewBody> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 40.h),
+                    SizedBox(height: 70.h),
                     GestureDetector(
                       onTap: () {
                         Navigator.pushAndRemoveUntil(

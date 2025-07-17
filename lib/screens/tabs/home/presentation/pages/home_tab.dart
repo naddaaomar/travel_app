@@ -2,9 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gradient_borders/gradient_borders.dart';
 import 'package:p/di.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/ai/Ai_requests.dart';
+import 'package:p/screens/tabs/home/presentation/pages/event_recommend.dart';
 import 'package:p/screens/tabs/home/presentation/pages/travel_recommend.dart';
 import 'package:p/screens/view_all_events/presentation/pages/view_all_recommended_events.dart';
 import 'package:p/screens/search/presentation/pages/location_card_new.dart';
@@ -12,7 +14,6 @@ import 'package:p/screens/newest_view_all/presentation/pages/all_newest.dart';
 import 'package:p/screens/tabs/home/presentation/manager/home_cubit.dart';
 import 'package:p/screens/tabs/home/presentation/widgets/nearby_places.dart';
 import 'package:p/screens/tabs/home/presentation/widgets/recommended_places.dart';
-import 'dart:ui' as ui;
 
 import 'package:p/screens/settings/bloc/theme_bloc/theme_bloc.dart';
 import 'package:p/screens/trip_details/views/widgets/view_all_nearby_trips.dart';
@@ -30,8 +31,8 @@ class HomeTab extends StatelessWidget {
         ..call(
             PageIndex: 1,
             PageSize: 6,
-            numRecommendations: 5,
-            numHighestInteractions: 3),
+            numRecommendations: 10,
+            numHighestInteractions: 2),
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -40,7 +41,7 @@ class HomeTab extends StatelessWidget {
           return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
+              padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 0.h),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -51,71 +52,136 @@ class HomeTab extends StatelessWidget {
                     // LocationCard(),
                     // SizedBox(height: 40.h),
                     if (state.token != null &&
-                        (state.eventRecommendation != null ||
-                            state.travelRecommendation != null)) ...[
+                        (state.eventRecommendation != null || state.travelRecommendation != null)) ...[
                       Row(
                         children: [
+                          // === Travel Container ===
                           Expanded(
-                            child: Shimmer.fromColors(
-                              period: Duration(milliseconds: 3000),
-                              baseColor: ColorApp.thirdColor.withOpacity(1),
-                              highlightColor: Colors.grey.shade300,
-                              child: Text(
-                                "Travels\nJust for you",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
+                            child: GestureDetector(
+                              onTap: (state.travelRecommendation != null &&
+                                  state.travelRecommendation!.isNotEmpty)
+                                  ? () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAllTravelRecommendations(travels: state.travelRecommendation),));
+
+                              }
+                                  : null,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: GradientBoxBorder(
+                                    width: 1.5,
+                                    gradient: LinearGradient(colors: [
+                                      ColorApp.thirdColor,
+                                      ColorApp.highlightColor,
+                                    ]),
+                                  ),
+                                ),
+                                child: (state.travelRecommendation != null &&
+                                    state.travelRecommendation!.isNotEmpty)
+                                    ? Shimmer.fromColors(
+                                  period: const Duration(milliseconds: 3000),
+                                  baseColor: ColorApp.thirdColor.withOpacity(1),
+                                  highlightColor: Colors.grey.shade300,
+                                  child: const Text(
+                                    "Travels\nJust for you",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: "vol",
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                )
+                                    : const Text(
+                                  "Travels\nJust for you",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
                                     fontFamily: "vol",
-                                    color: Colors.white,
-                                    fontSize: 12),
+                                    color: Colors.white54, // lighter color when inactive
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 20,
-                          ),
+
+                          const SizedBox(width: 20),
+
+                          // === Event Container ===
                           Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      ColorApp.thirdColor.withOpacity(.7),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12))),
-                              onPressed: () {
-                                // Show Events
-                              },
-                              child: Text(
-                                "Events\nJust for you ",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
+                            child: GestureDetector(
+                              onTap: (state.eventRecommendation != null &&
+                                  state.eventRecommendation!.isNotEmpty)
+                                  ? () {
+                               Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAllEventRecommendations(events: state.eventRecommendation),));
+                              }
+                                  : null,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: GradientBoxBorder(
+                                    width: 1.5,
+                                    gradient: LinearGradient(colors: [
+                                      ColorApp.thirdColor,
+                                      ColorApp.highlightColor,
+                                    ]),
+                                  ),
+                                ),
+                                child: (state.eventRecommendation != null &&
+                                    state.eventRecommendation!.isNotEmpty)
+                                    ? Shimmer.fromColors(
+                                  period: const Duration(milliseconds: 6000),
+                                  baseColor: ColorApp.thirdColor.withOpacity(1),
+                                  highlightColor: Colors.grey.shade300,
+                                  child: const Text(
+                                    "Events\nJust for you",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: "vol",
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                )
+                                    : const Text(
+                                  "Events\nJust for you",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
                                     fontFamily: "vol",
-                                    color: Colors.white,
-                                    fontSize: 12),
+                                    color: Colors.white54, // lighter color when inactive
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ],
+                    ]
+,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            //  final token = await prefs.getString('token');
-                            final userId = await prefs.getString('user_id');
-                            //  print(token);
-                            //  print("////////////////////////////////////////////");
-                            // print(userId);
-                            final aiRequests = AiRequests();
 
-                            await aiRequests
-                                .syncInteractionStatesFromRemote(); // fetch favs + bookings
-                            await aiRequests.sendUserInteractions(
-                                userId ?? ""); // send to AI endpoint
-
-                            print("✅ AI sync test completed.");
+                            // SharedPreferences prefs =
+                            //     await SharedPreferences.getInstance();
+                            // //  final token = await prefs.getString('token');
+                            // final userId = await prefs.getString('user_id');
+                            // //  print(token);
+                            // //  print("////////////////////////////////////////////");
+                            // // print(userId);
+                            // final aiRequests = AiRequests();
+                            //
+                            // await aiRequests
+                            //     .syncInteractionStatesFromRemote(); // fetch favs + bookings
+                            // await aiRequests.sendUserInteractions(
+                            //     userId ?? ""); // send to AI endpoint
+                            //
+                            // print("✅ AI sync test completed.");
                           },
                           child: Text(
                             'Events',

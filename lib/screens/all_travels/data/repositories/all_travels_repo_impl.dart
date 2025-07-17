@@ -46,6 +46,7 @@ class AllTravelsRepoImpl implements AllTravelsRepo {
           MaxPrice: MaxPrice,
           CategorieyId: CategorieyId,
         );
+        print("📦 Data from API: $data (${data.runtimeType})");
 
         // ✅ Only cache unfiltered data
         if (!isFiltered) {

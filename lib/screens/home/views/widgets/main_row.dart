@@ -18,10 +18,10 @@ class MainRow extends StatelessWidget {
         child: Row(
           children: [
             Image.asset(
-              'assets/images/logo.png',
+              'assets/images/logo_2.png',
               fit: BoxFit.cover,
-              width: 94.w,
-              height: 40.h,
+              width: 120.w,
+              height: 50.h,
               filterQuality: FilterQuality.high,
             ),
             Spacer(),

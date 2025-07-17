@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:chat_bubbles/bubbles/bubble_special_two.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/chatbot/data_chat_bot.dart';
 import 'package:p/screens/chatbot/models/suggest_text.dart';
-import 'package:p/screens/chatbot/widgets/chat_message.dart';
+import 'package:p/screens/ai_chatbot/domain/entities/chat_message.dart';
 import 'package:p/screens/chatbot/widgets/suggest_item.dart';
 import 'package:p/screens/events_details/presentation/pages/event_details_view_body.dart';
 import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
@@ -23,19 +24,27 @@ class _ChatbotState extends State<Chatbot> {
   List<ChatMessage> messages = [];
   final ScrollController _scrollController = ScrollController();
 
-
   @override
   void initState() {
     super.initState();
-    signalR.startConnection();
 
+    // Add the initial greeting message
+    messages.add(ChatMessage(
+      sender: 'Kemet',
+      message:
+          'Hello, I am Kemet. I\'m here to help you explore Egypt. How may I assist you today?',
+      timestamp: DateTime.now(),
+    ));
+
+    signalR.startConnection();
     signalR.onMessageReceived = (msg) {
       setState(() {
-        messages.add(msg); // الآن msg هو ChatMessage
+        messages.add(msg);
       });
       _scrollToBottom();
     };
   }
+
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
@@ -77,126 +86,132 @@ class _ChatbotState extends State<Chatbot> {
   //   });
   // }
 
-
-
   Widget _buildChatBubble(ChatMessage msg) {
     final isMe = msg.sender == 'Me';
 
-    return Container(
-      alignment: isMe ? Alignment.topRight : Alignment.topLeft,
-      margin: EdgeInsets.symmetric(vertical: 6.h),
-      child: Column(
-        crossAxisAlignment:
-        isMe ? CrossAxisAlignment.start : CrossAxisAlignment.end,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              if (!isMe)
-                CircleAvatar(
-                  backgroundColor: ColorApp.primaryColor,
-                  radius: 20.r,
-                  child: ClipOval(
-                    child: Image.asset(
-                      "assets/images/ai.png",
-                      fit: BoxFit.cover,
-                      width: 40.w,
-                      height: 40.h,
-                    ),
-                  ),
-                ),
-              Flexible(
-                child: BubbleSpecialTwo(
-                  text: msg.message,
-                  color: isMe
-                      ? Colors.grey.withOpacity(.3)
-                      : ColorApp.primaryColor,
-                  tail: true,
-                  isSender: isMe,
-                  textStyle: TextStyle(
-                    color: isMe ? Colors.black : Colors.white,
-                    fontSize: 14.sp,
-                  ),
-                ),
-              ),
-              if (isMe)
-                CircleAvatar(
-                  radius: 20.r,
-                  child: ClipOval(
-                    child: Image.asset(
-                      "assets/images/profile.jpg",
-                      fit: BoxFit.cover,
-                      width: 40.w,
-                      height: 40.h,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-
-          // 🕒 Timestamp
-          Padding(
-            padding: EdgeInsets.only(top: 2.h),
-            child: Row(
+    return FadeIn(
+      duration: Duration(milliseconds: 750),
+      child: Container(
+        alignment: isMe ? Alignment.topRight : Alignment.topLeft,
+        margin: EdgeInsets.symmetric(vertical: 6.h),
+        child: Column(
+          crossAxisAlignment:
+              isMe ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+          children: [
+            Row(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  DateFormat('MM/dd/yyyy, hh:mm a')
-                      .format(msg.timestamp)
-                      .toString()
-                      .substring(12),
-                  style: TextStyle(
-                      color: Colors.black.withOpacity(.5), fontSize: 11.sp),
+                if (!isMe)
+                  CircleAvatar(
+                    backgroundColor: ColorApp.primaryColor,
+                    radius: 20.r,
+                    child: ClipOval(
+                      child: Image.asset(
+                        "assets/images/ai.png",
+                        fit: BoxFit.cover,
+                        width: 40.w,
+                        height: 40.h,
+                      ),
+                    ),
+                  ),
+                Flexible(
+                  child: BubbleSpecialTwo(
+                    text: msg.message,
+                    color: isMe
+                        ? Colors.grey.withOpacity(.3)
+                        : ColorApp.primaryColor,
+                    tail: true,
+                    isSender: isMe,
+                    textStyle: TextStyle(
+                      color: isMe ? Colors.black : Colors.white,
+                      fontSize: 14.sp,
+                    ),
+                  ),
                 ),
-                Icon(
-                  Icons.check,
-                  color: Colors.black.withOpacity(.5),
-                  size: 17.w,
-                )
+                if (isMe)
+                  CircleAvatar(
+                    radius: 20.r,
+                    child: ClipOval(
+                      child: Image.asset(
+                        "assets/images/profile.jpg",
+                        fit: BoxFit.cover,
+                        width: 40.w,
+                        height: 40.h,
+                      ),
+                    ),
+                  ),
               ],
             ),
-          ),
 
-          if (!isMe && (msg.events != null || msg.travels != null))
+            // 🕒 Timestamp
             Padding(
-              padding: EdgeInsets.only(top: 8.h),
-              child: Column(
+              padding: EdgeInsets.only(top: 2.h),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (msg.events != null) ..._buildCards(msg.events!, 'event'),
-                  if (msg.travels != null) ..._buildCards(msg.travels!, 'travel'),
+                  Text(
+                    DateFormat('MM/dd/yyyy, hh:mm a')
+                        .format(msg.timestamp)
+                        .toString()
+                        .substring(12),
+                    style: TextStyle(
+                        color: Colors.black.withOpacity(.5), fontSize: 11.sp),
+                  ),
+                  Icon(
+                    Icons.check,
+                    color: Colors.black.withOpacity(.5),
+                    size: 17.w,
+                  )
                 ],
               ),
             ),
 
-        ],
+            if (!isMe && (msg.events != null || msg.travels != null))
+              Padding(
+                padding: EdgeInsets.only(top: 8.h),
+                child: Column(
+                  children: [
+                    if (msg.events != null)
+                      ..._buildCards(msg.events!, 'event'),
+                    if (msg.travels != null)
+                      ..._buildCards(msg.travels!, 'travel'),
+                  ],
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
+
   List<Widget> _buildCards(List<dynamic> items, String type) {
     return items.map((item) {
       final map = item as Map<String, dynamic>;
 
-      final imageUrl = type == 'event'
-          ? map['image']
-          : map['coverImageUrl'];
+      final imageUrl = type == 'event' ? map['image'] : map['coverImageUrl'];
 
       final title = map['title'] ?? 'No Title';
 
       final subtitle = type == 'event'
-          ? (map['dates'] ??map["date"] )
+          ? (map['dates'] ?? map["date"])
           : (map['description'] ?? 'No Description');
 
       return GestureDetector(
         onTap: () {
           if (type == 'event') {
-            Navigator.push(context, MaterialPageRoute(
-              builder: (_) => EventDetailsViewBody(id: map['id'].toString()),
-            ));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      EventDetailsViewBody(id: map['id'].toString()),
+                ));
           } else {
-            Navigator.push(context, MaterialPageRoute(
-              builder: (_) => TripDetailsViewBody(id: map['id'].toString()),
-            ));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => TripDetailsViewBody(id: map['id'].toString()),
+                ));
           }
         },
         child: Container(
@@ -264,8 +279,6 @@ class _ChatbotState extends State<Chatbot> {
     }).toList();
   }
 
-
-
   @override
   void dispose() {
     signalR.stopConnection();
@@ -302,7 +315,7 @@ class _ChatbotState extends State<Chatbot> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Main Title",
+                "Kemet Assistant",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
@@ -318,16 +331,16 @@ class _ChatbotState extends State<Chatbot> {
               )
             ],
           ),
-          actions: [
-            Padding(
-              padding: EdgeInsets.only(right: 20.w),
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.remove_circle_outline_outlined,
-                    color: Colors.white),
-              ),
-            )
-          ],
+          // actions: [
+          //   Padding(
+          //     padding: EdgeInsets.only(right: 20.w),
+          //     child: IconButton(
+          //       onPressed: () {},
+          //       icon: const Icon(Icons.remove_circle_outline_outlined,
+          //           color: Colors.white),
+          //     ),
+          //   )
+          // ],
         ),
         backgroundColor: ColorApp.secondaryColor,
         body: Column(
@@ -336,14 +349,13 @@ class _ChatbotState extends State<Chatbot> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: messages.length,
-                    itemBuilder: (_, index) {
-                      return _buildChatBubble(messages[index]);
-                    },
-                  ),
-
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: messages.length,
+                  itemBuilder: (_, index) {
+                    return _buildChatBubble(messages[index]);
+                  },
+                ),
               ),
             ),
             Container(
@@ -397,8 +409,7 @@ class _ChatbotState extends State<Chatbot> {
                               controller.clear();
                             });
                             _scrollToBottom();
-                          }
-,
+                          },
                           icon: Icon(
                             Icons.send_outlined,
                             color: Colors.blue.withOpacity(.7),

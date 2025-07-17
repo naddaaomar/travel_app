@@ -82,19 +82,19 @@ class DiscountItems {
       num? destinationCityLat, 
       num? destinationCityLng, 
       String? transportationType, 
-      List<dynamic>? amenities, 
+      List<String>? amenities,
       String? coverImageUrl, 
       String? profileImageUrl, 
       String? companyProfileImageUrl, 
-      List<dynamic>? included, 
-      List<dynamic>? notIncluded, 
+      List<String>? included,
+      List<String>? notIncluded,
       dynamic specialOffer, 
       num? companyId, 
       String? companyName, 
       num? categoryId, 
       dynamic categoryName, 
       List<String>? imageUrls, 
-      List<dynamic>? itineraries,}){
+      List<String>? itineraries,}){
     _id = id;
     _title = title;
     _description = description;
@@ -145,39 +145,19 @@ class DiscountItems {
     _destinationCityLat = json['destinationCityLat'];
     _destinationCityLng = json['destinationCityLng'];
     _transportationType = json['transportationType'];
-    if (json['amenities'] != null) {
-      _amenities = [];
-      json['amenities'].forEach((v) {
-        _amenities?.add(v);
-      });
-    }
+    _amenities = json['amenities'] != null ? List<String>.from(json['amenities']) : [];
     _coverImageUrl = json['coverImageUrl'];
     _profileImageUrl = json['profileImageUrl'];
     _companyProfileImageUrl = json['companyProfileImageUrl'];
-    if (json['included'] != null) {
-      _included = [];
-      json['included'].forEach((v) {
-        _included?.add(v);
-      });
-    }
-    if (json['notIncluded'] != null) {
-      _notIncluded = [];
-      json['notIncluded'].forEach((v) {
-        _notIncluded?.add(v);
-      });
-    }
+    _included = json['included'] != null ? List<String>.from(json['included']) : [];
+    _notIncluded = json['notIncluded'] != null ? List<String>.from(json['notIncluded']) : [];
     _specialOffer = json['specialOffer'];
     _companyId = json['companyId'];
     _companyName = json['companyName'];
     _categoryId = json['categoryId'];
     _categoryName = json['categoryName'];
     _imageUrls = json['imageUrls'] != null ? json['imageUrls'].cast<String>() : [];
-    if (json['itineraries'] != null) {
-      _itineraries = [];
-      json['itineraries'].forEach((v) {
-        _itineraries?.add(v);
-      });
-    }
+    _itineraries = json['itenraries'] != null ? List<String>.from(json['itenraries']) : [];
   }
   num? _id;
   String? _title;
@@ -196,19 +176,19 @@ class DiscountItems {
   num? _destinationCityLat;
   num? _destinationCityLng;
   String? _transportationType;
-  List<dynamic>? _amenities;
+  List<String>? _amenities;
   String? _coverImageUrl;
   String? _profileImageUrl;
   String? _companyProfileImageUrl;
-  List<dynamic>? _included;
-  List<dynamic>? _notIncluded;
+  List<String>? _included;
+  List<String>? _notIncluded;
   dynamic _specialOffer;
   num? _companyId;
   String? _companyName;
   num? _categoryId;
   dynamic _categoryName;
   List<String>? _imageUrls;
-  List<dynamic>? _itineraries;
+  List<String>? _itineraries;
   DiscountItems copyWith({  num? id,
   String? title,
   String? description,
@@ -226,19 +206,19 @@ class DiscountItems {
   num? destinationCityLat,
   num? destinationCityLng,
   String? transportationType,
-  List<dynamic>? amenities,
+  List<String>? amenities,
   String? coverImageUrl,
   String? profileImageUrl,
   String? companyProfileImageUrl,
-  List<dynamic>? included,
-  List<dynamic>? notIncluded,
+  List<String>? included,
+  List<String>? notIncluded,
   dynamic specialOffer,
   num? companyId,
   String? companyName,
   num? categoryId,
   dynamic categoryName,
   List<String>? imageUrls,
-  List<dynamic>? itineraries,
+  List<String>? itineraries,
 }) => Items(  id: id ?? _id,
   title: title ?? _title,
   description: description ?? _description,
@@ -320,27 +300,20 @@ class DiscountItems {
     map['destinationCityLat'] = _destinationCityLat;
     map['destinationCityLng'] = _destinationCityLng;
     map['transportationType'] = _transportationType;
-    if (_amenities != null) {
-      map['amenities'] = _amenities?.map((v) => v.toJson()).toList();
-    }
+
+    map['amenities'] = _amenities;
     map['coverImageUrl'] = _coverImageUrl;
     map['profileImageUrl'] = _profileImageUrl;
     map['companyProfileImageUrl'] = _companyProfileImageUrl;
-    if (_included != null) {
-      map['included'] = _included?.map((v) => v.toJson()).toList();
-    }
-    if (_notIncluded != null) {
-      map['notIncluded'] = _notIncluded?.map((v) => v.toJson()).toList();
-    }
+    map['included'] = _included;
+    map['notIncluded'] = _notIncluded;
     map['specialOffer'] = _specialOffer;
     map['companyId'] = _companyId;
     map['companyName'] = _companyName;
     map['categoryId'] = _categoryId;
     map['categoryName'] = _categoryName;
     map['imageUrls'] = _imageUrls;
-    if (_itineraries != null) {
-      map['itineraries'] = _itineraries?.map((v) => v.toJson()).toList();
-    }
+    map['itenraries'] = _itineraries;
     return map;
   }
 

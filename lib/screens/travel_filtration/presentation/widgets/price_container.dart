@@ -163,7 +163,7 @@ class _PriceContainerState extends State<PriceContainer> {
 
                           filterCubit.clearPrice();
                           widget.onDone(
-                              RangeValues(0, 100000), state.selectedOrder);
+                              RangeValues(0, 10000), state.selectedOrder);
                         }
 ,
                         style: ElevatedButton.styleFrom(

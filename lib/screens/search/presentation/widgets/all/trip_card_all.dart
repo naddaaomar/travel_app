@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:p/helpers/themes/colors.dart';
 import 'package:p/screens/ai/Ai_requests.dart';
 import 'package:p/screens/search/data/models/SearchAllModel.dart';
 import 'package:p/screens/search/presentation/widgets/search_model.dart';
 import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
+import 'package:p/screens/user_interaction/presentation/manager/interaction_cubit.dart';
 
 class TripCardAll extends StatelessWidget {
   TripCardAll({super.key, required this.model});
@@ -14,12 +16,11 @@ class TripCardAll extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: ()async {
-        final aiRequests = AiRequests();
-
-        await aiRequests.trackInteractionClick(
+        await context.read<InteractionCubit>().trackInteraction(
           contentId: model.id.toString(),
           type: 'travel',
         );
+
 
         Navigator.push(context, MaterialPageRoute(builder: (context) =>TripDetailsViewBody(id: model.id.toString()) ,));
       },
