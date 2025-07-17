@@ -3,77 +3,95 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/model/user_profile_model.dart';
 import 'profile_state.dart';
 
-
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileInitial());
 
-  Future<void> loadProfile(String defaultName, String defaultEmail,
-      String defaultPassword) async {
+  Future<void> loadProfile() async {
     emit(ProfileLoading());
     try {
       final prefs = await SharedPreferences.getInstance();
+      final email = prefs.getString('email') ?? 'no-email-set';
+
       final profile = UserProfile(
-        name: prefs.getString('name') ?? defaultName,
-        email: prefs.getString('email') ?? defaultEmail,
-        password: prefs.getString('password') ?? defaultPassword,
+        name: prefs.getString('name') ?? 'No name',
+        email: email,
+        password: 'hidden',
       );
+
+      print('CLEAN PROFILE EMAIL: ${profile.email}');
       emit(ProfileLoaded(profile));
     } catch (e) {
-      emit(ProfileError('Failed to load profile: $e'));
+      emit(ProfileError('Failed to load profile'));
     }
   }
 
   Future<void> updateName(String newName) async {
+    if (state is! ProfileLoaded) return;
+
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('name', newName);
-      if (state is ProfileLoaded) {
-        final currentProfile = (state as ProfileLoaded).profile;
-        emit(ProfileLoaded(currentProfile.copyWith(name: newName)));
-      }
+      emit(ProfileLoaded((state as ProfileLoaded).profile.copyWith(name: newName)));
     } catch (e) {
-      emit(ProfileError('Failed to update name: $e'));
+      emit(ProfileError('Failed to update name'));
     }
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', newName);
   }
 
   Future<void> updateEmail(String newEmail) async {
+    if (state is! ProfileLoaded) return;
+
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('email', newEmail);
-      if (state is ProfileLoaded) {
-        final currentProfile = (state as ProfileLoaded).profile;
-        emit(ProfileLoaded(currentProfile.copyWith(email: newEmail)));
-      }
+      emit(ProfileLoaded((state as ProfileLoaded).profile.copyWith(email: newEmail)));
     } catch (e) {
-      emit(ProfileError('Failed to update email: $e'));
+      emit(ProfileError('Failed to update email'));
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('email', newEmail);
+  }
+
+  Future<bool> verifyPassword(String currentPassword) async {
+    if (state is! ProfileLoaded) return false;
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final storedPassword = prefs.getString('password') ??
+          (state as ProfileLoaded).profile.password;
+      return currentPassword == storedPassword;
+    } catch (e) {
+      return false;
     }
   }
 
-  Future<void> updatePassword(String currentPassword,
-      String newPassword) async {
+  Future<bool> updatePassword(String currentPassword, String newPassword) async {
+    if (state is! ProfileLoaded) return false;
+
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final storedPassword = prefs.getString('password') ?? '';
-
-      if (currentPassword != storedPassword) {
+      if (!await verifyPassword(currentPassword)) {
         emit(ProfileError('Current password is incorrect'));
-        return;
+        return false;
       }
-
       if (newPassword.length < 6) {
         emit(ProfileError('Password must be at least 6 characters'));
-        return;
+        return false;
       }
-
+      final prefs = await SharedPreferences.getInstance();
       await prefs.setString('password', newPassword);
-      if (state is ProfileLoaded || state is ProfilePasswordUpdated) {
-        final currentProfile = (state is ProfileLoaded)
-            ? (state as ProfileLoaded).profile
-            : (state as ProfilePasswordUpdated).profile;
-        emit(ProfileLoaded(currentProfile.copyWith(password: newPassword)));
-      }
+
+      final updatedProfile = (state as ProfileLoaded).profile.copyWith(
+        password: newPassword,
+      );
+      emit(ProfilePasswordUpdated(updatedProfile));
+
+      return true;
     } catch (e) {
-      emit(ProfileError('Failed to update password: $e'));
+      emit(ProfileError('Failed to update password'));
+      return false;
     }
   }
 }

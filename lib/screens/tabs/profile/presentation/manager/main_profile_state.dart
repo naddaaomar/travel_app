@@ -18,12 +18,12 @@ class MainProfileRefreshing extends MainProfileState {
 
 class MainProfileLoaded extends MainProfileState {
   final ProfileCubit profileCubit;
-  final CombinedFavoritesCubit combinedFavoritesCubit;
+  final FavoritesCubit favoritesCubit;
   final TripsTabCubit tripsTabCubit;
 
   const MainProfileLoaded({
     required this.profileCubit,
-    required this.combinedFavoritesCubit,
+    required this.favoritesCubit,
     required this.tripsTabCubit,
   });
 
@@ -33,12 +33,12 @@ class MainProfileLoaded extends MainProfileState {
           other is MainProfileLoaded &&
               runtimeType == other.runtimeType &&
               profileCubit == other.profileCubit &&
-              combinedFavoritesCubit == other.combinedFavoritesCubit &&
+              favoritesCubit == other.favoritesCubit &&
               tripsTabCubit == other.tripsTabCubit;
 
   @override
   int get hashCode =>
-      Object.hash(profileCubit, combinedFavoritesCubit, tripsTabCubit);
+      Object.hash(profileCubit, favoritesCubit, tripsTabCubit);
 }
 
 class MainProfileError extends MainProfileState {

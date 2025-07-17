@@ -9,6 +9,7 @@ class LocaleBloc extends Bloc<LocaleEvent, Locale> {
     on<ChangeLocale>((event, emit) async {
       emit(event.locale);
 
+      var navigatorKey;
       await EasyLocalization.of(navigatorKey.currentContext!)!
           .setLocale(event.locale);
     });

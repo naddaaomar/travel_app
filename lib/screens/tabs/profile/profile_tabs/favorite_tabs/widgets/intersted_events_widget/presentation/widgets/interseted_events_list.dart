@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:p/screens/view_all_events/presentation/pages/view_all_recommended_events.dart';
 import '../../../../../../../../event_details/presentation/pages/event_details_view_body.dart';
@@ -48,3 +49,5 @@ class InterestedEventsList extends StatelessWidget {
     );
   }
 }
+
+ */

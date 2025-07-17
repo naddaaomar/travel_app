@@ -43,7 +43,7 @@ class ProfileCard extends StatelessWidget {
             const Divider(height: 24),
             ProfileItem(
               title: 'Password',
-              value: '•' * profile.passwordLength,
+              value: '*' * profile.passwordLength,
               icon: Icons.lock,
               onTap: onEditPassword,
             ),

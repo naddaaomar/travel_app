@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:p/screens/view_all_events/presentation/pages/view_all_recommended_events.dart';
@@ -63,3 +64,5 @@ class _InterestedEventsPageState extends State<InterestedEventsPage> {
     );
   }
 }
+
+ */

@@ -13,6 +13,7 @@ class MainProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLight = context.watch<ThemeBloc>().state == ThemeMode.light;
 
     return BlocProvider(
       create: (context) => MainProfileCubit(client: http.Client()),
@@ -20,9 +21,7 @@ class MainProfile extends StatelessWidget {
         builder: (context, state) {
           if (state is MainProfileInitial || state is MainProfileLoading) {
             return const Scaffold(
-              body: Center(
-                  child: CircularProgressIndicator()
-              ),
+              body: Center(child: CircularProgressIndicator()),
             );
           }
 
@@ -47,8 +46,7 @@ class MainProfile extends StatelessWidget {
             return MultiBlocProvider(
               providers: [
                 BlocProvider.value(value: state.profileCubit),
-                BlocProvider.value(value: state.combinedFavoritesCubit),
-             //   BlocProvider.value(value: state.interestedEventsCubit),
+                BlocProvider.value(value: state.favoritesCubit),
                 BlocProvider.value(value: state.tripsTabCubit),
               ],
               child: ProfileContent(),
@@ -56,9 +54,8 @@ class MainProfile extends StatelessWidget {
           }
 
           return const Scaffold(
-              body: Center(
-                  child: CircularProgressIndicator()
-              ),
+            body: Center(
+                child: CircularProgressIndicator()),
           );
         },
       ),
@@ -75,8 +72,7 @@ class ProfileContent extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(
-                child: CircularProgressIndicator()
-            ),
+                child: CircularProgressIndicator()),
           );
         }
 
@@ -88,7 +84,10 @@ class ProfileContent extends StatelessWidget {
               MaterialPageRoute(builder: (context) => const SignInPage()),
             );
           });
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+              body: Center(
+                  child: CircularProgressIndicator()),
+          );
         }
 
         return Scaffold(

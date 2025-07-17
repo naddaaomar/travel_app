@@ -1,3 +1,4 @@
+/*
 import '../../data/model/interseted_event_model.dart';
 
 sealed class InterestedEventsState {
@@ -48,3 +49,5 @@ class InterestedEventsError extends InterestedEventsState {
 class InterestedEventsAuthRequired extends InterestedEventsState {
   const InterestedEventsAuthRequired();
 }
+
+ */

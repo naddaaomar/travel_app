@@ -33,15 +33,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     context.read<ProfileCubit>().loadProfile(
-      widget.name,
+     /* widget.name,
       widget.email,
       widget.password,
+
+      */
     );
   }
 
   Future<void> _signOut() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('isSignedIn');
+    await prefs.remove('isSignedUp');
+
     await prefs.remove('email');
     await prefs.remove('name');
     await prefs.remove('password');
@@ -51,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.pushNamedAndRemoveUntil(
       context, '/',
           (route) => false,
-    );
+            );
   }
 
   Future<void> _navigateToEditProfile(UserProfile profile) async {
@@ -89,15 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.pop(context);
             }
           },
-          onResetPassword: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Password reset link sent to ${profile.email}'),
-                duration: const Duration(seconds: 3),
-              ),
-            );
-            Navigator.pop(context);
-          },
+          userEmail: profile.email,
         ),
       ),
     );
@@ -115,6 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
         builder: (context, state) {
+
           if (state is ProfileInitial || state is ProfileLoading) {
             return const Center(child: CircularProgressIndicator());
           }

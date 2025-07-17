@@ -1,55 +1,86 @@
+/*
 part of 'combined_favorites_cubit.dart';
 
-sealed class CombinedFavoritesState {
+@immutable
+sealed class CombinedFavoritesState extends Equatable {
   final List<InterstedEvents> events;
-  final List<Trip> favorites;
+  final List<FavoriteModel> favorites;
 
   const CombinedFavoritesState({
     this.events = const [],
     this.favorites = const [],
   });
+
+  @override
+  List<Object> get props => [events, favorites];
+
+  bool get isLoading => this is CombinedFavoritesLoading;
+  bool get isLoaded => this is CombinedFavoritesLoaded;
+  bool get isError => this is CombinedFavoritesError;
 }
 
 class CombinedFavoritesInitial extends CombinedFavoritesState {
   const CombinedFavoritesInitial() : super();
+
+  @override
+  List<Object> get props => [...super.props, runtimeType];
+}
+
+class CombinedFavoritesLoading extends CombinedFavoritesState {
+  const CombinedFavoritesLoading({
+    required List<InterstedEvents> events,
+    required List<FavoriteModel> favorites,
+  }) : super(events: events, favorites: favorites);
+
+  @override
+  List<Object> get props => [...super.props, runtimeType];
 }
 
 class CombinedFavoritesLoaded extends CombinedFavoritesState {
   const CombinedFavoritesLoaded({
     required List<InterstedEvents> events,
-    required List<Trip> favorites,
+    required List<FavoriteModel> favorites,
   }) : super(events: events, favorites: favorites);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is CombinedFavoritesLoaded &&
-              runtimeType == other.runtimeType &&
-              events == other.events &&
-              favorites == other.favorites;
+  List<Object> get props => [...super.props, runtimeType];
 
-  @override
-  int get hashCode => Object.hash(events, favorites);
+  CombinedFavoritesLoaded copyWith({
+    List<InterstedEvents>? events,
+    List<FavoriteModel>? favorites,
+  }) {
+    return CombinedFavoritesLoaded(
+      events: events ?? this.events,
+      favorites: favorites ?? this.favorites,
+    );
+  }
 }
 
 class CombinedFavoritesError extends CombinedFavoritesState {
   final String message;
+  final DateTime timestamp;
 
-  const CombinedFavoritesError(
+  CombinedFavoritesError(
       this.message, {
         required List<InterstedEvents> events,
-        required List<Trip> favorites,
-      }) : super(events: events, favorites: favorites);
+        required List<FavoriteModel> favorites,
+      })  : timestamp = DateTime.now(),
+        super(events: events, favorites: favorites);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is CombinedFavoritesError &&
-              runtimeType == other.runtimeType &&
-              message == other.message &&
-              events == other.events &&
-              favorites == other.favorites;
+  List<Object> get props => [...super.props, message, timestamp, runtimeType];
 
-  @override
-  int get hashCode => Object.hash(message, events, favorites);
+  CombinedFavoritesError copyWith({
+    String? message,
+    List<InterstedEvents>? events,
+    List<FavoriteModel>? favorites,
+  }) {
+    return CombinedFavoritesError(
+      message ?? this.message,
+      events: events ?? this.events,
+      favorites: favorites ?? this.favorites,
+    );
+  }
 }
+
+ */

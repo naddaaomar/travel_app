@@ -1,3 +1,4 @@
+/*
 import '../../../../../../../../event_details/data/models/EventDetailsModel.dart';
 
 class InterstedEvents {
@@ -64,3 +65,6 @@ class InterstedEvents {
     );
   }
 }
+
+
+ */

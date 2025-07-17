@@ -1,3 +1,4 @@
+/*
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -31,7 +32,7 @@ class InterestedEventsService {
     try {
       final token = await _getAuthToken();
       final response = await _client.get(
-        Uri.parse('$_baseUrl$_apiPath/interested'),
+        Uri.parse('$_baseUrl$_apiPath/interested'),    //NEEDED
         headers: _headersWithAuth(token),
       ).timeout(_requestTimeout);
 
@@ -58,7 +59,7 @@ class InterestedEventsService {
     try {
       final token = await _getAuthToken();
       final response = await _client.post(
-        Uri.parse('$_baseUrl$_apiPath/toggle-interest/$eventId'),
+        Uri.parse('$_baseUrl$_apiPath/toggle-interest/$eventId'),        //NEEDED
         headers: _headersWithAuth(token),
       ).timeout(_requestTimeout);
 
@@ -76,7 +77,7 @@ class InterestedEventsService {
     try {
       final token = await _getAuthToken();
       final response = await _client.delete(
-        Uri.parse('$_baseUrl$_apiPath/interested'),
+        Uri.parse('$_baseUrl$_apiPath/interested'),                     //NEEDED
         headers: _headersWithAuth(token),
       ).timeout(_requestTimeout);
 
@@ -149,3 +150,5 @@ class InterestedEventsService {
     return 'Request failed with status $statusCode';
   }
 }
+
+ */

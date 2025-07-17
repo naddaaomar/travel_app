@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:p/screens/tabs/profile/profile_tabs/favorite_trips_widget/presentation/widgets/no_favorites.dart';
 import 'package:p/screens/trip_details/views/trip_details_view_body.dart';
 import '../../../../../../../../all_travels/presentation/pages/all_travels.dart';
 import '../../data/model/fav_trip_model.dart';
 import 'favorite_trip_card.dart';
-import 'no_favorites.dart';
 
 class FavoriteList extends StatelessWidget {
   final List<Trip> favorites;
