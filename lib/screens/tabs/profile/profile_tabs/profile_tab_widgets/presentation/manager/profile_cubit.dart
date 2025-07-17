@@ -6,19 +6,19 @@ import 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileInitial());
 
-  Future<void> loadProfile(
-      String defaultName,
-      String defaultEmail,
-      String defaultPassword,
-      ) async {
+  Future<void> loadProfile() async {
     emit(ProfileLoading());
     try {
       final prefs = await SharedPreferences.getInstance();
+      final email = prefs.getString('email') ?? 'no-email-set';
+
       final profile = UserProfile(
-        name: prefs.getString('name') ?? defaultName,
-        email: prefs.getString('email') ?? defaultEmail,
-        password: prefs.getString('password') ?? defaultPassword,
+        name: prefs.getString('name') ?? 'No name',
+        email: email,
+        password: 'hidden',
       );
+
+      print('CLEAN PROFILE EMAIL: ${profile.email}');
       emit(ProfileLoaded(profile));
     } catch (e) {
       emit(ProfileError('Failed to load profile'));

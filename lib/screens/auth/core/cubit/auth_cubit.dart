@@ -33,23 +33,25 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       final prefs = await SharedPreferences.getInstance();
+
       await prefs.setBool('isSignedIn', true);
       await prefs.setString('email', user!.email!);
 
-      final storedEmail = prefs.getString('email');
-      await prefs.setString('email', storedEmail ?? username);
-
       await prefs.setString('name', username);
       await prefs.setString('password', password);
-      await prefs.setString('token', user!.token!);
+      await prefs.setString('token', user.token!);
 
       final storedToken = prefs.getString('token');
       print("Token stored in SharedPreferences: $storedToken");
 
+      print('CLEAN EMAIL SAVED: ${user.email}');
+
 
       if (context.mounted) {
         final profileCubit = context.read<ProfileCubit>();
-        profileCubit.loadProfile(username, user.email!, password);
+        profileCubit.loadProfile();
+
+        // profileCubit.loadProfile(username, user.email!, password);
       }
 
       await FavoriteAuth.saveAuthToken(user.token!);

@@ -22,8 +22,9 @@ class AuthDataModel {
     _message = json['message'];
     _isAuthenticated = json['isAuthenticated'];
     _userName = json['userName'];
-    _email = json['email'];
+    _email = json['emailorNumber'] ?? json['email'] ?? json['userName'];
     _token = json['token'];
+    print('Parsed email: $_email');
   }
   dynamic _message;
   bool? _isAuthenticated;
@@ -35,7 +36,8 @@ class AuthDataModel {
     String? userName,
     String? email,
     String? token,
-  }) => AuthDataModel(  message: message ?? _message,
+  }) => AuthDataModel(
+    message: message ?? _message,
     isAuthenticated: isAuthenticated ?? _isAuthenticated,
     userName: userName ?? _userName,
     email: email ?? _email,
@@ -44,8 +46,10 @@ class AuthDataModel {
   dynamic get message => _message;
   bool? get isAuthenticated => _isAuthenticated;
   String? get userName => _userName;
-  String? get email => _email;
-  String? get token => _token;
+  String? get email {
+    final email = _email ?? _userName;
+    return email?.contains('@') == true ? email : '$email@gmail.com';
+  }  String? get token => _token;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

@@ -33,9 +33,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     context.read<ProfileCubit>().loadProfile(
-      widget.name,
+     /* widget.name,
       widget.email,
       widget.password,
+
+      */
     );
   }
 
@@ -109,6 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
         builder: (context, state) {
+
           if (state is ProfileInitial || state is ProfileLoading) {
             return const Center(child: CircularProgressIndicator());
           }

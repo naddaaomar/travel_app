@@ -129,11 +129,7 @@ class _ProfileBodyState extends State<ProfileBody>
     switch (selectedIndex) {
       case 0:
         return BlocProvider(
-          create: (context) => ProfileCubit()..loadProfile(
-            widget.name,
-            widget.email,
-            '',
-          ),
+          create: (context) => ProfileCubit()..loadProfile(),
           child: BlocBuilder<ProfileCubit, ProfileState>(
             builder: (context, state) {
               if (state is ProfileLoaded || state is ProfilePasswordUpdated) {
