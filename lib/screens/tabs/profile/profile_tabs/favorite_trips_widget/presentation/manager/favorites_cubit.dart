@@ -9,20 +9,18 @@ class FavoritesCubit extends Cubit<FavoritesState> {
   final FlutterSecureStorage secureStorage;
   BuildContext? _context;
 
+
   FavoritesCubit({
     required this.favoritesService,
     required this.secureStorage,
-  }) : super(FavoritesInitial());
-
-  void setContext(BuildContext context) {
-    _context = context;
-    loadFavorites();
+  }) : super(FavoritesInitial()) {
+    loadFavorites(); // 👈 call immediately
   }
 
   Future<void> loadFavorites() async {
     try {
-      emit(FavoritesLoading());
-      final token = await secureStorage.read(key: 'auth_token');
+     // emit(FavoritesLoading());
+      final token = await secureStorage.read(key: 'token');
       if (token == null) {
         _showAuthRequired();
         emit(const FavoritesError('Authentication required'));
@@ -38,7 +36,7 @@ class FavoritesCubit extends Cubit<FavoritesState> {
 
   Future<void> addFavorite(int travelId) async {
     try {
-      final token = await secureStorage.read(key: 'auth_token');
+      final token = await secureStorage.read(key: 'token');
       if (token == null) {
         _showAuthRequired();
         return;
@@ -53,8 +51,8 @@ class FavoritesCubit extends Cubit<FavoritesState> {
 
   Future<void> removeFavorite(int travelId) async {
     try {
-      emit(FavoritesLoading());
-      final token = await secureStorage.read(key: 'auth_token');
+     // emit(FavoritesLoading());
+      final token = await secureStorage.read(key: 'token');
       if (token == null) {
         _showAuthRequired();
         return;

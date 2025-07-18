@@ -7,11 +7,16 @@ import 'package:p/screens/auth/presentation/pages/sign_in.dart';
 
 class FavoriteAuth {
   static const _storage = FlutterSecureStorage();
-  static const _tokenKey = 'auth_token';
+  static const _tokenKey = 'token';
 
   static Future<bool> checkAuth(BuildContext context) async {
-    final authCubit = context.read<AuthCubit>();
-    final isAuthenticated = authCubit.state is AuthSuccess;
+    final authCubit = await context.read<AuthCubit>();
+
+    if (authCubit.state is AuthLoading) {
+      await authCubit.stream.firstWhere((state) => state is! AuthLoading);
+    }
+
+    final isAuthenticated =await  authCubit.state is AuthSuccess;
 
     if (isAuthenticated) {
       await _syncTokenIfMissing(context);
@@ -28,6 +33,8 @@ class FavoriteAuth {
 
     return didSignIn ?? false;
   }
+
+
 
   static Future<String?> getAuthToken(BuildContext context) async {
     final authCubit = context.read<AuthCubit>();

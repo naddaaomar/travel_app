@@ -32,8 +32,10 @@ class HomeViewBody extends StatefulWidget {
   State<HomeViewBody> createState() => _HomeViewBodyState();
 }
 
-class _HomeViewBodyState extends State<HomeViewBody> with TickerProviderStateMixin {
-  final ValueNotifier<AppBarState> _appBarStateNotifier = ValueNotifier(AppBarState.transparent);
+class _HomeViewBodyState extends State<HomeViewBody>
+    with TickerProviderStateMixin {
+  final ValueNotifier<AppBarState> _appBarStateNotifier =
+      ValueNotifier(AppBarState.transparent);
   final _secureStorage = const FlutterSecureStorage();
   final ValueNotifier<bool> isFieldFocused = ValueNotifier(false);
   final FocusNode focusNode = FocusNode();
@@ -42,15 +44,11 @@ class _HomeViewBodyState extends State<HomeViewBody> with TickerProviderStateMix
   bool _isCheckingAuth = true;
 
   List<Widget> get tabs => [
-    HomeTab(),
-    OffersScreen(),
-    BlocProvider(
-      create: (context) => AuthCubit()..checkAuthStatus(),
-      child: PersonTab(
-          appBarStateNotifier: _appBarStateNotifier),
-    ),
-    MapView(),
-  ];
+        HomeTab(),
+        OffersScreen(),
+        PersonTab(appBarStateNotifier: _appBarStateNotifier),
+        MapView(),
+      ];
 
   @override
   void initState() {
@@ -99,7 +97,8 @@ class _HomeViewBodyState extends State<HomeViewBody> with TickerProviderStateMix
       if (_advancedDrawerController.value.visible) {
         FocusScope.of(context).unfocus();
       } else {
-        Future.delayed(const Duration(milliseconds: 200), () => setState(() {}));
+        Future.delayed(
+            const Duration(milliseconds: 200), () => setState(() {}));
       }
     });
 
@@ -130,13 +129,16 @@ class _HomeViewBodyState extends State<HomeViewBody> with TickerProviderStateMix
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
         elevation: 0,
-        leading: MainRow(controller: _advancedDrawerController),
+        leading: MainRow(
+          controller: _advancedDrawerController,
+          color: _appBarStateNotifier.value == AppBarState.color
+              ? Colors.white
+              : ColorApp.primaryColor,
+        ),
         leadingWidth: double.infinity,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          statusBarIconBrightness: isLight
-              ? Brightness.dark
-              : Brightness.light,
+          statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
         ),
       );
     }
@@ -148,19 +150,24 @@ class _HomeViewBodyState extends State<HomeViewBody> with TickerProviderStateMix
     return AppBar(
       backgroundColor: _appBarStateNotifier.value == AppBarState.color
           ? isLight
-          ? ColorApp.primaryColor
-          : ColorApp.primaryColorDark
+              ? ColorApp.primaryColor
+              : ColorApp.primaryColorDark
           : Colors.transparent,
       elevation: 0,
-      leading: MainRow(controller: _advancedDrawerController),
+      leading: MainRow(
+        controller: _advancedDrawerController,
+        color: _appBarStateNotifier.value == AppBarState.color
+            ? ColorApp.primaryColor: Colors.white
+            ,
+      ),
       leadingWidth: double.infinity,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: _appBarStateNotifier.value == AppBarState.color
             ? Brightness.light
             : isLight
-            ? Brightness.dark
-            : Brightness.light,
+                ? Brightness.dark
+                : Brightness.light,
       ),
     );
   }
@@ -177,7 +184,8 @@ class _HomeViewBodyState extends State<HomeViewBody> with TickerProviderStateMix
 
     return WillPopScope(
       onWillPop: () async {
-        if (_advancedDrawerController.value.visible && HomeViewBody.currentIndex != 0) {
+        if (_advancedDrawerController.value.visible &&
+            HomeViewBody.currentIndex != 0) {
           _advancedDrawerController.hideDrawer();
           return false;
         }
@@ -217,7 +225,8 @@ class _HomeViewBodyState extends State<HomeViewBody> with TickerProviderStateMix
           openRatio: .5,
           disabledGestures: false,
           childDecoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(16)),),
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
           drawer: NewDrawer(controller: _advancedDrawerController),
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
@@ -237,13 +246,13 @@ class _HomeViewBodyState extends State<HomeViewBody> with TickerProviderStateMix
                         valueListenable: isFieldFocused,
                         builder: (context, isFocused, child) => isFocused
                             ? Positioned.fill(
-                             child: GestureDetector(
-                               onTap: () => FocusScope.of(context).unfocus(),
-                               child: Container(
-                                 color: Colors.white.withOpacity(0.6),
-                            ),
-                          ),
-                        )
+                                child: GestureDetector(
+                                  onTap: () => FocusScope.of(context).unfocus(),
+                                  child: Container(
+                                    color: Colors.white.withOpacity(0.6),
+                                  ),
+                                ),
+                              )
                             : const SizedBox.shrink(),
                       ),
                     ],
@@ -268,29 +277,29 @@ class _HomeViewBodyState extends State<HomeViewBody> with TickerProviderStateMix
               bottomNavigationBar: _isKeyboardVisible
                   ? const SizedBox.shrink()
                   : CurvedNavigationBar(
-                index: HomeViewBody.currentIndex,
-                color: isLight
-                    ? ColorApp.primaryColor
-                    : ColorApp.primaryColorDark,
-                backgroundColor: Colors.transparent,
-                animationDuration: const Duration(milliseconds: 400),
-                items: [
-                  Icon(Icons.home,
-                      color: isLight ? Colors.black : Colors.white),
-                  Icon(Icons.local_offer_outlined,
-                      color: isLight ? Colors.black : Colors.white),
-                  Icon(Icons.person,
-                      color: isLight ? Colors.black : Colors.white),
-                  Image.asset(
-                    'assets/images/map.png',
-                    width: 35.w,
-                    color: isLight ? Colors.black : Colors.white,
-                  ),
-                ],
-                onTap: (index) => setState(() {
-                  HomeViewBody.currentIndex = index;
-                }),
-              ),
+                      index: HomeViewBody.currentIndex,
+                      color: isLight
+                          ? ColorApp.primaryColor
+                          : ColorApp.primaryColorDark,
+                      backgroundColor: Colors.transparent,
+                      animationDuration: const Duration(milliseconds: 400),
+                      items: [
+                        Icon(Icons.home,
+                            color: isLight ? Colors.black : Colors.white),
+                        Icon(Icons.local_offer_outlined,
+                            color: isLight ? Colors.black : Colors.white),
+                        Icon(Icons.person,
+                            color: isLight ? Colors.black : Colors.white),
+                        Image.asset(
+                          'assets/images/map.png',
+                          width: 35.w,
+                          color: isLight ? Colors.black : Colors.white,
+                        ),
+                      ],
+                      onTap: (index) => setState(() {
+                        HomeViewBody.currentIndex = index;
+                      }),
+                    ),
             ),
           ),
         ),

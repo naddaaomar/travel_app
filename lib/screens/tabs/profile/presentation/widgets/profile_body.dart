@@ -49,7 +49,7 @@ class _ProfileBodyState extends State<ProfileBody>
             padding: const EdgeInsets.only(
                 left: 40, right: 40, top: 40),
             child: Container(
-              height: 100,
+              height: 80,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80)),
               ),
@@ -82,28 +82,28 @@ class _ProfileBodyState extends State<ProfileBody>
                                 children: [
                                   Icon(ProfileData[index].icon),
                                   const SizedBox(height: 3),
-                                  Builder(
-                                    builder: (context) {
-                                      final words = ProfileData[index].name.split(' ');
-                                      if (words.length > 1) {
-                                        return Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: words.map((word) =>
-                                              Text(
-                                                word,
-                                                style: const TextStyle(fontFamily: "vol"),
-                                                textAlign: TextAlign.center,
-                                              )
-                                          ).toList(),
-                                        );
-                                      }
-                                      return Text(
-                                        ProfileData[index].name,
-                                        style: const TextStyle(fontFamily: "vol"),
-                                        textAlign: TextAlign.center,
-                                      );
-                                    },
-                                  ),
+                                  // Builder(
+                                  //   builder: (context) {
+                                  //     final words = ProfileData[index].name.split(' ');
+                                  //     if (words.length > 1) {
+                                  //       return Column(
+                                  //         mainAxisSize: MainAxisSize.min,
+                                  //         children: words.map((word) =>
+                                  //             Text(
+                                  //               word,
+                                  //               style: const TextStyle(fontFamily: "vol"),
+                                  //               textAlign: TextAlign.center,
+                                  //             )
+                                  //         ).toList(),
+                                  //       );
+                                  //     }
+                                  //     return Text(
+                                  //       ProfileData[index].name,
+                                  //       style: const TextStyle(fontFamily: "vol"),
+                                  //       textAlign: TextAlign.center,
+                                  //     );
+                                  //   },
+                                  // ),
                                 ],
                               ),
                             ),

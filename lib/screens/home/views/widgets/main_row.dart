@@ -5,9 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:p/helpers/themes/colors.dart';
 
 class MainRow extends StatelessWidget {
-  MainRow({super.key,required this.controller});
+  MainRow({super.key,required this.controller,required this.color});
 
   AdvancedDrawerController controller;
+  Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class MainRow extends StatelessWidget {
                       ,
                       child: Icon(Icons.clear,color: Colors.black,),):Icon(
                       Icons.menu ,
-                      color: ColorApp.primaryColor,
+                      color:color,
                       key: ValueKey<bool>(value.visible),
                     ),
                   );

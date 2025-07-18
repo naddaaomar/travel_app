@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:p/di.dart';
 import 'package:p/helpers/themes/colors.dart';
@@ -225,17 +226,26 @@ class HomeTab extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            final token = await prefs.getString('token');
-                            final userId = await prefs.getString('user_id');
-                            print(token);
-                            print(
-                                "////////////////////////////////////////////");
-                            print(userId);
-                            print(state.eventRecommendation);
-                            print(state.travelRecommendation);
+                            // From SharedPreferences
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            final tokenSP = prefs.getString('token');
+                            final userIdSP = prefs.getString('user_id');
+
+                            // From FlutterSecureStorage
+                            final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+                            final tokenSecure = await secureStorage.read(key: 'token');
+                            final userIdSecure = await secureStorage.read(key: 'user_id');
+
+                            print("========== From SharedPreferences ==========");
+                            print("Token (SP): $tokenSP");
+                            print("User ID (SP): $userIdSP");
+
+                            print("========== From FlutterSecureStorage ==========");
+                            print("Token (Secure): $tokenSecure");
+                            print("User ID (Secure): $userIdSecure");
+
                           },
+
                           child: Text(
                             'Newest',
                             style: TextStyle(

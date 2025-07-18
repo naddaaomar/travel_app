@@ -19,7 +19,7 @@ class FavoritesPage extends StatelessWidget {
       create: (context) => FavoritesCubit(
         favoritesService: FavoritesService(client: http.Client()),
         secureStorage: const FlutterSecureStorage(),
-      )..setContext(context),
+      ),
       child: BlocBuilder<FavoritesCubit, FavoritesState>(
         builder: (context, state) {
           if (state is FavoritesLoading || state is FavoritesInitial) {

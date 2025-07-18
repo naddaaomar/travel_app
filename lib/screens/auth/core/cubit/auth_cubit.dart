@@ -60,6 +60,7 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       await FavoriteAuth.saveAuthToken(user.token!);
+      print("object///////////////////////////////////////");
 
       final payload = JwtDecoder.decode(user.token!);
 

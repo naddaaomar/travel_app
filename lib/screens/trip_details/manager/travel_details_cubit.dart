@@ -40,6 +40,7 @@ class TravelDetailsCubit extends Cubit<TravelDetailsState> {
         travelDetailsModel: travelDetailsModel,
         error: null,
       ));
+      print("dataa arriveddddddddddddddddddddddddddd");
       return travelDetailsModel;
     } catch (e) {
       emit(state.copyWith(

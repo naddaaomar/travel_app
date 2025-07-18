@@ -5,14 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:p/di.dart';
 import 'package:p/helpers/api_manager/api_manager.dart';
 import 'package:p/helpers/bloc_observer/bloc_observer.dart';
 import 'package:p/helpers/themes/theme_data.dart';
+import 'package:p/screens/auth/core/cubit/auth_cubit.dart';
 import 'package:p/screens/settings/bloc/notification_bloc/notification_bloc.dart';
 import 'package:p/screens/settings/bloc/permission_bloc/permissions_bloc.dart';
+import 'package:p/screens/tabs/profile/profile_tabs/favorite_trips_widget/data/service/favorites_service.dart';
+import 'package:p/screens/tabs/profile/profile_tabs/favorite_trips_widget/presentation/manager/favorites_cubit.dart';
 import 'package:p/screens/user_interaction/data/data_sources/local/hive_interaction_local_ds.dart';
 import 'package:p/screens/user_interaction/data/data_sources/remote/interaction_remote_ds.dart';
 import 'package:p/screens/user_interaction/data/models/event_interaction_model.dart';
@@ -36,101 +40,111 @@ import 'screens/splash_screen/view/splash.dart';
 import 'screens/tabs/profile/profile_tabs/profile_tab_widgets/presentation/manager/profile_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:ui';
+import 'package:http/http.dart' as http;
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
-final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+final secureStorage = FlutterSecureStorage();
+final favoritesService = getIt<FavoritesService>();
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 late GoogleAuthRepository googleAuthRepo;
 late GoogleAuthCubit googleAuthCubit;
 late String? token;
 void main() async {
-  Future<void> main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await EasyLocalization.ensureInitialized();
-    ApiManager.init();
-    await AndroidAlarmManager.initialize();
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  final getIt = GetIt.instance;
+  getIt.registerLazySingleton<FavoritesService>(
+      () => FavoritesService(client: http.Client()));
+  ApiManager.init();
+  await AndroidAlarmManager.initialize();
 
-    final prefs = await SharedPreferences.getInstance();
+  final prefs = await SharedPreferences.getInstance();
+  final appDocDir = await getApplicationDocumentsDirectory();
+  Hive.init(appDocDir.path);
+  await Hive.initFlutter(appDocDir.path);
+  Hive.registerAdapter(EventInteractionModelAdapter());
+  await Hive.openBox<EventInteractionModel>('interactions');
+
+  // token = prefs.getString('token');
+  //
+  // if (kIsWeb) {
+  //   print("Running on Web");
+  // } else {
+  //   print("Running on Mobile");
+  // }
+  //
+  // if (token == null || token!.isEmpty) {
+  //   print("Token not loaded from cache (Platform: ${kIsWeb ? 'Web' : 'Mobile'})");
+  // } else {
+  //   print("Token loaded from cache: $token");
+  // }
+
+  const secureStorage = FlutterSecureStorage();
+  final token = await secureStorage.read(key: 'auth_token');
+
+  final dio = Dio(BaseOptions(baseUrl: 'https://journeymate.runasp.net'));
+  final googleSignIn = GoogleSignIn();
+
+  googleAuthRepo = GoogleAuthRepository(
+    dio: dio,
+    googleSignIn: googleSignIn,
+    storage: secureStorage,
+  );
+
+  googleAuthCubit = GoogleAuthCubit(googleAuthRepo);
+
+  try {
     final appDocDir = await getApplicationDocumentsDirectory();
     Hive.init(appDocDir.path);
-    await Hive.initFlutter(appDocDir.path);
-    Hive.registerAdapter(EventInteractionModelAdapter());
-    await Hive.openBox<EventInteractionModel>('interactions');
-
-    // token = prefs.getString('token');
-    //
-    // if (kIsWeb) {
-    //   print("Running on Web");
-    // } else {
-    //   print("Running on Mobile");
-    // }
-    //
-    // if (token == null || token!.isEmpty) {
-    //   print("Token not loaded from cache (Platform: ${kIsWeb ? 'Web' : 'Mobile'})");
-    // } else {
-    //   print("Token loaded from cache: $token");
-    // }
-
-    const secureStorage = FlutterSecureStorage();
-    final token = await secureStorage.read(key: 'auth_token');
-
-    final dio = Dio(BaseOptions(baseUrl: 'https://journeymate.runasp.net'));
-    final googleSignIn = GoogleSignIn();
-
-    googleAuthRepo = GoogleAuthRepository(
-      dio: dio,
-      googleSignIn: googleSignIn,
-      storage: secureStorage,
-    );
-
-    googleAuthCubit = GoogleAuthCubit(googleAuthRepo);
-
-    try {
-      final appDocDir = await getApplicationDocumentsDirectory();
-      Hive.init(appDocDir.path);
-    } catch (e) {
-      Hive.init('hive_storage');
-    }
-
-    await AndroidAlarmManager.periodic(
-      const Duration(days: 7),
-      123,
-      sendUserInteractionCallback,
-      wakeup: true,
-      exact: true,
-      rescheduleOnReboot: true,
-    );
-
-
-    bool isFirstTime = prefs.getBool('onboarding_seen') ?? false;
-    Bloc.observer = MyBlocObserver();
-    configureDependencies();
-
-    runApp(EasyLocalization(
-      supportedLocales: [Locale('en'), Locale('ar')],
-      path: 'assets/translations',
-      startLocale: Locale("en"),
-      saveLocale: true,
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => ThemeBloc()),
-          BlocProvider(create: (context) => LocaleBloc()),
-          BlocProvider(create: (context) => PermissionsBloc()),
-          BlocProvider(create: (context) => NotificationBloc()),
-          BlocProvider(create: (context) => ProfileCubit()),
-          BlocProvider(create: (context) => getIt<InteractionCubit>()),
-          BlocProvider(
-            create: (context) => googleAuthCubit..checkAuthStatus(),
-          ),
-        ],
-        child: MyApp(isFirstTime: isFirstTime),
-      ),
-    ));
+  } catch (e) {
+    Hive.init('hive_storage');
   }
 
+  await AndroidAlarmManager.periodic(
+    const Duration(days: 7),
+    123,
+    sendUserInteractionCallback,
+    wakeup: true,
+    exact: true,
+    rescheduleOnReboot: true,
+  );
 
+  bool isFirstTime = prefs.getBool('onboarding_seen') ?? false;
+  Bloc.observer = MyBlocObserver();
+  configureDependencies();
+
+  runApp(EasyLocalization(
+    supportedLocales: [Locale('en'), Locale('ar')],
+    path: 'assets/translations',
+    startLocale: Locale("en"),
+    saveLocale: true,
+    child: MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ThemeBloc()),
+        BlocProvider(create: (context) => LocaleBloc()),
+        BlocProvider(create: (context) => PermissionsBloc()),
+        BlocProvider(create: (context) => NotificationBloc()),
+        BlocProvider(create: (context) => ProfileCubit()),
+        BlocProvider(
+            create: (context) => FavoritesCubit(
+                  favoritesService: FavoritesService(client: http.Client()),
+                  secureStorage: const FlutterSecureStorage(),
+                )),
+        BlocProvider(create: (context) => getIt<InteractionCubit>()),
+        BlocProvider(
+          create: (context) => googleAuthCubit..checkAuthStatus(),
+        ),
+        BlocProvider(
+          create: (context) => AuthCubit()..checkAuthStatus(),
+        )
+      ],
+      child: MyApp(isFirstTime: isFirstTime),
+    ),
+  ));
 }
+
 @pragma('vm:entry-point')
 Future<void> sendUserInteractionCallback() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -172,6 +186,7 @@ Future<void> sendUserInteractionCallback() async {
     print("🚨 Error sending interactions: $e");
   }
 }
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
@@ -217,25 +232,24 @@ class MyApp extends StatelessWidget {
   }
 }
 
-  void showNoInternetSnackBar() {
+void showNoInternetSnackBar() {
   Future.microtask(() {
-  scaffoldMessengerKey.currentState?.showSnackBar(
-  SnackBar(
-  content: Text(
-  'Connect to the internet',
-  style: TextStyle(fontSize: 12, fontFamily: "pop"),
-  textAlign: TextAlign.center,
-  ),
-  duration: Duration(seconds: 2),
-  behavior: SnackBarBehavior.floating,
-  shape: RoundedRectangleBorder(
-  borderRadius: BorderRadius.circular(30),
-  ),
-  elevation: 7,
-  backgroundColor: Color(0xff242931).withOpacity(.7),
-  margin:
-  EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-  ),
-  );
+    scaffoldMessengerKey.currentState?.showSnackBar(
+      SnackBar(
+        content: Text(
+          'Connect to the internet',
+          style: TextStyle(fontSize: 12, fontFamily: "pop"),
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        elevation: 7,
+        backgroundColor: Color(0xff242931).withOpacity(.7),
+        margin: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+      ),
+    );
   });
-  }
+}
